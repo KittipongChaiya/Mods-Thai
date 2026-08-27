@@ -24,9 +24,12 @@ BASE = PROJECT / "work" / "localization_base.tsv"
 TRANSLATIONS = PROJECT / "translations"
 
 BRACE = re.compile(r"\{\d+\}")
-# Two token styles appear in the table: plain %CREATURE% and the resolver form
-# %SFaction:LocalizeFaction% used by strategy/mission text.
-PERCENT = re.compile(r"%[A-Za-z_][A-Za-z0-9_]*(?::[A-Za-z0-9_]+)?%")
+# Three token styles appear in the table: plain %CREATURE%, the resolver form
+# %SFaction:LocalizeFaction% used by strategy/mission text, and the dotted
+# sub-object form %Explosion.Damage% / %Explosion.DamageType:LocalizeDamageType%
+# used by perk descriptions. The dot must be allowed or those tokens are simply
+# not checked - and silently dropping one prints a raw token in-game.
+PERCENT = re.compile(r"%[A-Za-z_][A-Za-z0-9_.]*(?::[A-Za-z0-9_]+)?%")
 TAG = re.compile(r"</?[a-zA-Z][^>]*>")
 THAI = re.compile(r"[฀-๿]")
 

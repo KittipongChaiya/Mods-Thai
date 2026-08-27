@@ -2,8 +2,8 @@
 
 **Mod version**: 1.2 (old, game 0.9.9) → **1.3 in progress** (game 1.0.3)
 **Target game**: `1.0.3.578s.024ad60`, Unity `2022.3.62f2`
-**Phase**: 3 of 5 — Translate the table | **Status**: IN_PROGRESS
-**Updated**: 2026-08-27
+**Phase**: 3 of 5 — Translate the table | **Status**: COMPLETE
+**Updated**: 2026-08-28
 
 ## Architecture (validated end to end on 2026-08-27)
 
@@ -60,11 +60,14 @@ Thai glyphs. Log clean, no exceptions, one table load, `Mod QuasimorphThai loade
       335,785 candidate matches per cell, zero unique). Corpus is therefore a
       **glossary / translation memory**, not a key→value map. Saved to `work/corpus_cells.json`.
 - [x] Phase 4 — Mod assembly written, builds clean, loads, serves the table, applies the font.
+- [x] **Phase 3 — Translate the 1.0.3 table into Thai. 11,352 / 11,352 cells (100%).**
+      Finished 2026-08-28. Every prefix is done, `check_translations.py` reports zero
+      problems, and the in-game log confirms `11577 rows, 11352 translated, 0 left in
+      English`.
 
 ## Active
 
-- [ ] **Phase 3 — Translate the 1.0.3 table into Thai.** 11,352 non-empty English cells,
-      1,194,649 chars. Order: visible UI → items → gameplay terms → monsters/stations → lore.
+_Nothing in progress._
 
 ### Translation loop (resumable — repeat until coverage is 100%)
 
@@ -83,23 +86,57 @@ Get-ChildItem "$P\translations\*.json" | ForEach-Object { $cmdArgs+="--translati
 & python @cmdArgs
 ```
 
-**Progress: 7,046 / 11,352 cells (62.1%) — all validation passing.**
-Done: **all `ui`**, **all `item`**, **all `monster`**, `alliance`, `armor`, `class`,
-`factiontype`, `missiontype`, `name`, `notification`, `pact`, `spec`, `weapon`, `woundtype`,
-`firemode`, `gamekey`, `strategy`, `wound`, `trait`, `woundeffect`, `curse`, `woundslot`,
-`tooltip`.
-Remaining (4,306 cells): `mgperk` 264, `perk` 588, `tutorial` 28, `station` 664,
-`spaceobject` 132, `faction` 99, `terminal` 48, `bramfatura` 30, and the lore bulk
-`mission` 1,406 (361K chars) + `story` 1,047 (332K chars).
+**Progress: 11,352 / 11,352 cells (100%) — all validation passing.**
+Every prefix is translated, including the `mission` (648 distinct phrases) and `story`
+(999 distinct phrases) lore bulk. The loop above is kept for the next game update, when
+`make_batches.py --stats` will list whatever new keys the update introduced.
+
+### Index-keyed workflow for the lore bulk (`mission`, `story`)
+
+`mission` and `story` are far too repetitive to translate cell by cell (1,406 cells from
+only 648 distinct strings) and far too large to re-type the English keys for
+`translate_repetitive.py`. So they use an extra indirection:
+
+```powershell
+# 1. freeze the distinct-phrase list (an ordered JSON array)
+#    -> work/mission_distinct.json, work/story_distinct.json
+# 2. read a character-budgeted slice
+python tools\dump_phrases.py work\story_distinct.json --start 0 --budget 11000
+# 3. write work\story_th_NNN.json as { "<index>": "<Thai>" }
+# 4. join index -> English -> Thai and apply
+python tools\build_phrases.py work\story_distinct.json "work\story_th_*.json" -o work\phrases_story.json
+python tools\translate_repetitive.py work\phrases_story.json translations\111_story.json work\batches\001_story.json
+python tools\check_translations.py
+```
+
+`build_phrases.py` reports any duplicate/out-of-range/empty index, so a slice cannot be
+silently half-applied. `translate_repetitive.py` writes a `.todo.json` skeleton while
+coverage is partial — delete it, it is not part of the translation.
+
+Done: **everything**. For the record, by prefix: **all `ui`**, **all `item`**, **all `monster`**, **all `station`**, **all `perk`**,
+**all `mgperk`**, **all `faction`**, **all `bramfatura`**, **all `terminal`**,
+**all `tutorial`**, **all `spaceobject`**, `alliance`, `armor`, `class`, `factiontype`,
+`missiontype`, `name`, `notification`, `pact`, `spec`, `weapon`, `woundtype`, `firemode`,
+`gamekey`, `strategy`, `wound`, `trait`, `woundeffect`, `curse`, `woundslot`, `tooltip`,
+**all `mission`** (1,406 cells / 648 distinct), **all `story`** (1,047 cells / 999 distinct).
+Nothing remains.
+
+**2026-08-27 session — verified the premise first.** Re-extracted the live `localization`
+TextAsset from the installed game and diffed it against `work/localization_base.tsv`:
+byte-identical (15,691,408 B), 0 keys added, 0 English cells changed. So there are **no
+"newly added" keys from a game update** — the English text still visible in game is simply
+the not-yet-translated remainder, and the deployed mod was already in sync with the last
+build.
 
 **Tip for mechanical batches** (`woundslot` was 488 cells from only 149 distinct phrases):
 use `tools/translate_repetitive.py <batch> <phrases.json> <out>`. Run it once with an empty
 `{}` dictionary to list every distinct phrase, write the dictionary, then re-run. It never
 guesses — uncovered phrases are reported, not invented.
 
-**v1.3 has already been packaged and delivered** to `Desktop\Quasimorph_Thai_v1.3\` (+ .zip)
-and verified working from a clean installer run. Re-run the build + `Compress-Archive` after
-more translation to refresh it.
+**v1.3 is packaged and delivered** to `Quasimorph_Thai\Quasimorph_Thai_v1.3\` (+ .zip),
+rebuilt 2026-08-28 with the complete translation (`thai_overrides.tsv.gz`, 477,854 B) and
+deployed to `LocalUserPresets\QuasimorphThai\`. `build.ps1 -OutDir` now defaults to that
+in-repo folder instead of the old Desktop path, which no longer exists.
 
 **Translation rules**: follow `GLOSSARY.md`. Keep `{0}`, `%TOKEN%`, `<color=…>`, `<br>`
 byte-identical. Keep alphanumeric model designations (`RPG-77`, `Starlock MD-6`, `A.R.C.`)
@@ -155,5 +192,14 @@ archive/v1.2_payload/     the old 1.2 delivery (BepInEx, doorstop, resources.ass
 
 ## Next Action
 
-Continue Phase 3: translate `station`, `perk`, `mgperk`, `spaceobject`, `faction`,
-`terminal`, `bramfatura`, `tutorial`, then the `mission` + `story` lore bulk.
+Phase 6 — playthrough validation. The translation is complete and the mod is deployed, but
+only the startup path has been verified programmatically (log: 11,352 translated, font
+loaded and applied, no exceptions). What still needs a human pass:
+
+1. Play far enough to see long `story.*.details` briefings and check Thai combining marks
+   (สระ / วรรณยุกต์) are not clipped — the 1.2 plugin had `AdjustThaiMarkGlyphMetrics`,
+   not yet ported. Port it only if screenshots show clipping.
+2. Spot-check a station screen, a perk tooltip, and a mission briefing for line-wrapping
+   and overflow in the narrower UI panels.
+
+Then Phase 5 (installer + `วิธีติดตั้ง.txt` rewrite), which is still pending.
