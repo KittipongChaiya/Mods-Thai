@@ -1,0 +1,326 @@
+[
+  {
+    "file": "001_bramfatura.json",
+    "prefix": "bramfatura",
+    "cells": 24,
+    "chars": 20294
+  },
+  {
+    "file": "002_bramfatura.json",
+    "prefix": "bramfatura",
+    "cells": 6,
+    "chars": 5796
+  },
+  {
+    "file": "003_faction.json",
+    "prefix": "faction",
+    "cells": 39,
+    "chars": 20521
+  },
+  {
+    "file": "004_faction.json",
+    "prefix": "faction",
+    "cells": 34,
+    "chars": 20231
+  },
+  {
+    "file": "005_faction.json",
+    "prefix": "faction",
+    "cells": 26,
+    "chars": 14544
+  },
+  {
+    "file": "006_mgperk.json",
+    "prefix": "mgperk",
+    "cells": 264,
+    "chars": 4225
+  },
+  {
+    "file": "007_mission.json",
+    "prefix": "mission",
+    "cells": 85,
+    "chars": 21522
+  },
+  {
+    "file": "008_mission.json",
+    "prefix": "mission",
+    "cells": 80,
+    "chars": 21657
+  },
+  {
+    "file": "009_mission.json",
+    "prefix": "mission",
+    "cells": 85,
+    "chars": 21535
+  },
+  {
+    "file": "010_mission.json",
+    "prefix": "mission",
+    "cells": 85,
+    "chars": 21503
+  },
+  {
+    "file": "011_mission.json",
+    "prefix": "mission",
+    "cells": 68,
+    "chars": 21676
+  },
+  {
+    "file": "012_mission.json",
+    "prefix": "mission",
+    "cells": 82,
+    "chars": 21875
+  },
+  {
+    "file": "013_mission.json",
+    "prefix": "mission",
+    "cells": 81,
+    "chars": 21895
+  },
+  {
+    "file": "014_mission.json",
+    "prefix": "mission",
+    "cells": 94,
+    "chars": 21581
+  },
+  {
+    "file": "015_mission.json",
+    "prefix": "mission",
+    "cells": 95,
+    "chars": 21950
+  },
+  {
+    "file": "016_mission.json",
+    "prefix": "mission",
+    "cells": 94,
+    "chars": 21606
+  },
+  {
+    "file": "017_mission.json",
+    "prefix": "mission",
+    "cells": 80,
+    "chars": 21599
+  },
+  {
+    "file": "018_mission.json",
+    "prefix": "mission",
+    "cells": 87,
+    "chars": 21963
+  },
+  {
+    "file": "019_mission.json",
+    "prefix": "mission",
+    "cells": 82,
+    "chars": 21982
+  },
+  {
+    "file": "020_mission.json",
+    "prefix": "mission",
+    "cells": 91,
+    "chars": 21963
+  },
+  {
+    "file": "021_mission.json",
+    "prefix": "mission",
+    "cells": 82,
+    "chars": 21846
+  },
+  {
+    "file": "022_mission.json",
+    "prefix": "mission",
+    "cells": 85,
+    "chars": 21800
+  },
+  {
+    "file": "023_mission.json",
+    "prefix": "mission",
+    "cells": 50,
+    "chars": 13109
+  },
+  {
+    "file": "024_monster.json",
+    "prefix": "monster",
+    "cells": 278,
+    "chars": 21919
+  },
+  {
+    "file": "025_monster.json",
+    "prefix": "monster",
+    "cells": 268,
+    "chars": 21996
+  },
+  {
+    "file": "026_monster.json",
+    "prefix": "monster",
+    "cells": 314,
+    "chars": 22000
+  },
+  {
+    "file": "027_monster.json",
+    "prefix": "monster",
+    "cells": 270,
+    "chars": 21916
+  },
+  {
+    "file": "028_monster.json",
+    "prefix": "monster",
+    "cells": 185,
+    "chars": 13774
+  },
+  {
+    "file": "029_perk.json",
+    "prefix": "perk",
+    "cells": 388,
+    "chars": 21984
+  },
+  {
+    "file": "030_perk.json",
+    "prefix": "perk",
+    "cells": 200,
+    "chars": 11215
+  },
+  {
+    "file": "031_spaceobject.json",
+    "prefix": "spaceobject",
+    "cells": 88,
+    "chars": 21501
+  },
+  {
+    "file": "032_spaceobject.json",
+    "prefix": "spaceobject",
+    "cells": 44,
+    "chars": 10991
+  },
+  {
+    "file": "033_station.json",
+    "prefix": "station",
+    "cells": 229,
+    "chars": 21641
+  },
+  {
+    "file": "034_station.json",
+    "prefix": "station",
+    "cells": 284,
+    "chars": 21982
+  },
+  {
+    "file": "035_station.json",
+    "prefix": "station",
+    "cells": 151,
+    "chars": 10565
+  },
+  {
+    "file": "036_story.json",
+    "prefix": "story",
+    "cells": 63,
+    "chars": 21829
+  },
+  {
+    "file": "037_story.json",
+    "prefix": "story",
+    "cells": 61,
+    "chars": 21742
+  },
+  {
+    "file": "038_story.json",
+    "prefix": "story",
+    "cells": 70,
+    "chars": 21581
+  },
+  {
+    "file": "039_story.json",
+    "prefix": "story",
+    "cells": 80,
+    "chars": 21421
+  },
+  {
+    "file": "040_story.json",
+    "prefix": "story",
+    "cells": 57,
+    "chars": 21128
+  },
+  {
+    "file": "041_story.json",
+    "prefix": "story",
+    "cells": 29,
+    "chars": 21032
+  },
+  {
+    "file": "042_story.json",
+    "prefix": "story",
+    "cells": 55,
+    "chars": 21883
+  },
+  {
+    "file": "043_story.json",
+    "prefix": "story",
+    "cells": 92,
+    "chars": 21872
+  },
+  {
+    "file": "044_story.json",
+    "prefix": "story",
+    "cells": 72,
+    "chars": 21955
+  },
+  {
+    "file": "045_story.json",
+    "prefix": "story",
+    "cells": 65,
+    "chars": 21459
+  },
+  {
+    "file": "046_story.json",
+    "prefix": "story",
+    "cells": 57,
+    "chars": 21659
+  },
+  {
+    "file": "047_story.json",
+    "prefix": "story",
+    "cells": 58,
+    "chars": 21883
+  },
+  {
+    "file": "048_story.json",
+    "prefix": "story",
+    "cells": 94,
+    "chars": 21792
+  },
+  {
+    "file": "049_story.json",
+    "prefix": "story",
+    "cells": 85,
+    "chars": 20618
+  },
+  {
+    "file": "050_story.json",
+    "prefix": "story",
+    "cells": 86,
+    "chars": 21829
+  },
+  {
+    "file": "051_story.json",
+    "prefix": "story",
+    "cells": 23,
+    "chars": 8027
+  },
+  {
+    "file": "052_terminal.json",
+    "prefix": "terminal",
+    "cells": 37,
+    "chars": 21504
+  },
+  {
+    "file": "053_terminal.json",
+    "prefix": "terminal",
+    "cells": 11,
+    "chars": 9485
+  },
+  {
+    "file": "054_tutorial.json",
+    "prefix": "tutorial",
+    "cells": 28,
+    "chars": 11680
+  }
+]

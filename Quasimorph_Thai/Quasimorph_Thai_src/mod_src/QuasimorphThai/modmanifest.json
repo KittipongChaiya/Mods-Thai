@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "QuasimorphThai",
+  "Assemblies": ["QuasimorphThai.dll"],
+  "Dependencies": [],
+  "SteamTags": [],
+  "RoomPresetNamespaceSlot": 0
+}

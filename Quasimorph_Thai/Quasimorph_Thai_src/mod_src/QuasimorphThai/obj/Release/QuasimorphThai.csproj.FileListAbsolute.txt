@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\build\mod\QuasimorphThai.deps.json
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\build\mod\QuasimorphThai.dll
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\mod_src\QuasimorphThai\obj\Release\QuasimorphThai.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\mod_src\QuasimorphThai\obj\Release\QuasimorphThai.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\mod_src\QuasimorphThai\obj\Release\QuasimorphThai.AssemblyInfoInputs.cache
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\mod_src\QuasimorphThai\obj\Release\QuasimorphThai.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\mod_src\QuasimorphThai\obj\Release\QuasimorphThai.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Quasimorph_Thai_src\mod_src\QuasimorphThai\obj\Release\QuasimorphThai.dll
