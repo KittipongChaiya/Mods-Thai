@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QuasimorphThai")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.3.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.3.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.3.0+5587e6df9524b33200086213b7de4bec6f8da4c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("Quasimorph Thai")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QuasimorphThai")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.3.0.0")]

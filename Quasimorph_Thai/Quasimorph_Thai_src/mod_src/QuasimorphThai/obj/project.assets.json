@@ -13,11 +13,11 @@
   "project": {
     "version": "1.3.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\Quasimorph_Thai_src\\mod_src\\QuasimorphThai\\QuasimorphThai.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\Mods-Thai\\Quasimorph_Thai\\Quasimorph_Thai_src\\mod_src\\QuasimorphThai\\QuasimorphThai.csproj",
       "projectName": "QuasimorphThai",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\Quasimorph_Thai_src\\mod_src\\QuasimorphThai\\QuasimorphThai.csproj",
+      "projectPath": "C:\\Users\\Administrator\\Desktop\\Mods-Thai\\Quasimorph_Thai\\Quasimorph_Thai_src\\mod_src\\QuasimorphThai\\QuasimorphThai.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\Quasimorph_Thai_src\\mod_src\\QuasimorphThai\\obj\\",
+      "outputPath": "C:\\Users\\Administrator\\Desktop\\Mods-Thai\\Quasimorph_Thai\\Quasimorph_Thai_src\\mod_src\\QuasimorphThai\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config"
