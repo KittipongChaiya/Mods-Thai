@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="46">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"Full / Compact - Mode"</Description>
+      <Options moAlwaysHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+      <Color>79BCFF</Color>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+LuaCall(function cycleFullCompact(sender,force) local state = not(compactmenuitem.Caption == 'Compact View Mode'); if force~=nil then state = not force end; compactmenuitem.Caption = state and 'Compact View Mode' or 'Full View Mode'; getMainForm().Splitter1.Visible = state; getMainForm().Panel4.Visible    = state; getMainForm().Panel5.Visible    = state; end; function addCompactMenu() if compactmenualreadyexists then return end; local parent = getMainForm().Menu.Items; compactmenuitem = createMenuItem(parent); parent.add(compactmenuitem); compactmenuitem.Caption = 'Compact View Mode'; compactmenuitem.OnClick = cycleFullCompact; compactmenualreadyexists = 'yes'; end; addCompactMenu(); cycleFullCompact(nil,true))
+
+[DISABLE]
+LuaCall(cycleFullCompact(nil,false))
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"1)  Activate me ! Quasimorph 0.9.87"</Description>
+      <Options moHideChildren="1" moAllowManualCollapseAndExpand="1"/>
+      <Color>0000FF</Color>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+{$lua}
+OpenProcess("Quasimorph.exe")
+mono_initialize()
+LaunchMonoDataCollector()
+{$asm}
+[DISABLE]
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>105849</ID>
+          <Description>"Weapon - SHIP ONLY (Right Click weapon to populate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(weapon3,2048,MGSC.ScreenWithShipCargo:DragControllerShowContextMenuCallback+8bb)
+registersymbol(iweapon3)
+alloc(iweapon3,8)
+label(return)
+label(exit)
+
+iweapon3:
+dd 0
+
+weapon3:
+mov [iweapon3],r14
+movsx rax,word ptr [r14+48]
+jmp exit
+
+exit:
+jmp return
+
+MGSC.ScreenWithShipCargo:DragControllerShowContextMenuCallback+8bb:
+jmp weapon3
+
+
+return:
+
+
+[DISABLE]
+dealloc(weapon3)
+MGSC.ScreenWithShipCargo:DragControllerShowContextMenuCallback+8bb:
+db 49 0F BF 46 48
+//movsx rax,word ptr [r14+48]
+unregistersymbol(iweapon3)
+dealloc(iweapon3)
+
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>105850</ID>
+              <Description>"CurrentAmmo"</Description>
+              <ShowAsSigned>1</ShowAsSigned>
+              <VariableType>2 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>48</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105851</ID>
+              <Description>"MagazineCapacity"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>B8</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105852</ID>
+              <Description>"ReloadDuration"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>B0</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105854</ID>
+              <Description>"Range"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>AC</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>105921</ID>
+          <Description>"Travel Time = 0.1"</Description>
+          <Options moHideChildren="1" moActivateChildrenAsWell="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(travel3,2048,MGSC.TravelSystem:StartSpaceshipTravel+273)
+registersymbol(itravel3)
+alloc(itravel3,8)
+label(return)
+label(exit)
+
+itravel3:
+dd 0
+
+travel3:
+mov [itravel3],rdi
+
+
+exit:
+jmp return
+
+MGSC.TravelSystem:StartSpaceshipTravel+273:
+jmp travel3
+nop 3
+
+return:
+
+
+[DISABLE]
+dealloc(travel3)
+MGSC.TravelSystem:StartSpaceshipTravel+273:
+db F2 0F 11 87 80 00 00 00
+//movsd [rdi+00000080],xmm0
+unregistersymbol(itravel3)
+dealloc(itravel3)
+
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>105926</ID>
+              <Description>"TravelHoursDuration"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Double</VariableType>
+              <Address>itravel3</Address>
+              <Offsets>
+                <Offset>80</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105923</ID>
+              <Description>"FlightTime"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>itravel3</Address>
+              <Offsets>
+                <Offset>48</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105925</ID>
+              <Description>"InitialTravelDistance"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>itravel3</Address>
+              <Offsets>
+                <Offset>70</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>106031</ID>
+          <Description>"Faction Stats (Buy something to populate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(trade4,2048,MGSC.TradeSystem:BuyStationItems+16e)
+registersymbol(itrade4)
+alloc(itrade4,8)
+label(return)
+label(exit)
+
+itrade4:
+dd 0
+
+trade4:
+mov [itrade4],r12
+mov [r12+40],eax
+
+exit:
+jmp return
+
+MGSC.TradeSystem:BuyStationItems+16e:
+jmp trade4
+
+return:
+
+
+[DISABLE]
+dealloc(trade4)
+MGSC.TradeSystem:BuyStationItems+16e:
+db 41 89 44 24 40
+//mov [r12+40],eax
+unregistersymbol(ihunger3)
+dealloc(ihunger3)
+
+
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>106032</ID>
+              <Description>"Power"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade4</Address>
+              <Offsets>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106033</ID>
+              <Description>"CurrentTechLevel"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade4</Address>
+              <Offsets>
+                <Offset>2c</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106034</ID>
+              <Description>"TechExp"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>itrade4</Address>
+              <Offsets>
+                <Offset>30</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106035</ID>
+              <Description>"BasePower"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade4</Address>
+              <Offsets>
+                <Offset>34</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106036</ID>
+              <Description>"PlayerReputation"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>itrade4</Address>
+              <Offsets>
+                <Offset>38</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106037</ID>
+              <Description>"PlayerTradePoints"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade4</Address>
+              <Offsets>
+                <Offset>3c</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106038</ID>
+              <Description>"AllTimeTradingPoints"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade4</Address>
+              <Offsets>
+                <Offset>40</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>105999</ID>
+          <Description>"Faction Stats (Sell something to populate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(trade3,2048,MGSC.TradeSystem:SellItems+364)
+registersymbol(itrade3)
+alloc(itrade3,8)
+label(return)
+label(exit)
+
+itrade3:
+dd 0
+
+trade3:
+mov [itrade3],r14
+mov [r14+3C],eax
+movsxd  rax,dword ptr [r14+40]
+
+exit:
+jmp return
+
+MGSC.TradeSystem:SellItems+364:
+jmp trade3
+nop 3
+
+return:
+
+
+[DISABLE]
+dealloc(trade3)
+MGSC.TradeSystem:SellItems+364:
+db 41 89 46 3C 49 63 46 40
+//mov [r14+3C],eax
+//movsxd  rax,dword ptr [r14+40]
+unregistersymbol(ihunger3)
+dealloc(ihunger3)
+
+
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>106011</ID>
+              <Description>"Power"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade3</Address>
+              <Offsets>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106012</ID>
+              <Description>"CurrentTechLevel"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade3</Address>
+              <Offsets>
+                <Offset>2c</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106013</ID>
+              <Description>"TechExp"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>itrade3</Address>
+              <Offsets>
+                <Offset>30</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106014</ID>
+              <Description>"BasePower"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade3</Address>
+              <Offsets>
+                <Offset>34</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106015</ID>
+              <Description>"PlayerReputation"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>itrade3</Address>
+              <Offsets>
+                <Offset>38</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106016</ID>
+              <Description>"PlayerTradePoints"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade3</Address>
+              <Offsets>
+                <Offset>3c</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106017</ID>
+              <Description>"AllTimeTradingPoints"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>itrade3</Address>
+              <Offsets>
+                <Offset>40</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>105966</ID>
+          <Description>"Items (right click)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(items3,2048,MGSC.PickupItem:get_IsStackable+1b)
+registersymbol(iitems3)
+alloc(iitems3,8)
+label(return)
+label(exit)
+
+iitems3:
+dd 0
+
+items3:
+mov [iitems3],rsi
+mov rax,[rsi]
+call qword ptr [rax+000000B8]
+
+exit:
+jmp return
+
+MGSC.PickupItem:get_IsStackable+1b:
+jmp items3
+nop 4
+
+return:
+
+
+[DISABLE]
+dealloc(items3)
+MGSC.PickupItem:get_IsStackable+1b:
+db 48 8B 06 FF 90 B8 00 00 00
+//mov rax,[rsi]
+//call qword ptr [rax+000000B8]
+unregistersymbol(iitems3)
+dealloc(iitems3)
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>105969</ID>
+              <Description>"StackCount"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>2 Bytes</VariableType>
+              <Address>iitems3</Address>
+              <Offsets>
+                <Offset>10</Offset>
+                <Offset>40</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105968</ID>
+              <Description>"MaxCount"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>2 Bytes</VariableType>
+              <Address>iitems3</Address>
+              <Offsets>
+                <Offset>12</Offset>
+                <Offset>40</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105985</ID>
+              <Description>"&lt;CurrentUsageValue&gt;"</Description>
+              <ShowAsSigned>1</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iitems3</Address>
+              <Offsets>
+                <Offset>18</Offset>
+                <Offset>48</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105984</ID>
+              <Description>"&lt;MaxUsageValue&gt;"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iitems3</Address>
+              <Offsets>
+                <Offset>10</Offset>
+                <Offset>48</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105986</ID>
+              <Description>"&lt;UsageCost&gt;"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iitems3</Address>
+              <Offsets>
+                <Offset>14</Offset>
+                <Offset>48</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>106039</ID>
+          <Description>"Backpack"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(Inventory_ResizeBackpack_New, 1024, MGSC.Inventory:ResizeBackpack+14)
+registersymbol(Inventory_ResizeBackpack_New)
+
+label(Inventory_ResizeBackpack_Old)
+label(Inventory)
+label(Inventory_ResizeBackpack_Return)
+
+registersymbol(Inventory_Resizebackpack_Old)
+registersymbol(Inventory)
+registersymbol(Inventory_Resizebackpack_Return)
+
+Inventory_ResizeBackpack_New:
+    mov [Inventory], rcx
+
+Inventory_ResizeBackpack_Old:
+    readmem(MGSC.Inventory:ResizeBackpack+14, $11)
+    jmp Inventory_ResizeBackpack_Return
+
+Inventory:
+    dq 0
+
+MGSC.Inventory:ResizeBackpack+14:
+    jmp far Inventory_ResizeBackpack_New
+    nop 3
+
+Inventory_ResizeBackpack_Return:
+
+
+[DISABLE]
+
+MGSC.Inventory:ResizeBackpack+14:
+    readmem(Inventory_ResizeBackpack_Old, $11)
+
+unregistersymbol(*)
+dealloc(*)
+
+{From Pekar of https://fearlessrevolution.com/
+  Date - 22-4-25
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>106040</ID>
+              <Description>"BackpackMode"</Description>
+              <DropDownList ReadOnly="1" DisplayValueAsItem="1">0:Normal
+1:Endless
+</DropDownList>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>Inventory</Address>
+              <Offsets>
+                <Offset>D0</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>105948</ID>
+          <Description>"Durability (mouse over item to populate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(breakable3,2048,MGSC.BreakableItemComponent:get_Durability+b)
+registersymbol(ibreakable3)
+alloc(ibreakable3,8)
+label(return)
+label(exit)
+
+ibreakable3:
+dd 0
+
+breakable3:
+mov [ibreakable3],rsi
+movss xmm0,[rsi+18]
+
+exit:
+jmp return
+
+MGSC.BreakableItemComponent:get_Durability+b:
+jmp breakable3
+
+return:
+
+
+[DISABLE]
+dealloc(breakable3)
+MGSC.BreakableItemComponent:get_Durability+b:
+db F3 0F 10 46 18
+//movss xmm0,[rsi+18]
+unregistersymbol(ibreakable3)
+dealloc(ibreakable3)
+
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>105949</ID>
+              <Description>"Current %"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>ibreakable3</Address>
+              <Offsets>
+                <Offset>18</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105950</ID>
+              <Description>"Max Durability"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>2 Bytes</VariableType>
+              <Address>ibreakable3</Address>
+              <Offsets>
+                <Offset>20</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105951</ID>
+              <Description>"&lt;Unbreakable&gt; On=1"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Byte</VariableType>
+              <Address>ibreakable3</Address>
+              <Offsets>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>105955</ID>
+          <Description>"Weapon - Mission ONLY (Shoot weapon to populate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(weapon3,2048,MGSC.WeaponComponent:SpendAmmo+15)
+registersymbol(iweapon3)
+alloc(iweapon3,8)
+label(return)
+label(exit)
+
+iweapon3:
+dd 0
+
+weapon3:
+mov rax,[rdi+30]
+mov rdx,rax
+mov [iweapon3],rdi
+jmp exit
+
+exit:
+jmp return
+
+MGSC.WeaponComponent:SpendAmmo+15:
+jmp weapon3
+nop 2
+
+return:
+
+
+[DISABLE]
+dealloc(weapon3)
+MGSC.WeaponComponent:SpendAmmo+15:
+db 48 8B 47 30 48 8B D0
+//mov rax,[rdi+30]
+//mov rdx,rax
+unregistersymbol(iweapon3)
+dealloc(iweapon3)
+
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>105956</ID>
+              <Description>"CurrentAmmo"</Description>
+              <ShowAsSigned>1</ShowAsSigned>
+              <VariableType>2 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>48</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105957</ID>
+              <Description>"MagazineCapacity"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>B8</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105958</ID>
+              <Description>"ReloadDuration"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>B0</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105959</ID>
+              <Description>"Range"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iweapon3</Address>
+              <Offsets>
+                <Offset>AC</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>105837</ID>
+          <Description>"Player Stats (Move to populate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(hunger3,2048,MGSC.StarvationEffect:set_CurrentLevel+16)
+registersymbol(ihunger3)
+alloc(ihunger3,8)
+label(return)
+label(exit)
+
+ihunger3:
+dd 0
+
+hunger3:
+mov [ihunger3],rdi
+movsxd  rdx,dword ptr [rdi+40]
+
+exit:
+jmp return
+
+MGSC.StarvationEffect:set_CurrentLevel+16:
+jmp hunger3
+nop
+
+return:
+
+
+[DISABLE]
+dealloc(hunger3)
+MGSC.StarvationEffect:set_CurrentLevel+16:
+db 48 63 57 40 2B D6
+//movsxd  rdx,dword ptr [rdi+40]
+//sub edx,esi
+unregistersymbol(ihunger3)
+dealloc(ihunger3)
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+
+
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>105838</ID>
+              <Description>"Health"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>28</Offset>
+                <Offset>48</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>18</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105839</ID>
+              <Description>"Health Max"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>20</Offset>
+                <Offset>48</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>28</Offset>
+                <Offset>10</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105840</ID>
+              <Description>"Invulnerability"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>2C</Offset>
+                <Offset>48</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>28</Offset>
+                <Offset>10</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105841</ID>
+              <Description>"Hunger"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>40</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105842</ID>
+              <Description>"Hunger Max"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>44</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105843</ID>
+              <Description>"Weight"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>ec</Offset>
+                <Offset>58</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>28</Offset>
+                <Offset>10</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105946</ID>
+              <Description>"BaseLosLevel"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>f8</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>18</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105913</ID>
+              <Description>"BaseRangeAccuracy"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>100</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>18</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105914</ID>
+              <Description>"BaseMeleeAccuracy"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>fc</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>18</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105912</ID>
+              <Description>"BaseDodge"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Float</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>104</Offset>
+                <Offset>18</Offset>
+                <Offset>180</Offset>
+                <Offset>18</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105947</ID>
+              <Description>"IsInvisible"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Byte</VariableType>
+              <Address>ihunger3</Address>
+              <Offsets>
+                <Offset>19D</Offset>
+                <Offset>28</Offset>
+                <Offset>10</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>106019</ID>
+          <Description>"Perks / XP  (Gain XP to populate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(perk3,2048,MGSC.Perk:AddExp+25)
+registersymbol(iperk3)
+alloc(iperk3,8)
+label(return)
+label(exit)
+
+iperk3:
+dd 0
+
+perk3:
+mov [iperk3],rdi
+movsxd  rcx,dword ptr [rdi+2C]
+cvtsi2ss xmm0,esi
+
+exit:
+jmp return
+
+MGSC.Perk:AddExp+25:
+jmp perk3
+nop 3
+
+return:
+
+
+[DISABLE]
+dealloc(perk3)
+MGSC.Perk:AddExp+25:
+db 48 63 4F 2C F3 0F 2A C6
+//movsxd  rcx,dword ptr [rdi+2C]
+//cvtsi2ss xmm0,esi
+unregistersymbol(ihunger3)
+dealloc(ihunger3)
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>106029</ID>
+              <Description>"ExpPerAction"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iperk3</Address>
+              <Offsets>
+                <Offset>30</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106030</ID>
+              <Description>"MaxExp"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iperk3</Address>
+              <Offsets>
+                <Offset>34</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>106028</ID>
+              <Description>"CurrentExp"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iperk3</Address>
+              <Offsets>
+                <Offset>2c</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>105977</ID>
+          <Description>"QuasiLvL (Move to Poppulate)"</Description>
+          <Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+          <Color>FF8000</Color>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(quasi3,2048,MGSC.QmorphosController:ProcessActionPoint+264)
+registersymbol(iquasi3)
+alloc(iquasi3,8)
+label(return)
+label(exit)
+
+iquasi3:
+dd 0
+
+quasi3:
+mov rcx,[rsi+28]
+movsxd  rdx,dword ptr [rcx+40]
+mov [iquasi3],rsi
+jmp exit
+
+exit:
+jmp return
+
+MGSC.QmorphosController:ProcessActionPoint+264:
+jmp quasi3
+nop 3
+
+return:
+
+
+[DISABLE]
+dealloc(quasi3)
+MGSC.QmorphosController:ProcessActionPoint+264:
+db 48 8B 4E 28 48 63 51 40
+//mov rcx,[rsi+28]
+//movsxd  rdx,dword ptr [rcx+40]
+unregistersymbol(iquasi3)
+dealloc(iquasi3)
+
+
+
+{
+12/4/2025 Dickincorp @
+https://fearlessrevolution.com/memberlist.php?mode=viewprofile&amp;u=25011
+
+}
+</AssemblerScript>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>105988</ID>
+              <Description>"QMorphosLevel"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iquasi3</Address>
+              <Offsets>
+                <Offset>40</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105989</ID>
+              <Description>"QMorphosMinLevel"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>4 Bytes</VariableType>
+              <Address>iquasi3</Address>
+              <Offsets>
+                <Offset>48</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105990</ID>
+              <Description>"IsBaronAllowed"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Byte</VariableType>
+              <Address>iquasi3</Address>
+              <Offsets>
+                <Offset>4D</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105991</ID>
+              <Description>"IsGlobalJammed"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Byte</VariableType>
+              <Address>iquasi3</Address>
+              <Offsets>
+                <Offset>4E</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105992</ID>
+              <Description>"EvacuationFlee"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Byte</VariableType>
+              <Address>iquasi3</Address>
+              <Offsets>
+                <Offset>34</Offset>
+                <Offset>20</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105993</ID>
+              <Description>"EvacuationByItem"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Byte</VariableType>
+              <Address>iquasi3</Address>
+              <Offsets>
+                <Offset>33</Offset>
+                <Offset>20</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>105994</ID>
+              <Description>"EvacuationBlocked"</Description>
+              <ShowAsSigned>0</ShowAsSigned>
+              <VariableType>Byte</VariableType>
+              <Address>iquasi3</Address>
+              <Offsets>
+                <Offset>32</Offset>
+                <Offset>20</Offset>
+                <Offset>28</Offset>
+              </Offsets>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>

@@ -1,0 +1,1812 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="46">
+  <CheatEntries>
+<CheatEntry>
+<ID>139</ID>
+<Description>"Full / Compact - Mode"</Description>
+<Color>79BCFF</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+LuaCall(function cycleFullCompact(sender,force) local state = not(compactmenuitem.Caption == 'Compact View Mode'); if force~=nil then state = not force end; compactmenuitem.Caption = state and 'Compact View Mode' or 'Full View Mode'; getMainForm().Splitter1.Visible = state; getMainForm().Panel4.Visible    = state; getMainForm().Panel5.Visible    = state; end; function addCompactMenu() if compactmenualreadyexists then return end; local parent = getMainForm().Menu.Items; compactmenuitem = createMenuItem(parent); parent.add(compactmenuitem); compactmenuitem.Caption = 'Compact View Mode'; compactmenuitem.OnClick = cycleFullCompact; compactmenualreadyexists = 'yes'; end; addCompactMenu(); cycleFullCompact(nil,true))
+
+[DISABLE]
+LuaCall(cycleFullCompact(nil,false))
+</AssemblerScript>
+</CheatEntry>
+<CheatEntry>
+<ID>140</ID>
+<Description>"1)  Activate me ! Quasimorph 1.0.3"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>0000FF</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+OpenProcess("Quasimorph.exe")
+mono_initialize()
+LaunchMonoDataCollector()
+
+qmSaved = qmSaved or {}
+
+function qmInsnSize(addr)
+  if getInstructionSize ~= nil then
+    local ok, s = pcall(getInstructionSize, addr)
+    if ok and type(s) == 'number' and s &gt; 0 then return s end
+  end
+  -- fallback: count the byte column of disassemble() output
+  local ok, line = pcall(disassemble, addr)
+  if not ok or line == nil then return nil end
+  local bytes = line:match('^[^-]+%-%s*([0-9A-Fa-f ]+)%s*%-')
+  if bytes == nil then return nil end
+  local n = 0
+  for _ in bytes:gmatch('%x%x') do n = n + 1 end
+  if n &lt; 1 then return nil end
+  return n
+end
+
+function qmStolen(addr)
+  local n = 0
+  while n &lt; 5 do
+    local s = qmInsnSize(addr + n)
+    if s == nil then return nil end
+    n = n + s
+    if n &gt; 40 then return nil end
+  end
+  return n
+end
+
+function qmBytesToDb(t)
+  local s = 'db'
+  for i = 1, #t do s = s .. string.format(' %02X', t[i]) end
+  return s
+end
+
+-- id      : unique name for this hook (used for the code cave symbol)
+-- method  : mono symbol, e.g. 'MGSC.Perk:AddExp'
+-- capture : assembler line(s) run at method entry, e.g. 'mov [pPerk],rcx'
+function qmHook(id, method, capture)
+  local addr = getAddress(method)
+  if addr == nil or addr == 0 then
+    error('Quasimorph: cannot resolve ' .. method ..
+          '\nEnable "1) Activate me" first, and load a save so the method is JIT compiled.')
+  end
+  local first = readBytes(addr, 1, false)
+  if first == 0xE8 or first == 0xE9 or first == 0xEB then
+    error('Quasimorph: ' .. method .. ' starts with a relative branch - unsafe to hook.')
+  end
+  local len = qmStolen(addr)
+  if len == nil then
+    error('Quasimorph: cannot measure the prologue of ' .. method)
+  end
+  local orig = readBytes(addr, len, true)
+  if orig == nil then
+    error('Quasimorph: cannot read the prologue of ' .. method)
+  end
+  qmSaved[id] = { addr = addr, len = len, bytes = orig }
+  local pad = ''
+  if len &gt; 5 then
+    pad = 'db' .. string.rep(' 90', len - 5)
+  end
+  return string.format(
+    'alloc(%s_code,2048,%X)\n' ..
+    'label(%s_ret)\n' ..
+    '%s_code:\n' ..
+    '%s\n' ..
+    '%s\n' ..
+    'jmp %s_ret\n' ..
+    '%X:\n' ..
+    'jmp %s_code\n' ..
+    '%s\n' ..
+    '%s_ret:\n',
+    id, addr, id, id, capture, qmBytesToDb(orig), id, addr, id, pad, id)
+end
+
+function qmUnhook(id)
+  local s = qmSaved[id]
+  if s == nil then return '' end
+  qmSaved[id] = nil
+  return string.format('%X:\n%s\ndealloc(%s_code)\n', s.addr, qmBytesToDb(s.bytes), id)
+end
+{$asm}
+alloc(pWeapon,8)
+alloc(pShipSlot,8)
+alloc(pItem,8)
+alloc(pInventory,8)
+alloc(pBreakable,8)
+alloc(pStarve,8)
+alloc(pPerk,8)
+alloc(pQmorphos,8)
+alloc(pTravel,8)
+alloc(pFactions,8)
+registersymbol(pWeapon)
+registersymbol(pShipSlot)
+registersymbol(pItem)
+registersymbol(pInventory)
+registersymbol(pBreakable)
+registersymbol(pStarve)
+registersymbol(pPerk)
+registersymbol(pQmorphos)
+registersymbol(pTravel)
+registersymbol(pFactions)
+
+pWeapon:
+dq 0
+pShipSlot:
+dq 0
+pItem:
+dq 0
+pInventory:
+dq 0
+pBreakable:
+dq 0
+pStarve:
+dq 0
+pPerk:
+dq 0
+pQmorphos:
+dq 0
+pTravel:
+dq 0
+pFactions:
+dq 0
+
+[DISABLE]
+unregistersymbol(pWeapon)
+unregistersymbol(pShipSlot)
+unregistersymbol(pItem)
+unregistersymbol(pInventory)
+unregistersymbol(pBreakable)
+unregistersymbol(pStarve)
+unregistersymbol(pPerk)
+unregistersymbol(pQmorphos)
+unregistersymbol(pTravel)
+unregistersymbol(pFactions)
+dealloc(pWeapon)
+dealloc(pShipSlot)
+dealloc(pItem)
+dealloc(pInventory)
+dealloc(pBreakable)
+dealloc(pStarve)
+dealloc(pPerk)
+dealloc(pQmorphos)
+dealloc(pTravel)
+dealloc(pFactions)
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>8</ID>
+<Description>"Weapon - Mission (shoot a weapon to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkWeapon', 'MGSC.WeaponComponent:SpendAmmo', 'mov [pWeapon],rcx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkWeapon')
+
+{WeaponComponent entry hook; RCX = this.
+CurrentAmmo is per-item; the record fields are shared by every
+weapon of that type.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>1</ID>
+<Description>"CurrentAmmo"</Description>
+<ShowAsSigned>1</ShowAsSigned>
+<VariableType>2 Bytes</VariableType>
+<Address>pWeapon</Address>
+<Offsets>
+<Offset>48</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>2</ID>
+<Description>"MagazineCapacity"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pWeapon</Address>
+<Offsets>
+<Offset>BC</Offset>
+<Offset>28</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>3</ID>
+<Description>"ReloadDuration"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pWeapon</Address>
+<Offsets>
+<Offset>B8</Offset>
+<Offset>28</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>4</ID>
+<Description>"Range"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pWeapon</Address>
+<Offsets>
+<Offset>B0</Offset>
+<Offset>28</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>5</ID>
+<Description>"Falloff"</Description>
+<VariableType>Float</VariableType>
+<Address>pWeapon</Address>
+<Offsets>
+<Offset>B4</Offset>
+<Offset>28</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>6</ID>
+<Description>"ThrowRange"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pWeapon</Address>
+<Offsets>
+<Offset>C8</Offset>
+<Offset>28</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>7</ID>
+<Description>"BonusAccuracy"</Description>
+<VariableType>Float</VariableType>
+<Address>pWeapon</Address>
+<Offsets>
+<Offset>DC</Offset>
+<Offset>28</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>16</ID>
+<Description>"Weapon - Ship (right click a weapon in cargo to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkShipSlot', 'MGSC.ScreenWithShipCargo:DragControllerShowContextMenuCallback', 'mov [pShipSlot],rdx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkShipSlot')
+
+{RDX = ItemSlot. Chain: ItemSlot+128 = item, item+38 = _records,
+list+10 = array, array+20 = records[0].
+Only meaningful when the clicked item really is a weapon.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>9</ID>
+<Description>"Item StackCount"</Description>
+<ShowAsSigned>1</ShowAsSigned>
+<VariableType>2 Bytes</VariableType>
+<Address>pShipSlot</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>128</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>10</ID>
+<Description>"Range"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pShipSlot</Address>
+<Offsets>
+<Offset>B0</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>38</Offset>
+<Offset>128</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>11</ID>
+<Description>"Falloff"</Description>
+<VariableType>Float</VariableType>
+<Address>pShipSlot</Address>
+<Offsets>
+<Offset>B4</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>38</Offset>
+<Offset>128</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>12</ID>
+<Description>"ReloadDuration"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pShipSlot</Address>
+<Offsets>
+<Offset>B8</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>38</Offset>
+<Offset>128</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>13</ID>
+<Description>"MagazineCapacity"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pShipSlot</Address>
+<Offsets>
+<Offset>BC</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>38</Offset>
+<Offset>128</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>14</ID>
+<Description>"Price"</Description>
+<VariableType>Float</VariableType>
+<Address>pShipSlot</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>38</Offset>
+<Offset>128</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>15</ID>
+<Description>"Weight"</Description>
+<VariableType>Float</VariableType>
+<Address>pShipSlot</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>38</Offset>
+<Offset>128</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>23</ID>
+<Description>"Items (right click an item to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkItem', 'MGSC.PickupItem:get_IsStackable', 'mov [pItem],rcx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkItem')
+
+{PickupItem entry hook; RCX = this.
++40 = _stackable component, +48 = _usable component.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>17</ID>
+<Description>"StackCount"</Description>
+<ShowAsSigned>1</ShowAsSigned>
+<VariableType>2 Bytes</VariableType>
+<Address>pItem</Address>
+<Offsets>
+<Offset>10</Offset>
+<Offset>40</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>18</ID>
+<Description>"MaxCount"</Description>
+<ShowAsSigned>1</ShowAsSigned>
+<VariableType>2 Bytes</VariableType>
+<Address>pItem</Address>
+<Offsets>
+<Offset>12</Offset>
+<Offset>40</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>19</ID>
+<Description>"&amp;lt;CurrentUsageValue&amp;gt;"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pItem</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>48</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>20</ID>
+<Description>"&amp;lt;MaxUsageValue&amp;gt;"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pItem</Address>
+<Offsets>
+<Offset>10</Offset>
+<Offset>48</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>21</ID>
+<Description>"&amp;lt;UsageCost&amp;gt;"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pItem</Address>
+<Offsets>
+<Offset>14</Offset>
+<Offset>48</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>22</ID>
+<Description>"&amp;lt;CurrentMaxUsageValue&amp;gt;"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pItem</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>48</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>27</ID>
+<Description>"Backpack"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkInv', 'MGSC.Inventory:ResizeBackpack', 'mov [pInventory],rcx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkInv')
+
+{Inventory entry hook; RCX = this.
+Original credit: Pekar of fearlessrevolution.com}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>24</ID>
+<Description>"BackpackMode"</Description>
+<DropDownList ReadOnly="1" DisplayValueAsItem="1">0:Normal
+1:Endless
+</DropDownList>
+<VariableType>4 Bytes</VariableType>
+<Address>pInventory</Address>
+<Offsets>
+<Offset>B4</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>25</ID>
+<Description>"ItemsWeight"</Description>
+<VariableType>Float</VariableType>
+<Address>pInventory</Address>
+<Offsets>
+<Offset>108</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>26</ID>
+<Description>"AccessMask"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pInventory</Address>
+<Offsets>
+<Offset>B0</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>33</ID>
+<Description>"Durability (mouse over an item to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkBreak', 'MGSC.BreakableItemComponent:get_Durability', 'mov [pBreakable],rcx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkBreak')
+
+{BreakableItemComponent entry hook; RCX = this.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>28</ID>
+<Description>"Current %"</Description>
+<VariableType>Float</VariableType>
+<Address>pBreakable</Address>
+<Offsets>
+<Offset>10</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>29</ID>
+<Description>"Max Penalty %"</Description>
+<VariableType>Float</VariableType>
+<Address>pBreakable</Address>
+<Offsets>
+<Offset>14</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>30</ID>
+<Description>"Max Durability"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pBreakable</Address>
+<Offsets>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>31</ID>
+<Description>"Min Durability After Repair"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pBreakable</Address>
+<Offsets>
+<Offset>1C</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>32</ID>
+<Description>"&amp;lt;Unbreakable&amp;gt; On=1"</Description>
+<VariableType>Byte</VariableType>
+<Address>pBreakable</Address>
+<Offsets>
+<Offset>20</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>49</ID>
+<Description>"Player Stats (move around to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkStarve', 'MGSC.StarvationEffect:set_CurrentLevel', 'mov [pStarve],rcx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkStarve')
+
+{StarvationEffect entry hook; RCX = this.
+Chain: +18 = Creature, +40 = CreatureData,
+       CreatureData+88 = HealthInfo, +98 = Inventory.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>34</ID>
+<Description>"Health"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>88</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>35</ID>
+<Description>"Health Max"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>88</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>36</ID>
+<Description>"Health Min"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>88</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>37</ID>
+<Description>"Invulnerability On=1"</Description>
+<VariableType>Byte</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>88</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>38</ID>
+<Description>"Hunger"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>48</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>39</ID>
+<Description>"Hunger Max"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>4C</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>40</ID>
+<Description>"Hunger Regen"</Description>
+<VariableType>Float</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>58</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>41</ID>
+<Description>"Weight"</Description>
+<VariableType>Float</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>108</Offset>
+<Offset>98</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>42</ID>
+<Description>"BaseHealth"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>68</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>43</ID>
+<Description>"BaseActionPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>6C</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>44</ID>
+<Description>"BaseLosLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>70</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>45</ID>
+<Description>"BaseMeleeAccuracy"</Description>
+<VariableType>Float</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>74</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>46</ID>
+<Description>"BaseRangeAccuracy"</Description>
+<VariableType>Float</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>78</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>47</ID>
+<Description>"BaseDodge"</Description>
+<VariableType>Float</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>7C</Offset>
+<Offset>40</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>48</ID>
+<Description>"IsInfiniteAmmo On=1"</Description>
+<VariableType>Byte</VariableType>
+<Address>pStarve</Address>
+<Offsets>
+<Offset>14C</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>53</ID>
+<Description>"Perks / XP (gain XP to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkPerk', 'MGSC.Perk:AddExp', 'mov [pPerk],rcx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkPerk')
+
+{Perk entry hook; RCX = this.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>50</ID>
+<Description>"CurrentExp"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pPerk</Address>
+<Offsets>
+<Offset>34</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>51</ID>
+<Description>"ExpPerAction"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pPerk</Address>
+<Offsets>
+<Offset>38</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>52</ID>
+<Description>"MaxExp"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pPerk</Address>
+<Offsets>
+<Offset>3C</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>64</ID>
+<Description>"QuasiLvL (move around to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkQmorph', 'MGSC.QmorphosController:ProcessActionPoint', 'mov [pQmorphos],rcx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkQmorph')
+
+{QmorphosController entry hook; RCX = this.
+Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>54</ID>
+<Description>"QMorphosLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>55</ID>
+<Description>"QMorphosMinLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>34</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>56</ID>
+<Description>"TurnNumber"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>57</ID>
+<Description>"IsBaronAllowed"</Description>
+<VariableType>Byte</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>50</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>58</ID>
+<Description>"IsGlobalJammed"</Description>
+<VariableType>Byte</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>51</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>59</ID>
+<Description>"EvacuationInProgress"</Description>
+<VariableType>Byte</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>31</Offset>
+<Offset>40</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>60</ID>
+<Description>"EvacuationBlocked"</Description>
+<VariableType>Byte</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>32</Offset>
+<Offset>40</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>61</ID>
+<Description>"EvacuationByItem"</Description>
+<VariableType>Byte</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>33</Offset>
+<Offset>40</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>62</ID>
+<Description>"EvacuationFlee"</Description>
+<VariableType>Byte</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>34</Offset>
+<Offset>40</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>63</ID>
+<Description>"EvacuationCompleted"</Description>
+<VariableType>Byte</VariableType>
+<Address>pQmorphos</Address>
+<Offsets>
+<Offset>98</Offset>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>71</ID>
+<Description>"Travel (start a flight to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkTravel', 'MGSC.TravelSystem:ProcessSpaceshipTravel', 'push rax\r\nmov rax,[rsp+40]\r\nmov [pTravel],rax\r\npop rax')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkTravel')
+
+{Static method: travelData is parameter 7, so at the entry it
+lives at [rsp+38] (return address + 20h shadow space + 2 slots).
+RAX is saved/restored, hence [rsp+40] inside the hook.}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>65</ID>
+<Description>"TravelHoursDuration"</Description>
+<VariableType>Double</VariableType>
+<Address>pTravel</Address>
+<Offsets>
+<Offset>90</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>66</ID>
+<Description>"FlightTime"</Description>
+<VariableType>Float</VariableType>
+<Address>pTravel</Address>
+<Offsets>
+<Offset>48</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>67</ID>
+<Description>"InitialTravelDistance"</Description>
+<VariableType>Float</VariableType>
+<Address>pTravel</Address>
+<Offsets>
+<Offset>78</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>68</ID>
+<Description>"TravelFinalOrbitT"</Description>
+<VariableType>Double</VariableType>
+<Address>pTravel</Address>
+<Offsets>
+<Offset>30</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>69</ID>
+<Description>"BramfaturaCounter"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pTravel</Address>
+<Offsets>
+<Offset>1C</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>70</ID>
+<Description>"CanTravel"</Description>
+<VariableType>Byte</VariableType>
+<Address>pTravel</Address>
+<Offsets>
+<Offset>2C</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>137</ID>
+<Description>"Faction Stats (buy or sell anything to populate)"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkBuy', 'MGSC.TradeSystem:BuyStationItems', 'mov [pFactions],rdx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkBuy')
+
+{Static method; RDX = Factions.
+Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
+       array+20+8*i = Faction[i].}
+</AssemblerScript>
+<CheatEntries>
+<CheatEntry>
+<ID>72</ID>
+<Description>"Faction count"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>80</ID>
+<Description>"Faction [0]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>73</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>74</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>75</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>76</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>77</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>78</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>79</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>20</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>88</ID>
+<Description>"Faction [1]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>81</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>28</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>82</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>28</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>83</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>28</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>84</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>28</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>85</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>28</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>86</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>28</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>87</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>28</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>96</ID>
+<Description>"Faction [2]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>89</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>30</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>90</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>30</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>91</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>30</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>92</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>30</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>93</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>30</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>94</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>30</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>95</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>30</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>104</ID>
+<Description>"Faction [3]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>97</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>38</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>98</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>38</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>99</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>38</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>100</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>38</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>101</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>38</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>102</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>38</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>103</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>38</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>112</ID>
+<Description>"Faction [4]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>105</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>40</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>106</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>40</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>107</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>40</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>108</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>40</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>109</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>40</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>110</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>40</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>111</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>40</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>120</ID>
+<Description>"Faction [5]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>113</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>48</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>114</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>48</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>115</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>48</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>116</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>48</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>117</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>48</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>118</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>48</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>119</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>48</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>128</ID>
+<Description>"Faction [6]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>121</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>50</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>122</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>50</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>123</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>50</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>124</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>50</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>125</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>50</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>126</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>50</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>127</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>50</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>136</ID>
+<Description>"Faction [7]"</Description>
+<Options moHideChildren="1" moDeactivateChildrenAsWell="1" moAllowManualCollapseAndExpand="1"/>
+<GroupHeader>1</GroupHeader>
+<CheatEntries>
+<CheatEntry>
+<ID>129</ID>
+<Description>"Power"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>18</Offset>
+<Offset>58</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>130</ID>
+<Description>"CurrentTechLevel"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>1C</Offset>
+<Offset>58</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>131</ID>
+<Description>"TechExp"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>20</Offset>
+<Offset>58</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>132</ID>
+<Description>"BasePower"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>24</Offset>
+<Offset>58</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>133</ID>
+<Description>"PlayerReputation"</Description>
+<VariableType>Float</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>28</Offset>
+<Offset>58</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>134</ID>
+<Description>"PlayerTradePoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>2C</Offset>
+<Offset>58</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+<CheatEntry>
+<ID>135</ID>
+<Description>"AllTimeTradingPoints"</Description>
+<VariableType>4 Bytes</VariableType>
+<Address>pFactions</Address>
+<Offsets>
+<Offset>30</Offset>
+<Offset>58</Offset>
+<Offset>10</Offset>
+<Offset>18</Offset>
+</Offsets>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+<CheatEntry>
+<ID>138</ID>
+<Description>"Faction Stats - also capture on Sell"</Description>
+<Color>FF8000</Color>
+<VariableType>Auto Assembler Script</VariableType>
+<AssemblerScript>[ENABLE]
+{$lua}
+if syntaxcheck then return end
+return qmHook('hkSell', 'MGSC.TradeSystem:SellItems', 'mov [pFactions],rdx')
+
+[DISABLE]
+{$lua}
+if syntaxcheck then return end
+return qmUnhook('hkSell')
+
+{Second capture point for the same pFactions symbol,
+so selling populates the Faction Stats tree as well.}
+</AssemblerScript>
+</CheatEntry>
+</CheatEntries>
+</CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
