@@ -1,4 +1,5 @@
 """Generate Quasimorph-v1.0.3-1.CT from the validated 1.0.3 offset map."""
+import json
 import os
 from xml.sax.saxutils import escape
 
@@ -56,7 +57,9 @@ end
 
 -- id      : unique name for this hook (used for the code cave symbol)
 -- method  : mono symbol, e.g. 'MGSC.Perk:AddExp'
--- capture : assembler line(s) run at method entry, e.g. 'mov [pPerk],rcx'
+-- capture : assembler run at method entry; stores the object into a pointer
+--           symbol. Always routed through RAX, because x86-64 encodes a store
+--           to an absolute 64-bit address only for the accumulator.
 function qmHook(id, method, capture)
   local addr = getAddress(method)
   if addr == nil or addr == 0 then
@@ -122,6 +125,85 @@ def hook_script(hid, method, capture, note):
             "return qmUnhook('%s')\n\n{%s}\n" % (hid, method, capture, hid, note))
 
 
+def cap(sym, src):
+    """Assembler that stores `src` into pointer symbol `sym` at method entry.
+
+    x86-64 can only encode a store to an absolute 64-bit address from RAX
+    (`mov [moffs64],rax`), and CE's assembler does not fall back to
+    RIP-relative addressing, so every capture is routed through RAX.
+    RAX is caller-scratch and holds no incoming argument, but it is saved
+    and restored anyway so the displaced prologue sees untouched state.
+    """
+    return ('push rax\\r\\n'
+            'mov rax,%s\\r\\n'
+            'mov [%s],rax\\r\\n'
+            'pop rax' % (src, sym))
+
+# ------------------------------------------------------------- offset sources
+# offsets.json is dumped from the live process with mono_class_enumFields, so
+# it is what the JIT actually uses. monolayout's 'gc' model reproduces it
+# exactly (486/486 fields over 24 classes) and is used to cross-check.
+HERE = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(HERE, 'offsets.json'), encoding='utf-8') as _f:
+    OFFSETS = json.load(_f)
+
+# Mono runtime layout constants
+LIST_ITEMS = '10'      # List<T>._items
+ARRAY_DATA = 0x20      # MonoArray: header + bounds + max_length
+
+
+def OFF(cls, field):
+    """Runtime offset of a field, as an uppercase hex string."""
+    try:
+        return '%X' % OFFSETS[cls][field]
+    except KeyError:
+        raise SystemExit('gen_ct: %s::%s is not in offsets.json - re-run the '
+                         'Mono dump against the current game build' % (cls, field))
+
+
+def PROP(cls, name):
+    """Offset of an auto-property's backing field."""
+    return OFF(cls, '<%s>k__BackingField' % name)
+
+
+def ELEM(i):
+    """Offset of element i inside a Mono array's data area."""
+    return '%X' % (ARRAY_DATA + 8 * i)
+
+
+def cross_check():
+    """Fail the build if the offline model disagrees with the runtime dump."""
+    try:
+        from monolayout import load_universe
+    except ImportError:
+        return 'skipped (monolayout unavailable)'
+    game = os.environ.get('QM_GAME', DEFAULT_GAME)
+    if not os.path.isdir(game):
+        return 'skipped (game not found at %s)' % game
+    U = load_universe(game)
+    checked = bad = 0
+    for cls, fields in OFFSETS.items():
+        hit = U.find('MGSC', cls)
+        if not hit:
+            continue
+        computed, _size, _notes = U.layout(hit[0], hit[1], 'gc')
+        for fname, want in fields.items():
+            got = computed.get(fname)
+            if got is None:
+                continue
+            checked += 1
+            if got != want:
+                bad += 1
+                print('  MISMATCH %s::%s dump=0x%X model=0x%X'
+                      % (cls, fname, want, got))
+    if bad:
+        raise SystemExit('gen_ct: %d offset mismatches - refusing to build' % bad)
+    return 'ok (%d fields agree with the gc model)' % checked
+
+
+DEFAULT_GAME = r'C:\Users\Administrator\Desktop\Quasimorph.v1.0.3\game'
+
+
 # ------------------------------------------------------------------ XML build
 def entry(desc, script=None, vtype=None, address=None, applied=None,
           children=None, color=None, signed=None, dropdown=None,
@@ -173,197 +255,234 @@ groups = []
 groups.append(entry(
     'Weapon - Mission (shoot a weapon to populate)',
     script=hook_script('hkWeapon', 'MGSC.WeaponComponent:SpendAmmo',
-                       'mov [pWeapon],rcx',
+                       cap('pWeapon', 'rcx'),
                        'WeaponComponent entry hook; RCX = this.\n'
                        'CurrentAmmo is per-item; the record fields are shared by every\n'
                        'weapon of that type.'),
     color=ORANGE,
     children=[
-        val('CurrentAmmo', '2 Bytes', 'pWeapon', '48', signed=True),
-        val('MagazineCapacity', '4 Bytes', 'pWeapon', '28', 'BC'),
-        val('ReloadDuration', '4 Bytes', 'pWeapon', '28', 'B8'),
-        val('Range', '4 Bytes', 'pWeapon', '28', 'B0'),
-        val('Falloff', 'Float', 'pWeapon', '28', 'B4'),
-        val('ThrowRange', '4 Bytes', 'pWeapon', '28', 'C8'),
-        val('BonusAccuracy', 'Float', 'pWeapon', '28', 'DC'),
+        val('CurrentAmmo', '2 Bytes', 'pWeapon',
+            PROP('WeaponComponent', 'CurrentAmmo'), signed=True),
+        val('MagazineCapacity', '4 Bytes', 'pWeapon',
+            OFF('WeaponComponent', '_weaponRecord'), PROP('WeaponRecord', 'MagazineCapacity')),
+        val('ReloadDuration', '4 Bytes', 'pWeapon',
+            OFF('WeaponComponent', '_weaponRecord'), PROP('WeaponRecord', 'ReloadDuration')),
+        val('Range', '4 Bytes', 'pWeapon',
+            OFF('WeaponComponent', '_weaponRecord'), PROP('WeaponRecord', 'Range')),
+        val('Falloff', 'Float', 'pWeapon',
+            OFF('WeaponComponent', '_weaponRecord'), PROP('WeaponRecord', 'Falloff')),
+        val('ThrowRange', '4 Bytes', 'pWeapon',
+            OFF('WeaponComponent', '_weaponRecord'), PROP('WeaponRecord', 'ThrowRange')),
+        val('BonusAccuracy', 'Float', 'pWeapon',
+            OFF('WeaponComponent', '_weaponRecord'), PROP('WeaponRecord', 'BonusAccuracy')),
     ]))
 
-# --- Weapon (ship) via ItemSlot -> item -> records[0]
+# --- Weapon (ship): ItemSlot -> item -> _records[0]
+REC = [PROP('ItemSlot', 'Item'), OFF('PickupItem', '_records'), LIST_ITEMS, ELEM(0)]
 groups.append(entry(
     'Weapon - Ship (right click a weapon in cargo to populate)',
     script=hook_script('hkShipSlot',
                        'MGSC.ScreenWithShipCargo:DragControllerShowContextMenuCallback',
-                       'mov [pShipSlot],rdx',
-                       'RDX = ItemSlot. Chain: ItemSlot+128 = item, item+38 = _records,\n'
-                       'list+10 = array, array+20 = records[0].\n'
+                       cap('pShipSlot', 'rdx'),
+                       'RDX = ItemSlot. Chain: ItemSlot -> Item -> _records -> [0].\n'
                        'Only meaningful when the clicked item really is a weapon.'),
     color=ORANGE,
     children=[
-        val('Item StackCount', '2 Bytes', 'pShipSlot', '128', '20', signed=True),
-        val('Range', '4 Bytes', 'pShipSlot', '128', '38', '10', '20', 'B0'),
-        val('Falloff', 'Float', 'pShipSlot', '128', '38', '10', '20', 'B4'),
-        val('ReloadDuration', '4 Bytes', 'pShipSlot', '128', '38', '10', '20', 'B8'),
-        val('MagazineCapacity', '4 Bytes', 'pShipSlot', '128', '38', '10', '20', 'BC'),
-        val('Price', 'Float', 'pShipSlot', '128', '38', '10', '20', '2C'),
-        val('Weight', 'Float', 'pShipSlot', '128', '38', '10', '20', '30'),
+        val('Item StackCount', '2 Bytes', 'pShipSlot',
+            PROP('ItemSlot', 'Item'), PROP('PickupItem', 'StackCount'), signed=True),
+        val('Range', '4 Bytes', 'pShipSlot', *(REC + [PROP('WeaponRecord', 'Range')])),
+        val('Falloff', 'Float', 'pShipSlot', *(REC + [PROP('WeaponRecord', 'Falloff')])),
+        val('ReloadDuration', '4 Bytes', 'pShipSlot',
+            *(REC + [PROP('WeaponRecord', 'ReloadDuration')])),
+        val('MagazineCapacity', '4 Bytes', 'pShipSlot',
+            *(REC + [PROP('WeaponRecord', 'MagazineCapacity')])),
+        val('Price', 'Float', 'pShipSlot', *(REC + [PROP('WeaponRecord', 'Price')])),
+        val('Weight', 'Float', 'pShipSlot', *(REC + [PROP('WeaponRecord', 'Weight')])),
     ]))
 
 # --- Items
 groups.append(entry(
     'Items (right click an item to populate)',
     script=hook_script('hkItem', 'MGSC.PickupItem:get_IsStackable',
-                       'mov [pItem],rcx',
-                       'PickupItem entry hook; RCX = this.\n'
-                       '+40 = _stackable component, +48 = _usable component.'),
+                       cap('pItem', 'rcx'),
+                       'PickupItem entry hook; RCX = this.'),
     color=ORANGE,
     children=[
-        val('StackCount', '2 Bytes', 'pItem', '40', '10', signed=True),
-        val('MaxCount', '2 Bytes', 'pItem', '40', '12', signed=True),
-        val('&lt;CurrentUsageValue&gt;', '4 Bytes', 'pItem', '48', '18'),
-        val('&lt;MaxUsageValue&gt;', '4 Bytes', 'pItem', '48', '10'),
-        val('&lt;UsageCost&gt;', '4 Bytes', 'pItem', '48', '14'),
-        val('&lt;CurrentMaxUsageValue&gt;', '4 Bytes', 'pItem', '48', '1C'),
+        val('StackCount', '2 Bytes', 'pItem', OFF('PickupItem', '_stackable'),
+            PROP('StackableItemComponent', 'Count'), signed=True),
+        val('MaxCount', '2 Bytes', 'pItem', OFF('PickupItem', '_stackable'),
+            PROP('StackableItemComponent', 'Max'), signed=True),
+        val('&lt;CurrentUsageValue&gt;', '4 Bytes', 'pItem', OFF('PickupItem', '_usable'),
+            PROP('UsableItemComponent', 'CurrentUsageValue')),
+        val('&lt;MaxUsageValue&gt;', '4 Bytes', 'pItem', OFF('PickupItem', '_usable'),
+            PROP('UsableItemComponent', 'MaxUsageValue')),
+        val('&lt;UsageCost&gt;', '4 Bytes', 'pItem', OFF('PickupItem', '_usable'),
+            PROP('UsableItemComponent', 'UsageCost')),
+        val('&lt;CurrentMaxUsageValue&gt;', '4 Bytes', 'pItem', OFF('PickupItem', '_usable'),
+            PROP('UsableItemComponent', 'CurrentMaxUsageValue')),
     ]))
 
 # --- Backpack
 groups.append(entry(
     'Backpack',
     script=hook_script('hkInv', 'MGSC.Inventory:ResizeBackpack',
-                       'mov [pInventory],rcx',
+                       cap('pInventory', 'rcx'),
                        'Inventory entry hook; RCX = this.\n'
                        'Original credit: Pekar of fearlessrevolution.com'),
     color=ORANGE,
     children=[
-        val('BackpackMode', '4 Bytes', 'pInventory', 'B4',
+        val('BackpackMode', '4 Bytes', 'pInventory', OFF('Inventory', '_backpackMode'),
             dropdown='0:Normal\n1:Endless\n'),
-        val('ItemsWeight', 'Float', 'pInventory', '108'),
-        val('AccessMask', '4 Bytes', 'pInventory', 'B0'),
+        val('ItemsWeight', 'Float', 'pInventory', PROP('Inventory', 'ItemsWeight')),
+        val('AccessMask', '4 Bytes', 'pInventory', OFF('Inventory', 'AccessMask')),
     ]))
 
 # --- Durability
 groups.append(entry(
     'Durability (mouse over an item to populate)',
     script=hook_script('hkBreak', 'MGSC.BreakableItemComponent:get_Durability',
-                       'mov [pBreakable],rcx',
+                       cap('pBreakable', 'rcx'),
                        'BreakableItemComponent entry hook; RCX = this.'),
     color=ORANGE,
     children=[
-        val('Current %', 'Float', 'pBreakable', '10'),
-        val('Max Penalty %', 'Float', 'pBreakable', '14'),
-        val('Max Durability', '4 Bytes', 'pBreakable', '18'),
-        val('Min Durability After Repair', '4 Bytes', 'pBreakable', '1C'),
-        val('&lt;Unbreakable&gt; On=1', 'Byte', 'pBreakable', '20'),
+        val('Current %', 'Float', 'pBreakable', PROP('BreakableItemComponent', 'CurrentPercent')),
+        val('Max Penalty %', 'Float', 'pBreakable',
+            PROP('BreakableItemComponent', 'MaxPenaltyPercent')),
+        val('Max Durability', '4 Bytes', 'pBreakable',
+            PROP('BreakableItemComponent', 'MaxDurability')),
+        val('Min Durability After Repair', '4 Bytes', 'pBreakable',
+            PROP('BreakableItemComponent', 'MinDurabilityAfterRepair')),
+        val('&lt;Unbreakable&gt; On=1', 'Byte', 'pBreakable',
+            PROP('BreakableItemComponent', 'Unbreakable')),
     ]))
 
 # --- Player stats
+CRE = OFF('StarvationEffect', '_creature')
+CD = [CRE, OFF('Creature', 'CreatureData')]
+HP = CD + [OFF('CreatureData', 'Health')]
 groups.append(entry(
     'Player Stats (move around to populate)',
     script=hook_script('hkStarve', 'MGSC.StarvationEffect:set_CurrentLevel',
-                       'mov [pStarve],rcx',
+                       cap('pStarve', 'rcx'),
                        'StarvationEffect entry hook; RCX = this.\n'
-                       'Chain: +18 = Creature, +40 = CreatureData,\n'
-                       '       CreatureData+88 = HealthInfo, +98 = Inventory.'),
+                       'Chain: _creature -> CreatureData -> Health / Inventory.'),
     color=ORANGE,
     children=[
-        val('Health', '4 Bytes', 'pStarve', '18', '40', '88', '2C'),
-        val('Health Max', '4 Bytes', 'pStarve', '18', '40', '88', '24'),
-        val('Health Min', '4 Bytes', 'pStarve', '18', '40', '88', '20'),
-        val('Invulnerability On=1', 'Byte', 'pStarve', '18', '40', '88', '30'),
-        val('Hunger', '4 Bytes', 'pStarve', '48'),
-        val('Hunger Max', '4 Bytes', 'pStarve', '4C'),
-        val('Hunger Regen', 'Float', 'pStarve', '58'),
-        val('Weight', 'Float', 'pStarve', '18', '40', '98', '108'),
-        val('BaseHealth', '4 Bytes', 'pStarve', '18', '40', '68'),
-        val('BaseActionPoints', '4 Bytes', 'pStarve', '18', '40', '6C'),
-        val('BaseLosLevel', '4 Bytes', 'pStarve', '18', '40', '70'),
-        val('BaseMeleeAccuracy', 'Float', 'pStarve', '18', '40', '74'),
-        val('BaseRangeAccuracy', 'Float', 'pStarve', '18', '40', '78'),
-        val('BaseDodge', 'Float', 'pStarve', '18', '40', '7C'),
-        val('IsInfiniteAmmo On=1', 'Byte', 'pStarve', '18', '14C'),
+        val('Health', '4 Bytes', 'pStarve', *(HP + [OFF('HealthInfo', '_value')])),
+        val('Health Max', '4 Bytes', 'pStarve', *(HP + [OFF('HealthInfo', 'MaxValue')])),
+        val('Health Min', '4 Bytes', 'pStarve', *(HP + [OFF('HealthInfo', 'MinValue')])),
+        val('Invulnerability On=1', 'Byte', 'pStarve',
+            *(HP + [OFF('HealthInfo', '_invulnerability')])),
+        val('Hunger', '4 Bytes', 'pStarve', OFF('StarvationEffect', '_currentLevel')),
+        val('Hunger Max', '4 Bytes', 'pStarve', PROP('StarvationEffect', 'MaxLevel')),
+        val('Hunger Regen', 'Float', 'pStarve', PROP('StarvationEffect', 'Regen')),
+        val('Weight', 'Float', 'pStarve',
+            *(CD + [OFF('CreatureData', 'Inventory'), PROP('Inventory', 'ItemsWeight')])),
+        val('BaseHealth', '4 Bytes', 'pStarve', *(CD + [OFF('CreatureData', 'BaseHealth')])),
+        val('BaseActionPoints', '4 Bytes', 'pStarve',
+            *(CD + [OFF('CreatureData', 'BaseActionPoints')])),
+        val('BaseLosLevel', '4 Bytes', 'pStarve', *(CD + [OFF('CreatureData', 'BaseLosLevel')])),
+        val('BaseMeleeAccuracy', 'Float', 'pStarve',
+            *(CD + [OFF('CreatureData', 'BaseMeleeAccuracy')])),
+        val('BaseRangeAccuracy', 'Float', 'pStarve',
+            *(CD + [OFF('CreatureData', 'BaseRangeAccuracy')])),
+        val('BaseDodge', 'Float', 'pStarve', *(CD + [OFF('CreatureData', 'BaseDodge')])),
+        val('IsInfiniteAmmo On=1', 'Byte', 'pStarve', CRE, OFF('Creature', 'IsInfiniteAmmo')),
     ]))
 
 # --- Perks
 groups.append(entry(
     'Perks / XP (gain XP to populate)',
-    script=hook_script('hkPerk', 'MGSC.Perk:AddExp', 'mov [pPerk],rcx',
+    script=hook_script('hkPerk', 'MGSC.Perk:AddExp', cap('pPerk', 'rcx'),
                        'Perk entry hook; RCX = this.'),
     color=ORANGE,
     children=[
-        val('CurrentExp', '4 Bytes', 'pPerk', '34'),
-        val('ExpPerAction', '4 Bytes', 'pPerk', '38'),
-        val('MaxExp', '4 Bytes', 'pPerk', '3C'),
+        val('CurrentExp', '4 Bytes', 'pPerk', OFF('Perk', 'CurrentExp')),
+        val('ExpPerAction', '4 Bytes', 'pPerk', OFF('Perk', 'ExpPerAction')),
+        val('MaxExp', '4 Bytes', 'pPerk', OFF('Perk', 'MaxExp')),
     ]))
 
 # --- Quasimorphosis
+RAID = OFF('QmorphosController', '_raidMetadata')
+WIN = [RAID, OFF('RaidMetadata', 'WinCondition')]
 groups.append(entry(
     'QuasiLvL (move around to populate)',
     script=hook_script('hkQmorph', 'MGSC.QmorphosController:ProcessActionPoint',
-                       'mov [pQmorphos],rcx',
+                       cap('pQmorphos', 'rcx'),
                        'QmorphosController entry hook; RCX = this.\n'
-                       'Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.'),
+                       'Chain: _raidMetadata -> WinCondition (MissionWinCondition).'),
     color=ORANGE,
     children=[
-        val('QMorphosLevel', '4 Bytes', 'pQmorphos', '30', '2C'),
-        val('QMorphosMinLevel', '4 Bytes', 'pQmorphos', '30', '34'),
-        val('TurnNumber', '4 Bytes', 'pQmorphos', '30', '30'),
-        val('IsBaronAllowed', 'Byte', 'pQmorphos', '30', '50'),
-        val('IsGlobalJammed', 'Byte', 'pQmorphos', '30', '51'),
-        val('EvacuationInProgress', 'Byte', 'pQmorphos', '30', '40', '31'),
-        val('EvacuationBlocked', 'Byte', 'pQmorphos', '30', '40', '32'),
-        val('EvacuationByItem', 'Byte', 'pQmorphos', '30', '40', '33'),
-        val('EvacuationFlee', 'Byte', 'pQmorphos', '30', '40', '34'),
-        val('EvacuationCompleted', 'Byte', 'pQmorphos', '30', '98'),
+        val('QMorphosLevel', '4 Bytes', 'pQmorphos', RAID, OFF('RaidMetadata', 'QMorphosLevel')),
+        val('QMorphosMinLevel', '4 Bytes', 'pQmorphos', RAID,
+            OFF('RaidMetadata', 'QMorphosMinLevel')),
+        val('TurnNumber', '4 Bytes', 'pQmorphos', RAID, OFF('RaidMetadata', 'TurnNumber')),
+        val('IsBaronAllowed', 'Byte', 'pQmorphos', RAID, OFF('RaidMetadata', 'IsBaronAllowed')),
+        val('IsGlobalJammed', 'Byte', 'pQmorphos', RAID, OFF('RaidMetadata', 'IsGlobalJammed')),
+        val('EvacuationInProgress', 'Byte', 'pQmorphos',
+            *(WIN + [OFF('MissionWinCondition', 'EvacuationInProgress')])),
+        val('EvacuationBlocked', 'Byte', 'pQmorphos',
+            *(WIN + [OFF('MissionWinCondition', 'EvacuationBlocked')])),
+        val('EvacuationByItem', 'Byte', 'pQmorphos',
+            *(WIN + [OFF('MissionWinCondition', 'EvacuationByItem')])),
+        val('EvacuationFlee', 'Byte', 'pQmorphos',
+            *(WIN + [OFF('MissionWinCondition', 'EvacuationFlee')])),
+        val('EvacuationCompleted', 'Byte', 'pQmorphos', RAID,
+            OFF('RaidMetadata', 'EvacuationCompleted')),
     ]))
 
 # --- Travel
 groups.append(entry(
     'Travel (start a flight to populate)',
     script=hook_script('hkTravel', 'MGSC.TravelSystem:ProcessSpaceshipTravel',
-                       'push rax\\r\\nmov rax,[rsp+40]\\r\\nmov [pTravel],rax\\r\\npop rax',
+                       cap('pTravel', '[rsp+40]'),
                        'Static method: travelData is parameter 7, so at the entry it\n'
                        'lives at [rsp+38] (return address + 20h shadow space + 2 slots).\n'
-                       'RAX is saved/restored, hence [rsp+40] inside the hook.'),
+                       'RAX is pushed first, hence [rsp+40] inside the hook.'),
     color=ORANGE,
     children=[
-        val('TravelHoursDuration', 'Double', 'pTravel', '90'),
-        val('FlightTime', 'Float', 'pTravel', '48'),
-        val('InitialTravelDistance', 'Float', 'pTravel', '78'),
-        val('TravelFinalOrbitT', 'Double', 'pTravel', '30'),
-        val('BramfaturaCounter', '4 Bytes', 'pTravel', '1C'),
-        val('CanTravel', 'Byte', 'pTravel', '2C'),
+        val('TravelHoursDuration', 'Double', 'pTravel',
+            OFF('TravelMetadata', 'TravelHoursDuration')),
+        val('FlightTime', 'Float', 'pTravel', OFF('TravelMetadata', 'FlightTime')),
+        val('InitialTravelDistance', 'Float', 'pTravel',
+            OFF('TravelMetadata', 'InitialTravelDistance')),
+        val('TravelFinalOrbitT', 'Double', 'pTravel',
+            OFF('TravelMetadata', 'TravelFinalOrbitT')),
+        val('BramfaturaCounter', '4 Bytes', 'pTravel',
+            OFF('TravelMetadata', 'BramfaturaCounter')),
+        val('CanTravel', 'Byte', 'pTravel', OFF('TravelMetadata', 'CanTravel')),
     ]))
 
-# --- Factions
+# --- Factions: Factions.Values -> List<Faction> -> array -> [i]
 FACTION_FIELDS = [
-    ('Power', '4 Bytes', '18'),
-    ('CurrentTechLevel', '4 Bytes', '1C'),
-    ('TechExp', 'Float', '20'),
-    ('BasePower', '4 Bytes', '24'),
-    ('PlayerReputation', 'Float', '28'),
-    ('PlayerTradePoints', '4 Bytes', '2C'),
-    ('AllTimeTradingPoints', '4 Bytes', '30'),
+    ('Power', '4 Bytes', OFF('Faction', 'Power')),
+    ('CurrentTechLevel', '4 Bytes', OFF('Faction', 'CurrentTechLevel')),
+    ('TechExp', 'Float', OFF('Faction', 'TechExp')),
+    ('BasePower', '4 Bytes', OFF('Faction', 'BasePower')),
+    ('PlayerReputation', 'Float', OFF('Faction', 'PlayerReputation')),
+    ('PlayerTradePoints', '4 Bytes', OFF('Faction', 'PlayerTradePoints')),
+    ('AllTimeTradingPoints', '4 Bytes', OFF('Faction', 'AllTimeTradingPoints')),
 ]
-faction_children = [val('Faction count', '4 Bytes', 'pFactions', '18', '18')]
+VALUES = OFF('Factions', 'Values')
+faction_children = [val('Faction count', '4 Bytes', 'pFactions', VALUES, '18')]
 for i in range(8):
-    slot = '%X' % (0x20 + 8 * i)
     faction_children.append(entry(
         'Faction [%d]' % i, group_header=True,
-        children=[val(fn, ft, 'pFactions', '18', '10', slot, off)
+        children=[val(fn, ft, 'pFactions', VALUES, LIST_ITEMS, ELEM(i), off)
                   for fn, ft, off in FACTION_FIELDS]))
 
 groups.append(entry(
     'Faction Stats (buy or sell anything to populate)',
     script=hook_script('hkBuy', 'MGSC.TradeSystem:BuyStationItems',
-                       'mov [pFactions],rdx',
+                       cap('pFactions', 'rdx'),
                        'Static method; RDX = Factions.\n'
-                       'Chain: Factions+18 = List<Faction>, list+10 = array,\n'
-                       '       array+20+8*i = Faction[i].'),
+                       'Chain: Values -> List._items -> array[i].'),
     color=ORANGE, children=faction_children))
 
 groups.append(entry(
     'Faction Stats - also capture on Sell',
     script=hook_script('hkSell', 'MGSC.TradeSystem:SellItems',
-                       'mov [pFactions],rdx',
+                       cap('pFactions', 'rdx'),
                        'Second capture point for the same pFactions symbol,\n'
                        'so selling populates the Faction Stats tree as well.'),
     color=ORANGE))
@@ -391,4 +510,5 @@ doc = ('<?xml version="1.0" encoding="utf-8"?>\n'
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 with open(OUT, 'w', encoding='utf-8', newline='\n') as f:
     f.write(doc)
+print('offset cross-check: %s' % cross_check())
 print('wrote %s (%d bytes, %d entries)' % (OUT, len(doc), _id[0]))

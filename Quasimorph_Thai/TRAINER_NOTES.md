@@ -3,8 +3,8 @@
 **Table**: `Quasimorph-v1.0.3-1.CT` (Cheat Engine 7.x, table version 46)
 **Target game**: `1.0.3.578s.024ad60`, Unity `2022.3.62f2`
 **Predecessor**: `Quasimorph-v0.9.87-1.CT` — kept unchanged as a fallback
-**Status**: offsets and hook logic VERIFIED statically · in-game behaviour **UNTESTED**
-**Updated**: 2026-08-28
+**Status**: hooks and offsets verified against the running game · in-game use confirmed by the maintainer
+**Updated**: 2026-08-29
 
 Original table by **Dickincorp**, backpack script by **Pekar**, both of
 fearlessrevolution.com. This is a port of their work to 1.0.3, not new content.
@@ -21,15 +21,15 @@ It broke in two independent ways, and only one of them is a matter of new number
    more. Those offsets move whenever the method's IL changes.
 2. **The stolen instructions no longer exist.** Each script also hardcoded the
    bytes it displaced, e.g. `db 41 89 46 3C 49 63 46 40` for `SellItems`. Those
-   bytes encode both the field offset *and* the register the JIT happened to pick.
-   In 1.0.3 several of the hooked methods have different bodies, so scanning for
-   the old byte patterns would not have found them either.
+   bytes encode both a field offset *and* the register the JIT happened to pick.
+   In 1.0.3 several hooked methods have different bodies, so scanning for the old
+   byte patterns would not have found them either.
 
 So the port replaces the hooking strategy rather than patching numbers.
 
 ## What the new table does instead
 
-Every hook now attaches to the **entry point** of a Mono method and captures the
+Every hook attaches to the **entry point** of a Mono method and captures the
 object from the **calling convention**, which is fixed by the Windows x64 ABI and
 does not depend on what the JIT emitted:
 
@@ -39,7 +39,7 @@ does not depend on what the JIT emitted:
 | 2nd / 3rd / 4th | `RDX` / `R8` / `R9` |
 | 5th and later | `[rsp+28]`, `[rsp+30]`, `[rsp+38]`, … |
 
-The displaced prologue bytes are no longer hardcoded. A small Lua runtime in the
+The displaced prologue bytes are not hardcoded. A small Lua runtime in the
 "Activate me" script measures them at hook time:
 
 ```
@@ -53,8 +53,19 @@ bytes into the code cave, and pads the entry with `nop`. It refuses to hook a
 method that begins with a relative branch, and raises a readable error instead of
 silently doing nothing when a symbol will not resolve.
 
+Measured prologues vary from 8 to 11 bytes across the eleven targets — e.g.
+`48 83 EC 18 48 89 3C 24` for `SpendAmmo`, `55 48 8B EC 48 81 EC E0 00 00 00`
+for `DragControllerShowContextMenuCallback` — which is exactly why they are not
+hardcoded.
+
+**Captures go through RAX.** x86-64 encodes a store to an absolute 64-bit
+address only for the accumulator (`mov [moffs64],rax`). `mov [pWeapon],rcx` has
+no encoding at the distance CE places the pointer block, and CE's assembler does
+not fall back to RIP-relative. Every capture is therefore
+`push rax / mov rax,<src> / mov [pX],rax / pop rax`.
+
 The consequence: **the table should survive future patches that only move code**.
-It needs revisiting only when a *field layout* or a *method signature* changes.
+It needs revisiting when a *field layout* or a *method signature* changes.
 
 ## Hook map
 
@@ -72,68 +83,77 @@ It needs revisiting only when a *field layout* or a *method signature* changes.
 | Faction Stats | `MGSC.TradeSystem:BuyStationItems` | `RDX` = Factions |
 | Faction Stats (sell) | `MGSC.TradeSystem:SellItems` | `RDX` = Factions |
 
-All 11 target classes and methods still exist in 1.0.3 under the same names.
+All eleven resolve in the running game.
 
-## Offset changes, 0.9.87 → 1.0.3
+## Field offsets
 
-Offsets are Mono runtime field offsets, computed from `Assembly-CSharp.dll`
-metadata by `trainer_tools/` and cross-checked against the offsets the 0.9.87
-table is known to have used.
+**Mono does not lay classes out in declaration order.** For `auto`-layout
+classes it makes two passes — reference-bearing fields first, then value types —
+so any class that interleaves the two has a layout that field order alone does
+not predict. This is the single biggest trap in this table: an offset map built
+from declaration order was wrong for 38 of 69 checked fields, including every
+offset in `Faction`, `CreatureData`, `Inventory`, `RaidMetadata`,
+`TravelMetadata`, `WeaponRecord` and `ItemSlot`.
+
+Offsets now come from `mono_class_enumFields` in the **live process**
+(`trainer_tools/offsets.json`), which is what the JIT actually uses.
+`monolayout.py`'s `gc` model reproduces that dump exactly — 486 of 486 instance
+fields across 24 classes — and `gen_ct.py` refuses to build if the two disagree.
+No offset in the generator is typed by hand; each is `OFF('Faction', 'Power')`.
+
+Selected changes, 0.9.87 → 1.0.3:
 
 | Class | Field | 0.9.87 | 1.0.3 |
 |---|---|---:|---:|
-| `BreakableItemComponent` | CurrentPercent | `18` | **`10`** |
-| | MaxDurability | `20` | **`18`** |
-| | Unbreakable | `28` | **`20`** |
-| `Perk` | CurrentExp / ExpPerAction / MaxExp | `2C`/`30`/`34` | **`34`/`38`/`3C`** |
+| `WeaponComponent` | CurrentAmmo | `48` | **`5C`** |
+| | _weaponRecord | `28` | `28` |
+| `WeaponRecord` | Range / ReloadDuration / MagazineCapacity | `AC`/`B0`/`B8` | **`C4`/`CC`/`D0`** |
+| `ItemSlot` | Item | — | `F8` |
+| `PickupItem` | _stackable / _usable | `40`/`48` | `40`/`48` |
+| `StackableItemComponent` | Count / Max | `10`/`12` | `10`/`12` |
+| `UsableItemComponent` | MaxUsageValue / UsageCost / CurrentUsageValue | `10`/`14`/`18` | `10`/`14`/`18` |
+| `Inventory` | _backpackMode | `D0` | **`E8`** |
+| `BreakableItemComponent` | CurrentPercent / MaxDurability / Unbreakable | `18`/`20`/`28` | **`10`/`18`/`20`** |
 | `StarvationEffect` | _currentLevel / MaxLevel | `40`/`44` | **`48`/`4C`** |
-| `Inventory` | _backpackMode | `D0` | **`B4`** |
-| `Faction` | Power … AllTimeTradingPoints | `28`…`40` | **`18`…`30`** |
-| `WeaponRecord` | Range / ReloadDuration / MagazineCapacity | `AC`/`B0`/`B8` | **`B0`/`B8`/`BC`** |
+| `Creature` | CreatureData | — | `28` |
+| `CreatureData` | Health / Inventory | — | `48` / `58` |
+| | BaseLosLevel … BaseDodge | `F8`…`104` | **`104`…`110`** |
+| `HealthInfo` | MaxValue / _value / _invulnerability | `20`/`28`/`2C` | **`24`/`2C`/`30`** |
+| `Perk` | CurrentExp / ExpPerAction / MaxExp | `2C`/`30`/`34` | **`34`/`38`/`3C`** |
 | `QmorphosController` | _raidMetadata | `28` | **`30`** |
-| `RaidMetadata` | QMorphosLevel | `40` | **`2C`** |
-| | QMorphosMinLevel | `48` | **`34`** |
-| | IsBaronAllowed / IsGlobalJammed | `4D`/`4E` | **`50`/`51`** |
-| | WinCondition | `20` | **`40`** |
-| `TravelMetadata` | TravelHoursDuration | `80` | **`90`** |
-| | InitialTravelDistance | `70` | **`78`** |
-
-Unchanged, and therefore evidence the layout model is right:
-
-| Class | Field | Offset |
-|---|---|---:|
-| `WeaponComponent` | CurrentAmmo / _weaponRecord | `48` / `28` |
-| `PickupItem` | _stackable / _usable | `40` / `48` |
-| `StackableItemComponent` | Count / Max | `10` / `12` |
-| `UsableItemComponent` | MaxUsageValue / UsageCost / CurrentUsageValue | `10` / `14` / `18` |
-| `MissionWinCondition` | EvacuationBlocked / ByItem / Flee | `32` / `33` / `34` |
-| `TravelMetadata` | FlightTime | `48` |
+| `RaidMetadata` | QMorphosLevel / QMorphosMinLevel | `40`/`48` | **`60`/`68`** |
+| | WinCondition | `20` | `20` |
+| | IsBaronAllowed / IsGlobalJammed | `4D`/`4E` | **`6D`/`6E`** |
+| `MissionWinCondition` | EvacuationBlocked / ByItem / Flee | `32`/`33`/`34` | `32`/`33`/`34` |
+| `TravelMetadata` | TravelHoursDuration / FlightTime | `80`/`48` | **`98`/`60`** |
+| `Faction` | Power … AllTimeTradingPoints | `28`…`40` | **`48`…`60`** |
+| `Factions` | Values | — | `18` |
 
 ## Behaviour changes
 
 - **Faction Stats is now indexed.** 0.9.87 captured the single `Faction` local
-  that the trade code happened to be holding. That local cannot be located
-  statically, so the table now captures the `Factions` collection passed in `RDX`
-  and walks `Factions+18 → List<Faction> → +10 → array → +20+8*i`. Eight faction
-  slots are exposed, plus the live faction count. Buying **or** selling populates
-  the same tree — the old table had two duplicate copies.
+  the trade code happened to be holding. That local cannot be located
+  statically, so the table captures the `Factions` collection from `RDX` and
+  walks `Values → List._items → array[i]`. Eight faction slots are exposed, plus
+  the live faction count. Buying **or** selling fills the same tree — the old
+  table had two duplicate copies.
 - **Weapon – Ship** reads the item's shared `WeaponRecord` through
-  `ItemSlot+128 → item → _records[0]`, so Range / ReloadDuration /
-  MagazineCapacity are editable from the ship. `CurrentAmmo` is per-instance and
-  stays on the mission hook. Right-clicking a non-weapon shows meaningless
-  numbers — that hazard existed in 0.9.87 too.
+  `ItemSlot → Item → _records[0]`, so Range / ReloadDuration / MagazineCapacity
+  are editable from the ship. `CurrentAmmo` is per-instance and stays on the
+  mission hook. Right-clicking a non-weapon shows meaningless numbers — that
+  hazard existed in 0.9.87 too.
 - **Travel** hooks `ProcessSpaceshipTravel` rather than `StartSpaceshipTravel`.
-  It runs every tick of a flight, so the values populate and stay live.
-  0.9.87 also silently dropped the game's own write to `TravelHoursDuration`
-  (its trampoline never re-executed the stolen `movsd`); the new hook preserves
-  the original instruction, so nothing is skipped.
-- **`IsInvisible` was removed.** No such field exists on `Creature` or
-  `CreatureData` in 1.0.3. The entry is gone rather than pointing at garbage.
-- Extra fields exposed where they were free: `Falloff`, `ThrowRange`,
-  `BonusAccuracy`, `MaxPenaltyPercent`, `MinDurabilityAfterRepair`,
-  `CurrentMaxUsageValue`, `ItemsWeight`, `BaseHealth`, `BaseActionPoints`,
-  `Health Min`, `TurnNumber`, `EvacuationInProgress`, `EvacuationCompleted`,
-  `IsInfiniteAmmo`, `BramfaturaCounter`, `CanTravel`, faction count.
+  It runs every tick of a flight, so the values populate and stay live. 0.9.87
+  also silently dropped the game's own write to `TravelHoursDuration` (its
+  trampoline never re-executed the stolen `movsd`); the new hook preserves the
+  original instruction.
+- **`IsInvisible` was removed** — no such field exists on `Creature` or
+  `CreatureData` in 1.0.3. `IsInfiniteAmmo` is exposed instead.
+- Extra fields where they were free: `Falloff`, `ThrowRange`, `BonusAccuracy`,
+  `MaxPenaltyPercent`, `MinDurabilityAfterRepair`, `CurrentMaxUsageValue`,
+  `ItemsWeight`, `BaseHealth`, `BaseActionPoints`, `Health Min`, `TurnNumber`,
+  `EvacuationInProgress`, `EvacuationCompleted`, `BramfaturaCounter`,
+  `CanTravel`, `Price`, `Weight`, faction count.
 
 ## Bugs carried over from 0.9.87, now fixed
 
@@ -146,49 +166,38 @@ Unchanged, and therefore evidence the layout model is right:
 
 ## Verification
 
-Static — run from `trainer_tools/`, all passing:
+**Against the running game** (`trainer_tools/ce_selftest.py`, CE 7.7, game
+`1.0.3.578s.024ad60`):
 
-```bash
-python gen_ct.py        # regenerate the table from the offset map
-python validate_ct.py   # XML, unique IDs, symbol balance, offsets, hook pairing
-python test_lua.py      # executes the table's Lua against a stubbed CE API
-```
+- all 10 pointer symbols allocate and resolve
+- all 11 Mono method symbols resolve
+- all 11 hooks measure their prologue, assemble, install (`E9` at the entry),
+  unhook, and restore the first 24 bytes **byte-identically** — 36/36 checks
+- the game stays alive and responding with all 11 hooks installed
+- 69 offsets checked against `mono_class_enumFields`; the shipped map matches
 
-`test_lua.py` runs `qmHook`/`qmUnhook` for real and asserts on the assembler they
-emit: cave allocated near the target, capture line first, all stolen bytes copied
-verbatim, entry padded to the measured length, `dealloc` on unhook, and both
-error paths.
+**Static** (`trainer_tools/`): `gen_ct.py` cross-checks 486 fields against the
+runtime dump, `validate_ct.py` runs 48 structural checks, and `test_lua.py`
+executes the table's own Lua against a stubbed CE API and asserts on the
+assembler it emits (16 checks).
 
-**In-game: UNTESTED.** Cheat Engine is not installed on the build machine, so
-nothing here has been attached to a running `Quasimorph.exe`. That pass is still
-required:
-
-1. Load the table, run the game, enable **1) Activate me ! Quasimorph 1.0.3**.
-2. Load a save, then enable each group and confirm its values populate on the
-   documented trigger:
-
-   | Group | Trigger |
-   |---|---|
-   | Weapon – Mission | fire a weapon |
-   | Weapon – Ship | right-click a weapon in ship cargo |
-   | Items | right-click any item |
-   | Backpack | open a backpack / resize |
-   | Durability | hover a damaged item |
-   | Player Stats | move in a mission |
-   | Perks / XP | gain any XP |
-   | QuasiLvL | move in a mission |
-   | Travel | start a flight |
-   | Faction Stats | buy or sell at a station |
-
-3. Toggle every script **off** and confirm the game keeps running — that
-   exercises `qmUnhook`'s byte restore.
-4. If a script errors, the message names the method that failed to resolve.
-   Re-run `python inspect_types.py method <Class>:<Method>` to see whether the
-   signature moved.
+**Normal play**: confirmed working by the maintainer. The automated
+`ce_selftest.py monitor` run recorded 0 of 119 entries, because its watch window
+elapsed before the game was played — it is not evidence either way. To capture
+live numbers, run `python ce_selftest.py monitor --run` and play during the
+window.
 
 ## When the game updates again
 
 The hooks should survive code movement on their own. Field offsets will not.
-See `trainer_tools/README.md` — the loop is: re-run `inspect_types.py layout` for
-the classes in the table above, edit the offset map at the bottom of `gen_ct.py`,
-regenerate, revalidate.
+
+```bash
+python ce_selftest.py dump --run     # with the new build running
+# refresh offsets.json from the dump, then
+python gen_ct.py && python validate_ct.py && python test_lua.py
+python ce_selftest.py hooks --run
+```
+
+Do not skip the in-game step. Both defects found after the "statically verified"
+build — ten hooks that could not assemble, and 38 wrong offsets — were invisible
+to static analysis. See `trainer_tools/README.md`.

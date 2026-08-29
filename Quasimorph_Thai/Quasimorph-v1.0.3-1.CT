@@ -63,7 +63,9 @@ end
 
 -- id      : unique name for this hook (used for the code cave symbol)
 -- method  : mono symbol, e.g. 'MGSC.Perk:AddExp'
--- capture : assembler line(s) run at method entry, e.g. 'mov [pPerk],rcx'
+-- capture : assembler run at method entry; stores the object into a pointer
+--           symbol. Always routed through RAX, because x86-64 encodes a store
+--           to an absolute 64-bit address only for the accumulator.
 function qmHook(id, method, capture)
   local addr = getAddress(method)
   if addr == nil or addr == 0 then
@@ -182,7 +184,7 @@ dealloc(pFactions)
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkWeapon', 'MGSC.WeaponComponent:SpendAmmo', 'mov [pWeapon],rcx')
+return qmHook('hkWeapon', 'MGSC.WeaponComponent:SpendAmmo', 'push rax\r\nmov rax,rcx\r\nmov [pWeapon],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
@@ -201,7 +203,7 @@ weapon of that type.}
 <VariableType>2 Bytes</VariableType>
 <Address>pWeapon</Address>
 <Offsets>
-<Offset>48</Offset>
+<Offset>5C</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -210,7 +212,7 @@ weapon of that type.}
 <VariableType>4 Bytes</VariableType>
 <Address>pWeapon</Address>
 <Offsets>
-<Offset>BC</Offset>
+<Offset>D0</Offset>
 <Offset>28</Offset>
 </Offsets>
 </CheatEntry>
@@ -220,7 +222,7 @@ weapon of that type.}
 <VariableType>4 Bytes</VariableType>
 <Address>pWeapon</Address>
 <Offsets>
-<Offset>B8</Offset>
+<Offset>CC</Offset>
 <Offset>28</Offset>
 </Offsets>
 </CheatEntry>
@@ -230,7 +232,7 @@ weapon of that type.}
 <VariableType>4 Bytes</VariableType>
 <Address>pWeapon</Address>
 <Offsets>
-<Offset>B0</Offset>
+<Offset>C4</Offset>
 <Offset>28</Offset>
 </Offsets>
 </CheatEntry>
@@ -240,7 +242,7 @@ weapon of that type.}
 <VariableType>Float</VariableType>
 <Address>pWeapon</Address>
 <Offsets>
-<Offset>B4</Offset>
+<Offset>C8</Offset>
 <Offset>28</Offset>
 </Offsets>
 </CheatEntry>
@@ -250,7 +252,7 @@ weapon of that type.}
 <VariableType>4 Bytes</VariableType>
 <Address>pWeapon</Address>
 <Offsets>
-<Offset>C8</Offset>
+<Offset>DC</Offset>
 <Offset>28</Offset>
 </Offsets>
 </CheatEntry>
@@ -260,7 +262,7 @@ weapon of that type.}
 <VariableType>Float</VariableType>
 <Address>pWeapon</Address>
 <Offsets>
-<Offset>DC</Offset>
+<Offset>E4</Offset>
 <Offset>28</Offset>
 </Offsets>
 </CheatEntry>
@@ -275,15 +277,14 @@ weapon of that type.}
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkShipSlot', 'MGSC.ScreenWithShipCargo:DragControllerShowContextMenuCallback', 'mov [pShipSlot],rdx')
+return qmHook('hkShipSlot', 'MGSC.ScreenWithShipCargo:DragControllerShowContextMenuCallback', 'push rax\r\nmov rax,rdx\r\nmov [pShipSlot],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
 return qmUnhook('hkShipSlot')
 
-{RDX = ItemSlot. Chain: ItemSlot+128 = item, item+38 = _records,
-list+10 = array, array+20 = records[0].
+{RDX = ItemSlot. Chain: ItemSlot -&gt; Item -&gt; _records -&gt; [0].
 Only meaningful when the clicked item really is a weapon.}
 </AssemblerScript>
 <CheatEntries>
@@ -294,8 +295,8 @@ Only meaningful when the clicked item really is a weapon.}
 <VariableType>2 Bytes</VariableType>
 <Address>pShipSlot</Address>
 <Offsets>
-<Offset>20</Offset>
-<Offset>128</Offset>
+<Offset>28</Offset>
+<Offset>F8</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -304,11 +305,11 @@ Only meaningful when the clicked item really is a weapon.}
 <VariableType>4 Bytes</VariableType>
 <Address>pShipSlot</Address>
 <Offsets>
-<Offset>B0</Offset>
+<Offset>C4</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>38</Offset>
-<Offset>128</Offset>
+<Offset>F8</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -317,11 +318,11 @@ Only meaningful when the clicked item really is a weapon.}
 <VariableType>Float</VariableType>
 <Address>pShipSlot</Address>
 <Offsets>
-<Offset>B4</Offset>
+<Offset>C8</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>38</Offset>
-<Offset>128</Offset>
+<Offset>F8</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -330,11 +331,11 @@ Only meaningful when the clicked item really is a weapon.}
 <VariableType>4 Bytes</VariableType>
 <Address>pShipSlot</Address>
 <Offsets>
-<Offset>B8</Offset>
+<Offset>CC</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>38</Offset>
-<Offset>128</Offset>
+<Offset>F8</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -343,11 +344,11 @@ Only meaningful when the clicked item really is a weapon.}
 <VariableType>4 Bytes</VariableType>
 <Address>pShipSlot</Address>
 <Offsets>
-<Offset>BC</Offset>
+<Offset>D0</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>38</Offset>
-<Offset>128</Offset>
+<Offset>F8</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -356,11 +357,11 @@ Only meaningful when the clicked item really is a weapon.}
 <VariableType>Float</VariableType>
 <Address>pShipSlot</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>34</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>38</Offset>
-<Offset>128</Offset>
+<Offset>F8</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -369,11 +370,11 @@ Only meaningful when the clicked item really is a weapon.}
 <VariableType>Float</VariableType>
 <Address>pShipSlot</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>38</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>38</Offset>
-<Offset>128</Offset>
+<Offset>F8</Offset>
 </Offsets>
 </CheatEntry>
 </CheatEntries>
@@ -387,15 +388,14 @@ Only meaningful when the clicked item really is a weapon.}
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkItem', 'MGSC.PickupItem:get_IsStackable', 'mov [pItem],rcx')
+return qmHook('hkItem', 'MGSC.PickupItem:get_IsStackable', 'push rax\r\nmov rax,rcx\r\nmov [pItem],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
 if syntaxcheck then return end
 return qmUnhook('hkItem')
 
-{PickupItem entry hook; RCX = this.
-+40 = _stackable component, +48 = _usable component.}
+{PickupItem entry hook; RCX = this.}
 </AssemblerScript>
 <CheatEntries>
 <CheatEntry>
@@ -471,7 +471,7 @@ return qmUnhook('hkItem')
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkInv', 'MGSC.Inventory:ResizeBackpack', 'mov [pInventory],rcx')
+return qmHook('hkInv', 'MGSC.Inventory:ResizeBackpack', 'push rax\r\nmov rax,rcx\r\nmov [pInventory],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
@@ -491,7 +491,7 @@ Original credit: Pekar of fearlessrevolution.com}
 <VariableType>4 Bytes</VariableType>
 <Address>pInventory</Address>
 <Offsets>
-<Offset>B4</Offset>
+<Offset>E8</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -500,7 +500,7 @@ Original credit: Pekar of fearlessrevolution.com}
 <VariableType>Float</VariableType>
 <Address>pInventory</Address>
 <Offsets>
-<Offset>108</Offset>
+<Offset>104</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -509,7 +509,7 @@ Original credit: Pekar of fearlessrevolution.com}
 <VariableType>4 Bytes</VariableType>
 <Address>pInventory</Address>
 <Offsets>
-<Offset>B0</Offset>
+<Offset>E4</Offset>
 </Offsets>
 </CheatEntry>
 </CheatEntries>
@@ -523,7 +523,7 @@ Original credit: Pekar of fearlessrevolution.com}
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkBreak', 'MGSC.BreakableItemComponent:get_Durability', 'mov [pBreakable],rcx')
+return qmHook('hkBreak', 'MGSC.BreakableItemComponent:get_Durability', 'push rax\r\nmov rax,rcx\r\nmov [pBreakable],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
@@ -589,7 +589,7 @@ return qmUnhook('hkBreak')
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkStarve', 'MGSC.StarvationEffect:set_CurrentLevel', 'mov [pStarve],rcx')
+return qmHook('hkStarve', 'MGSC.StarvationEffect:set_CurrentLevel', 'push rax\r\nmov rax,rcx\r\nmov [pStarve],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
@@ -597,8 +597,7 @@ if syntaxcheck then return end
 return qmUnhook('hkStarve')
 
 {StarvationEffect entry hook; RCX = this.
-Chain: +18 = Creature, +40 = CreatureData,
-       CreatureData+88 = HealthInfo, +98 = Inventory.}
+Chain: _creature -&gt; CreatureData -&gt; Health / Inventory.}
 </AssemblerScript>
 <CheatEntries>
 <CheatEntry>
@@ -608,8 +607,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <Address>pStarve</Address>
 <Offsets>
 <Offset>2C</Offset>
-<Offset>88</Offset>
-<Offset>40</Offset>
+<Offset>48</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -620,8 +619,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <Address>pStarve</Address>
 <Offsets>
 <Offset>24</Offset>
-<Offset>88</Offset>
-<Offset>40</Offset>
+<Offset>48</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -632,8 +631,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <Address>pStarve</Address>
 <Offsets>
 <Offset>20</Offset>
-<Offset>88</Offset>
-<Offset>40</Offset>
+<Offset>48</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -644,8 +643,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <Address>pStarve</Address>
 <Offsets>
 <Offset>30</Offset>
-<Offset>88</Offset>
-<Offset>40</Offset>
+<Offset>48</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -682,9 +681,9 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>Float</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>108</Offset>
-<Offset>98</Offset>
-<Offset>40</Offset>
+<Offset>104</Offset>
+<Offset>58</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -694,8 +693,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>4 Bytes</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>68</Offset>
-<Offset>40</Offset>
+<Offset>FC</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -705,8 +704,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>4 Bytes</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>6C</Offset>
-<Offset>40</Offset>
+<Offset>100</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -716,8 +715,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>4 Bytes</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>70</Offset>
-<Offset>40</Offset>
+<Offset>104</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -727,8 +726,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>Float</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>74</Offset>
-<Offset>40</Offset>
+<Offset>108</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -738,8 +737,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>Float</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>78</Offset>
-<Offset>40</Offset>
+<Offset>10C</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -749,8 +748,8 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>Float</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>7C</Offset>
-<Offset>40</Offset>
+<Offset>110</Offset>
+<Offset>28</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -760,7 +759,7 @@ Chain: +18 = Creature, +40 = CreatureData,
 <VariableType>Byte</VariableType>
 <Address>pStarve</Address>
 <Offsets>
-<Offset>14C</Offset>
+<Offset>158</Offset>
 <Offset>18</Offset>
 </Offsets>
 </CheatEntry>
@@ -775,7 +774,7 @@ Chain: +18 = Creature, +40 = CreatureData,
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkPerk', 'MGSC.Perk:AddExp', 'mov [pPerk],rcx')
+return qmHook('hkPerk', 'MGSC.Perk:AddExp', 'push rax\r\nmov rax,rcx\r\nmov [pPerk],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
@@ -823,7 +822,7 @@ return qmUnhook('hkPerk')
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkQmorph', 'MGSC.QmorphosController:ProcessActionPoint', 'mov [pQmorphos],rcx')
+return qmHook('hkQmorph', 'MGSC.QmorphosController:ProcessActionPoint', 'push rax\r\nmov rax,rcx\r\nmov [pQmorphos],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
@@ -831,7 +830,7 @@ if syntaxcheck then return end
 return qmUnhook('hkQmorph')
 
 {QmorphosController entry hook; RCX = this.
-Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
+Chain: _raidMetadata -&gt; WinCondition (MissionWinCondition).}
 </AssemblerScript>
 <CheatEntries>
 <CheatEntry>
@@ -840,7 +839,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <VariableType>4 Bytes</VariableType>
 <Address>pQmorphos</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>60</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -850,7 +849,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <VariableType>4 Bytes</VariableType>
 <Address>pQmorphos</Address>
 <Offsets>
-<Offset>34</Offset>
+<Offset>68</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -860,7 +859,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <VariableType>4 Bytes</VariableType>
 <Address>pQmorphos</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>64</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -870,7 +869,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <VariableType>Byte</VariableType>
 <Address>pQmorphos</Address>
 <Offsets>
-<Offset>50</Offset>
+<Offset>6D</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -880,7 +879,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <VariableType>Byte</VariableType>
 <Address>pQmorphos</Address>
 <Offsets>
-<Offset>51</Offset>
+<Offset>6E</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -891,7 +890,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <Address>pQmorphos</Address>
 <Offsets>
 <Offset>31</Offset>
-<Offset>40</Offset>
+<Offset>20</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -902,7 +901,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <Address>pQmorphos</Address>
 <Offsets>
 <Offset>32</Offset>
-<Offset>40</Offset>
+<Offset>20</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -913,7 +912,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <Address>pQmorphos</Address>
 <Offsets>
 <Offset>33</Offset>
-<Offset>40</Offset>
+<Offset>20</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -924,7 +923,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <Address>pQmorphos</Address>
 <Offsets>
 <Offset>34</Offset>
-<Offset>40</Offset>
+<Offset>20</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -934,7 +933,7 @@ Chain: +30 = RaidMetadata, RaidMetadata+40 = MissionWinCondition.}
 <VariableType>Byte</VariableType>
 <Address>pQmorphos</Address>
 <Offsets>
-<Offset>98</Offset>
+<Offset>7C</Offset>
 <Offset>30</Offset>
 </Offsets>
 </CheatEntry>
@@ -958,7 +957,7 @@ return qmUnhook('hkTravel')
 
 {Static method: travelData is parameter 7, so at the entry it
 lives at [rsp+38] (return address + 20h shadow space + 2 slots).
-RAX is saved/restored, hence [rsp+40] inside the hook.}
+RAX is pushed first, hence [rsp+40] inside the hook.}
 </AssemblerScript>
 <CheatEntries>
 <CheatEntry>
@@ -967,7 +966,7 @@ RAX is saved/restored, hence [rsp+40] inside the hook.}
 <VariableType>Double</VariableType>
 <Address>pTravel</Address>
 <Offsets>
-<Offset>90</Offset>
+<Offset>98</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -976,7 +975,7 @@ RAX is saved/restored, hence [rsp+40] inside the hook.}
 <VariableType>Float</VariableType>
 <Address>pTravel</Address>
 <Offsets>
-<Offset>48</Offset>
+<Offset>60</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -985,7 +984,7 @@ RAX is saved/restored, hence [rsp+40] inside the hook.}
 <VariableType>Float</VariableType>
 <Address>pTravel</Address>
 <Offsets>
-<Offset>78</Offset>
+<Offset>88</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -994,7 +993,7 @@ RAX is saved/restored, hence [rsp+40] inside the hook.}
 <VariableType>Double</VariableType>
 <Address>pTravel</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>50</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -1003,7 +1002,7 @@ RAX is saved/restored, hence [rsp+40] inside the hook.}
 <VariableType>4 Bytes</VariableType>
 <Address>pTravel</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>3C</Offset>
 </Offsets>
 </CheatEntry>
 <CheatEntry>
@@ -1012,7 +1011,7 @@ RAX is saved/restored, hence [rsp+40] inside the hook.}
 <VariableType>Byte</VariableType>
 <Address>pTravel</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>4C</Offset>
 </Offsets>
 </CheatEntry>
 </CheatEntries>
@@ -1026,7 +1025,7 @@ RAX is saved/restored, hence [rsp+40] inside the hook.}
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkBuy', 'MGSC.TradeSystem:BuyStationItems', 'mov [pFactions],rdx')
+return qmHook('hkBuy', 'MGSC.TradeSystem:BuyStationItems', 'push rax\r\nmov rax,rdx\r\nmov [pFactions],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
@@ -1034,8 +1033,7 @@ if syntaxcheck then return end
 return qmUnhook('hkBuy')
 
 {Static method; RDX = Factions.
-Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
-       array+20+8*i = Faction[i].}
+Chain: Values -&gt; List._items -&gt; array[i].}
 </AssemblerScript>
 <CheatEntries>
 <CheatEntry>
@@ -1060,7 +1058,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1072,7 +1070,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1084,7 +1082,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1096,7 +1094,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1108,7 +1106,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1120,7 +1118,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1132,7 +1130,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>20</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1152,7 +1150,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>28</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1164,7 +1162,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>28</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1176,7 +1174,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>28</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1188,7 +1186,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>28</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1200,7 +1198,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>28</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1212,7 +1210,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>28</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1224,7 +1222,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>28</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1244,7 +1242,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>30</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1256,7 +1254,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>30</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1268,7 +1266,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>30</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1280,7 +1278,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>30</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1292,7 +1290,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>30</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1304,7 +1302,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>30</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1316,7 +1314,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>30</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1336,7 +1334,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>38</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1348,7 +1346,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>38</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1360,7 +1358,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>38</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1372,7 +1370,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>38</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1384,7 +1382,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>38</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1396,7 +1394,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>38</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1408,7 +1406,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>38</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1428,7 +1426,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>40</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1440,7 +1438,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>40</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1452,7 +1450,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>40</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1464,7 +1462,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>40</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1476,7 +1474,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>40</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1488,7 +1486,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>40</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1500,7 +1498,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>40</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1520,7 +1518,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>48</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1532,7 +1530,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>48</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1544,7 +1542,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>48</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1556,7 +1554,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>48</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1568,7 +1566,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>48</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1580,7 +1578,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>48</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1592,7 +1590,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>48</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1612,7 +1610,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>50</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1624,7 +1622,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>50</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1636,7 +1634,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>50</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1648,7 +1646,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>50</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1660,7 +1658,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>50</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1672,7 +1670,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>50</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1684,7 +1682,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>50</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1704,7 +1702,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>18</Offset>
+<Offset>48</Offset>
 <Offset>58</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1716,7 +1714,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>1C</Offset>
+<Offset>4C</Offset>
 <Offset>58</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1728,7 +1726,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>20</Offset>
+<Offset>50</Offset>
 <Offset>58</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1740,7 +1738,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>24</Offset>
+<Offset>54</Offset>
 <Offset>58</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1752,7 +1750,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>Float</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>28</Offset>
+<Offset>58</Offset>
 <Offset>58</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1764,7 +1762,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>2C</Offset>
+<Offset>5C</Offset>
 <Offset>58</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1776,7 +1774,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <VariableType>4 Bytes</VariableType>
 <Address>pFactions</Address>
 <Offsets>
-<Offset>30</Offset>
+<Offset>60</Offset>
 <Offset>58</Offset>
 <Offset>10</Offset>
 <Offset>18</Offset>
@@ -1794,7 +1792,7 @@ Chain: Factions+18 = List&lt;Faction&gt;, list+10 = array,
 <AssemblerScript>[ENABLE]
 {$lua}
 if syntaxcheck then return end
-return qmHook('hkSell', 'MGSC.TradeSystem:SellItems', 'mov [pFactions],rdx')
+return qmHook('hkSell', 'MGSC.TradeSystem:SellItems', 'push rax\r\nmov rax,rdx\r\nmov [pFactions],rax\r\npop rax')
 
 [DISABLE]
 {$lua}
