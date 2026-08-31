@@ -22,7 +22,7 @@
 [CmdletBinding()]
 param(
     [string]$GameManaged = "C:\Users\Administrator\Desktop\Quasimorph.v1.0.3\game\Quasimorph_Data\Managed",
-    [string]$OutDir = (Join-Path (Split-Path $PSScriptRoot -Parent) "Quasimorph_Thai_v1.3"),
+    [string]$OutDir = (Join-Path (Split-Path $PSScriptRoot -Parent) "Quasimorph_Thai_v1.4"),
     [switch]$SkipZip
 )
 

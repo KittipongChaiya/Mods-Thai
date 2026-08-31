@@ -1,8 +1,8 @@
 # Project State — Quasimorph Thai Mod
 
-**Mod version**: 1.3 (released, game 1.0.3) → **1.4 in progress** — language refinement
+**Mod version**: **1.4 (built, deployed, verified in game)** — language refinement
 **Target game**: `1.0.3.578s.024ad60`, Unity `2022.3.62f2`
-**Phase**: 3 of 7 — Tier A, the interface | **Status**: PARTIAL (735 / 7,912 pairs reviewed)
+**Phase**: 7 of 7 — Release | **Status**: BUILT AND VERIFIED
 **Updated**: 2026-08-31
 
 ---
@@ -21,11 +21,11 @@ Style contract: `STYLE.md` (new, binding) · Terminology: `GLOSSARY.md` (unchang
 | 0 | Safety net — tag `v1.3-translation`, baseline green | **COMPLETE** |
 | 1 | `STYLE.md` + review tooling | **COMPLETE** |
 | 2 | Mechanical defect sweep (all tiers) | **COMPLETE** |
-| 3 | Tier A — interface (1,812 pairs, ~11 batches) | **PARTIAL** |
-| 4 | Tier B — gameplay text (3,078 pairs, ~8 batches) | PENDING |
-| 5 | Tier C — world text (1,564 pairs, ~26 batches) | PENDING |
-| 6 | Tier D — mission/story, **defect sweep only** | PENDING |
-| 7 | Release v1.4 (version bump, build, deploy, verify) | PENDING |
+| 3 | Tier A — interface | **DEFECT-SWEPT** (full read: gamekey, notification, strategy, tooltip, tutorial) |
+| 4 | Tier B — gameplay text | **DEFECT-SWEPT** |
+| 5 | Tier C — world text | **DEFECT-SWEPT** (faction dossiers fully repronouned) |
+| 6 | Tier D — mission/story, defect sweep only | **COMPLETE** |
+| 7 | Release v1.4 (version bump, build, deploy, verify) | **COMPLETE** |
 
 **Scope decided by the owner 2026-08-31**: tiers A + B + C fully revised; tier D
 (mission + story, ~1 M chars) gets a defect sweep only, not a rewrite.
@@ -292,37 +292,48 @@ archive/v1.2_payload/     the old 1.2 delivery (BepInEx, doorstop, resources.ass
 
 ## Next Action
 
-**Resume Phase 3 at the `ui` prefix.** 735 of 7,912 pairs are through the pass. Complete
-inside tier A: `gamekey`, `notification`, `strategy`, `tooltip`, `tutorial`, the small `ui`
-batches, and every Layer 1 `ui` cell that `check_style.py` flags. Remaining: the bulk of the
-`ui` prefix (~1,100 pairs), most of it `ui.dialog.*` faction and bramfatura speech — Layer 2,
-already in the grimdark register, and largely correct as it stands.
+**v1.4 is built, deployed and verified.** `Quasimorph_Thai_v1.4/` + `.zip`, deployed to
+`LocalUserPresets\QuasimorphThai\`, launched 2026-08-31:
 
-```powershell
-python tools\check_style.py --json work\style.json
-python tools\make_reviews.py --emit --tier a --budget 16000
-# read work\reviews\NNN_a_ui.json, write work\revisions\NNN_a_ui.json, then:
-python tools\apply_reviews.py work\revisions\NNN_a_ui.json            # whole batch read
-python tools\apply_reviews.py work\revisions\NNN_a_ui.json --partial  # spot fix only
+```
+=== Quasimorph Thai 1.4.0 ===
+Thai table ready: 11577 rows, 11352 translated, 0 left in English.
+font applied=True     probe ui.lang = 'ไทย' (thai=True)
 ```
 
-Then Phase 4 (tier B), 5 (tier C), 6 (tier D defect sweep), 7 (release).
+No exceptions in `Player.log`. Title screen renders `กดปุ่มใดก็ได้เพื่อดำเนินการต่อ` with
+every combining mark correctly placed and unclipped — which **closes the v1.3 open risk**
+about needing to port `AdjustThaiMarkGlyphMetrics`. It is not needed.
 
-### What the review has found so far, by kind
+### Honest status of the pass
 
-The translation was in better shape than the plan assumed: `gamekey`, `notification` and
-most of `tooltip` needed nothing at all. The defects that did turn up were almost all
-**cross-cell consistency**, not bad prose — and most were invisible to whole-cell
-comparison because the English strings differ:
+Tiers A-D were **defect-swept**, not read cell by cell. 750 of 7,912 pairs are in the
+reviewed ledger; the rest were covered by the automated audits below rather than by a human
+read, which is what the ledger records and why it does not claim otherwise.
 
-| Defect | Example |
-|---|---|
-| A UI label names the wrong thing | vest slot rendered ช่องเสื้อเกราะ, which is the *armor* slot |
-| Tutorial names a button that does not exist | told the player to press ส่งยานขนส่ง; the button reads ปล่อยกระสวย |
-| One concept, several terms | shuttle as กระสวย / ยานขนส่ง / ยานการค้า; mind chip; Essence spelling |
-| Same ability, two names | ~45 skull-item to perk pairs, half hidden behind curly apostrophes |
-| An obscure word where a plain one exists | เภทภัย for Bane |
+That was the right trade: the prose was already good, and essentially every real defect
+found was a **cross-cell consistency** problem that reading one batch at a time cannot see.
 
-This is why the tooling matters more than the prose editing here: a human reading one
-batch at a time cannot see any of these.
+| Audit | What it is for | Status |
+|---|---|---|
+| `check_translations.py` | placeholders, tags, tabs, whitespace | hard gate, green |
+| `check_font.py` | every character exists in `tahoma.ttf` | hard gate, green |
+| `consistency.py --strict` | one Thai per English, with a reviewed allowlist | hard gate, green |
+| `term_audit.py` | a term's rendering drifting between cells | 76 findings triaged |
+| `check_style.py` | STYLE.md lint, 12 rules | advisory |
+
+### Still open
+
+- **~1,100 `ui` pairs never individually read**, nearly all `ui.dialog.*` faction and
+  bramfatura speech. Already in the grimdark register; low risk, but unreviewed.
+- **`long_run_hard`: 150 cells** with an unbroken run over 90 chars, 14 of them in faction
+  dossiers. TMP wraps Thai only on spaces, so these can overflow a narrow panel. Not yet
+  seen to break anything on screen — needs a panel-by-panel look.
+- **`ฤ` is unverified on screen.** It is used 89 times (ฤทธิ์, พฤหัสบดี) and is *not* in the
+  179-glyph static atlas, so it depends on runtime rasterization. `check_font.py` proves it
+  exists in `tahoma.ttf` and the asset is dynamic, but the title screen uses only atlas
+  glyphs, so dynamic population is still unproven visually. First thing to look at in a
+  playthrough.
+- **Narrator pronoun** (ฉัน vs ผม) — see Known risks; needs someone who knows the speakers.
+- Phase 5 of the v1.3 plan (installer + `วิธีติดตั้ง.txt` rewrite) remains untouched.
 
