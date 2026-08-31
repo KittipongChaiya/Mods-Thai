@@ -29,8 +29,8 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from _corpus import (REVIEWS, group_pairs, load_base, load_translations,
-                     prefix_of, tier_of, write_json)
+from _corpus import (REVIEWS, canonical, group_pairs, load_base,
+                     load_translations, prefix_of, tier_of, write_json)
 
 LEDGER = REVIEWS / "reviewed.json"
 STYLE_JSON = REVIEWS.parent / "style.json"
@@ -66,6 +66,8 @@ def main() -> int:
     parser.add_argument("--tier", help="only this revision tier (a/b/c/d)")
     parser.add_argument("--prefix", help="only this key prefix")
     parser.add_argument("--smell", help="only pairs flagged by this check_style rule, or 'any'")
+    parser.add_argument("--inconsistent", action="store_true",
+                        help="only pairs whose English has more than one Thai rendering")
     parser.add_argument("--all", action="store_true",
                         help="include pairs already in the reviewed ledger")
     args = parser.parse_args()
@@ -76,10 +78,23 @@ def main() -> int:
     ledger = set() if args.all else load_ledger()
     smelly = load_smell(args.smell) if args.smell else None
 
+    # Pairs whose English is rendered more than one way somewhere in the table.
+    # Emitting all variants of such a string in the same batch is the point: the
+    # divergence can only be judged by seeing the renderings side by side.
+    diverging: set[str] = set()
+    if args.inconsistent:
+        seen: dict[str, set[str]] = defaultdict(set)
+        for (english, current) in pairs:
+            if english.strip():
+                seen[canonical(english)].add(current)
+        diverging = {en for en, variants in seen.items() if len(variants) > 1}
+
     selected: dict[tuple[str, str], list[str]] = {}
     for pair, keys in pairs.items():
         english, current = pair
         if not english.strip():
+            continue
+        if args.inconsistent and canonical(english) not in diverging:
             continue
         if signature(english, current) in ledger:
             continue

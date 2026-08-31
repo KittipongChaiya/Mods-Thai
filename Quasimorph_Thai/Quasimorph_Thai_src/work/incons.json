@@ -1,0 +1,2149 @@
+{
+ "split": {
+  "Blood Filtration": {
+   "เครื่องกรองเลือด": [
+    "item.blood_filtration.name"
+   ],
+   "การกรองเลือด": [
+    "perk.blood_filtration.name"
+   ]
+  },
+  "Khatm as-Sihr": {
+   "คอตัม อัซซิฮ์ร": [
+    "item.chaos_orb.name"
+   ],
+   "คัตม์ อัส-ซิห์ร": [
+    "perk.chaos_orb.name"
+   ]
+  },
+  "Pants": {
+   "กางเกง": [
+    "item.class.Leggings"
+   ],
+   "กางเกงขายาว": [
+    "item.common_pants_1.name"
+   ]
+  },
+  "Cyber Trojan": {
+   "โทรจันไซเบอร์": [
+    "item.cyber_trojan.name"
+   ],
+   "ไซเบอร์โทรจัน": [
+    "perk.cyber_trojan.name"
+   ]
+  },
+  "Controller": {
+   "ตัวควบคุม": [
+    "item.cyborg_chest.name",
+    "woundslot.BattleCyborgChest.name",
+    "woundslot.CyborgChest.name",
+    "woundslot.DroneStomach.name",
+    "woundslot.MarsCyborgChest.name",
+    "woundslot.RecreationCyborgChest.name"
+   ],
+   "คอนโทรลเลอร์": [
+    "ui.settings.joystick"
+   ]
+  },
+  "Frame": {
+   "โครง": [
+    "item.cyborg_guts.name",
+    "woundslot.BattleCyborgBody.name",
+    "woundslot.CyborgBody.name",
+    "woundslot.RecreationCyborgBody.name",
+    "woundslot.TurretBody.name"
+   ],
+   "โครงเหล็ก": [
+    "item.military_power_armor_1.name",
+    "item.military_power_boots_1.name",
+    "item.military_power_helmet_1.name",
+    "item.military_power_pants_1.name"
+   ]
+  },
+  "Discharge Chamber": {
+   "ห้องคายประจุ": [
+    "item.discharge_chamber.name"
+   ],
+   "ห้องปล่อยประจุ": [
+    "perk.discharge_chamber.name"
+   ]
+  },
+  "Shroud of Ash-Shakin": {
+   "ผ้าคลุมของอัชชะกิน": [
+    "item.ethereal_barrier.name",
+    "ui.effect.EtherealBarrierBuff.caption"
+   ],
+   "ผ้าคลุมแห่งอัช-ชากิน": [
+    "perk.ethereal_barrier.name"
+   ]
+  },
+  "Field Emitter": {
+   "ตัวปล่อยสนามพลัง": [
+    "item.field_emitter.name"
+   ],
+   "เครื่องปล่อยสนาม": [
+    "perk.field_emitter.name"
+   ]
+  },
+  "Waste": {
+   "ของเสีย": [
+    "item.human_poop.shortdesc"
+   ],
+   "สูญเปล่า": [
+    "curse.moon_curse_2.name"
+   ]
+  },
+  "Ossuary": {
+   "สุสานกระดูก": [
+    "item.impaler.name"
+   ],
+   "ที่เก็บกระดูก": [
+    "perk.impaler.name"
+   ]
+  },
+  "Disruption Burst": {
+   "คลื่นรบกวน": [
+    "item.matrix_interference_generator.name"
+   ],
+   "คลื่นรบกวนระเบิด": [
+    "perk.matrix_interference_generator.name"
+   ]
+  },
+  "Autoinjector": {
+   "เครื่องฉีดอัตโนมัติ": [
+    "item.med_auto_injector.name"
+   ],
+   "เข็มฉีดอัตโนมัติ": [
+    "perk.med_auto_injector.name"
+   ]
+  },
+  "Volcano": {
+   "ภูเขาไฟ": [
+    "item.plasma_hmg_1.name"
+   ],
+   "Vulcan": [
+    "spaceobject.volcano.name"
+   ]
+  },
+  "Ricochet": {
+   "ริโคเชต์": [
+    "item.prison_light_helmet_1.name"
+   ],
+   "กระดอน": [
+    "trait.ricochet"
+   ]
+  },
+  "Sinews of Zharm": {
+   "เอ็นของซาร์ม": [
+    "item.quasi_generator.name",
+    "ui.effect.QuasiGeneratorBuff.caption"
+   ],
+   "เอ็นแห่งซาร์ม": [
+    "perk.quasi_generator.name"
+   ]
+  },
+  "Radio Jack": {
+   "ช่องต่อวิทยุ": [
+    "item.radio_jack.name"
+   ],
+   "เรดิโอแจ็ค": [
+    "perk.radio_jack.name"
+   ]
+  },
+  "Castigor Tenebrarum": {
+   "คาสติกอร์ เทเนบรารุม": [
+    "item.ripper.name"
+   ],
+   "Castigor Tenebrarum": [
+    "perk.ripper.name"
+   ]
+  },
+  "Sting": {
+   "เหล็กไน": [
+    "item.she_heavy_pistol_1.name"
+   ],
+   "เหล็กใน": [
+    "woundslot.VenusCatSting.name"
+   ]
+  },
+  "Morax’s Authority Circle": {
+   "วงอำนาจของโมแรกซ์": [
+    "item.skull_cattaram_arena.name"
+   ],
+   "วงอำนาจแห่งโมแรกซ์": [
+    "perk.cattaram_arena.name"
+   ]
+  },
+  "Rattling Tear of Cronuth": {
+   "หยาดน้ำตาสั่นไหวของโครนุธ": [
+    "item.skull_cattaram_pillar.name"
+   ],
+   "หยาดน้ำตาสั่นสะท้านแห่งโครนุธ": [
+    "perk.cattaram_pillar.name"
+   ]
+  },
+  "At the Gates of Tartarus": {
+   "ที่ประตูแห่งทาร์ทารัส": [
+    "item.skull_cattaram_stonewalk.name"
+   ],
+   "ณ ประตูแห่งทาร์ทารัส": [
+    "perk.cattaram_stonewalk.name"
+   ]
+  },
+  "Lament of Cronuth": {
+   "บทคร่ำครวญของโครนุธ": [
+    "item.skull_cattaram_upheaval.name"
+   ],
+   "บทคร่ำครวญแห่งโครนุธ": [
+    "perk.cattaram_upheaval.name"
+   ]
+  },
+  "Sidhe Chainmail": {
+   "เกราะโซ่ซีเธอ": [
+    "item.skull_flauros_barkskin.name",
+    "ui.effect.BarkskinBuff.caption"
+   ],
+   "เกราะโซ่แห่งชี": [
+    "perk.flauros_barkskin.name"
+   ]
+  },
+  "Consecration": {
+   "การถวายพร": [
+    "item.skull_flauros_baron_form.name"
+   ],
+   "การอภิเษก": [
+    "perk.flauros_baron_form.name"
+   ]
+  },
+  "Blasphemy": {
+   "คำหมิ่นศาสนา": [
+    "item.skull_flauros_blood_moon.name",
+    "ui.effect.BloodMoonBuff.caption"
+   ],
+   "การลบหลู่": [
+    "perk.flauros_blood_moon.name"
+   ]
+  },
+  "Amergin’s Ogham Knots": {
+   "ปมโอกัมของอเมอร์กิน": [
+    "item.skull_flauros_druid.name",
+    "ui.effect.FlaurosDruidBuff.caption"
+   ],
+   "ปมโอกัมแห่งอเมอร์กิน": [
+    "perk.flauros_druid.name"
+   ]
+  },
+  "Shedu's False Gifts": {
+   "ของขวัญลวงของเชดู": [
+    "item.skull_mars_brass_conversion.name"
+   ],
+   "ของกำนัลลวงแห่งเชดู": [
+    "perk.mars_brass_conversion.name"
+   ]
+  },
+  "Urparp's Ziggurat": {
+   "ซิกกูรัตของอูร์พาร์ป": [
+    "item.skull_mars_brazen_armor.name"
+   ],
+   "ซิกกูรัตแห่งอูร์ปาร์ป": [
+    "perk.mars_brazen_armor.name"
+   ]
+  },
+  "Urparp's Living Seal": {
+   "ตราประทับมีชีวิตของอูร์พาร์ป": [
+    "item.skull_mars_enforced_order.name"
+   ],
+   "ตราประทับมีชีวิตแห่งอูร์ปาร์ป": [
+    "perk.mars_enforced_order.name"
+   ]
+  },
+  "Red and Gold Idol": {
+   "รูปเคารพแดงและทอง": [
+    "item.skull_mars_idol_of_ur.name"
+   ],
+   "เทวรูปแดงและทอง": [
+    "perk.mars_idol_of_ur.name"
+   ]
+  },
+  "Nergal's Cuneiform": {
+   "อักษรลิ่มของเนอร์กัล": [
+    "item.skull_mars_incendiary_rain.name"
+   ],
+   "อักษรลิ่มแห่งเนอร์กัล": [
+    "perk.mars_incendiary_rain.name"
+   ]
+  },
+  "Nergal's Red Edict": {
+   "พระราชโองการแดงของเนอร์กัล": [
+    "item.skull_mars_molten_jet.name"
+   ],
+   "พระราชโองการแดงแห่งเนอร์กัล": [
+    "perk.mars_molten_jet.name"
+   ]
+  },
+  "Gibil's Extra": {
+   "ของแถมจากกิบิล": [
+    "item.skull_mars_overclock.name",
+    "ui.effect.MarsOverclockBuff.caption"
+   ],
+   "ส่วนเกินแห่งกิบิล": [
+    "perk.mars_overclock.name"
+   ]
+  },
+  "Gibil's Blackfire": {
+   "ไฟดำของกิบิล": [
+    "item.skull_mars_reactive_pyre.name",
+    "ui.effect.ReactivePyreBuff.caption",
+    "ui.effect.ReactivePyreMark.caption"
+   ],
+   "เพลิงดำแห่งกิบิล": [
+    "perk.mars_reactive_pyre.name"
+   ]
+  },
+  "Marduk's Blazing Charge": {
+   "ประจุลุกโชนของมาร์ดุก": [
+    "item.skull_mars_shatter_grenade.name"
+   ],
+   "ระเบิดเพลิงแห่งมาร์ดุก": [
+    "perk.mars_shatter_grenade.name"
+   ]
+  },
+  "Incarnate Blind Shift": {
+   "การเลื่อนตำแหน่งบอดแห่งอวตาร": [
+    "item.skull_mercury_arcane_escape.name"
+   ],
+   "การย้ายบอดแห่งร่างจุติ": [
+    "perk.mercury_arcane_escape.name"
+   ]
+  },
+  "Abd’s Turning": {
+   "การหันเหของอับด์": [
+    "item.skull_mercury_mass_displacement.name"
+   ],
+   "การกลับใจแห่งอับด์": [
+    "perk.mercury_mass_displacement.name"
+   ]
+  },
+  "Fukabirna Surface": {
+   "พื้นผิวฟูกาบีร์นา": [
+    "item.skull_mercury_reflect_shield.name",
+    "ui.effect.ReflectShieldBuff.caption"
+   ],
+   "ผิวหน้าฟูคาบีร์นา": [
+    "perk.mercury_reflect_shield.name"
+   ]
+  },
+  "In the Form of Mujtahid": {
+   "ในร่างของมุจญ์ตะฮิด": [
+    "item.skull_mercury_rewind.name"
+   ],
+   "ในร่างมุจตะฮิด": [
+    "perk.mercury_rewind.name"
+   ]
+  },
+  "Oblivion": {
+   "การลืมเลือน": [
+    "item.skull_mercury_times_marching_on.name"
+   ],
+   "การสูญสลาย": [
+    "perk.mercury_times_marching_on.name"
+   ]
+  },
+  "Vincar's Cold Warden": {
+   "ผู้คุมเย็นชาของวินการ์": [
+    "item.skull_moon_iron_maiden.name"
+   ],
+   "ผู้คุมเย็นแห่งวินคาร์": [
+    "perk.moon_iron_maiden.name"
+   ]
+  },
+  "End of Dream": {
+   "จุดจบของความฝัน": [
+    "item.skull_moon_mass_decay.name",
+    "ui.effect.MoonMassDecayBuff.caption"
+   ],
+   "อวสานแห่งความฝัน": [
+    "perk.moon_mass_decay.name"
+   ]
+  },
+  "Pacification": {
+   "การสยบ": [
+    "item.skull_moon_psychic_resonance.name",
+    "ui.effect.PsychicResonanceBuff.caption"
+   ],
+   "การปราบให้สงบ": [
+    "perk.moon_psychic_resonance.name"
+   ]
+  },
+  "Chöd": {
+   "เชอ": [
+    "item.skull_olirna_baron_form.name"
+   ],
+   "เชอด": [
+    "perk.olirna_baron_form.name"
+   ]
+  },
+  "Marah's Mantle": {
+   "อาภรณ์ของมาราห์": [
+    "item.skull_olirna_carapace.name",
+    "ui.effect.CarapaceBuff.caption"
+   ],
+   "เสื้อคลุมแห่งมาราห์": [
+    "perk.olirna_carapace.name"
+   ]
+  },
+  "Gnyann's Gaze": {
+   "สายตาของกนีอันน์": [
+    "item.skull_olirna_glaciation.name"
+   ],
+   "สายตาแห่งญัน": [
+    "perk.olirna_glaciation.name"
+   ]
+  },
+  "Gnyann's Binding": {
+   "พันธนาการของกนีอันน์": [
+    "item.skull_olirna_ice_age.name",
+    "ui.effect.IceAgeBuff.caption"
+   ],
+   "พันธนาการแห่งญัน": [
+    "perk.olirna_ice_age.name"
+   ]
+  },
+  "Miasma": {
+   "มิอาสมา": [
+    "item.skull_olirna_mountain_breath.name"
+   ],
+   "ไอพิษ": [
+    "perk.olirna_mountain_breath.name"
+   ]
+  },
+  "Cruel Edict": {
+   "พระราชกฤษฎีกาโหด": [
+    "item.skull_ron_eye_of_the_storm.name",
+    "ui.effect.EyeOfTheStormBuff.caption"
+   ],
+   "พระราชโองการโหด": [
+    "perk.ron_eye_of_the_storm.name"
+   ]
+  },
+  "Zār's Quiet Step": {
+   "ย่างก้าวเงียบของซาร์": [
+    "item.skull_ron_invisibility.name"
+   ],
+   "ย่างก้าวเงียบแห่งซาร์": [
+    "perk.ron_invisibility.name"
+   ]
+  },
+  "Zār's Drumbeat": {
+   "เสียงกลองของซาร์": [
+    "item.skull_ron_static_field.name"
+   ],
+   "เสียงกลองแห่งซาร์": [
+    "perk.ron_static_field.name"
+   ]
+  },
+  "Carnifex": {
+   "คาร์นิเฟกซ์": [
+    "item.skull_scrivnus_baron_form.name"
+   ],
+   "Carnifex": [
+    "perk.scrivnus_baron_form.name"
+   ]
+  },
+  "Karzurs' Bonebreak": {
+   "การหักกระดูกของคาร์ซูร์": [
+    "item.skull_scrivnus_impale.name"
+   ],
+   "กระดูกหักแห่งคาร์ซูร์": [
+    "perk.scrivnus_impale.name"
+   ]
+  },
+  "Karzur's Bone Needle": {
+   "เข็มกระดูกของคาร์ซูร์": [
+    "item.skull_scrivnus_torment.name"
+   ],
+   "เข็มกระดูกแห่งคาร์ซูร์": [
+    "perk.scrivnus_torment.name"
+   ]
+  },
+  "Hematite": {
+   "เฮมาไทต์": [
+    "item.skull_venus_baron_form.name"
+   ],
+   "ฮีมาไทต์": [
+    "perk.venus_baron_form.name"
+   ]
+  },
+  "Tlenamacac": {
+   "ตเลนามาคัก": [
+    "item.skull_venus_blood_vortex.name"
+   ],
+   "ตเลนามากัก": [
+    "perk.venus_blood_vortex.name"
+   ]
+  },
+  "Stealth Skin": {
+   "ผิวพรางตัว": [
+    "item.stealth_skin.name",
+    "ui.effect.StealthSkinBuff.caption"
+   ],
+   "ผิวลอบเร้น": [
+    "perk.stealth_skin.name"
+   ]
+  },
+  "Thermal Emitter": {
+   "ตัวปล่อยความร้อน": [
+    "item.thermal_emitter.name"
+   ],
+   "เครื่องปล่อยความร้อน": [
+    "perk.thermal_emitter.name"
+   ]
+  },
+  "Leap of al-Abarsa": {
+   "การกระโจนของอัลอาบาร์ซา": [
+    "item.warp_accelerator.name"
+   ],
+   "การกระโจนแห่งอัล-อาบาร์ซา": [
+    "perk.warp_accelerator.name"
+   ]
+  },
+  "Web Gland": {
+   "ต่อมใยแมงมุม": [
+    "item.web_gland.name"
+   ],
+   "ต่อมใย": [
+    "perk.web_gland.name"
+   ]
+  },
+  "reloading": {
+   "กำลังบรรจุอาวุธ": [
+    "ui.activity.Reloading"
+   ],
+   "การบรรจุอาวุธ": [
+    "tooltip.ReloadDuration",
+    "tooltip.Restoration"
+   ]
+  },
+  "take": {
+   "เก็บ": [
+    "ui.context.Take"
+   ],
+   "หยิบ": [
+    "ui.hud.caption.takeskull"
+   ]
+  },
+  "We confirm that this is a small task force of <color=#FFFEC1>RealWare Sec</color> fighters. Their <color=#FFFEC1>corporate transponders</color> are turned off, which means they are not covered by <color=#FFFEC1>NCE</color>. Such episodes among the hexarchs are rare, but this is a good chance to obtain information about the true balance of power in the System.<br><br>To facilitate the fulfillment of the contract we dropped two autonomous capsules with resources and promising prototypes from the Unveiled. A great opportunity for you to complete the mission, and for us to conduct field tests. The main goal of the contract does not change. We don't see anything you can't handle.": {
+   "เรายืนยันว่านี่คือหน่วยเฉพาะกิจขนาดเล็กของนักรบ <color=#FFFEC1>RealWare Sec</color> <color=#FFFEC1>ทรานสปอนเดอร์ประจำองค์กร</color>ของพวกเขาถูกปิดอยู่ ซึ่งหมายความว่าพวกเขาไม่ได้รับความคุ้มครองจาก <color=#FFFEC1>NCE</color> เหตุการณ์แบบนี้ในหมู่เฮกซาร์คเกิดขึ้นไม่บ่อย แต่นี่เป็นโอกาสดีที่จะได้ข้อมูลเกี่ยวกับดุลอำนาจที่แท้จริงในระบบสุริยะ<br><br>เพื่อให้ทำสัญญาได้ง่ายขึ้น เราได้ปล่อยแคปซูลอัตโนมัติสองลูกที่บรรจุทรัพยากรและต้นแบบที่น่าจับตาจาก Unveiled ลงไป เป็นโอกาสดีที่คุณจะทำภารกิจให้สำเร็จ และเป็นโอกาสที่เราจะได้ทดสอบภาคสนาม เป้าหมายหลักของสัญญายังไม่เปลี่ยน เราไม่เห็นว่าจะมีอะไรที่คุณรับมือไม่ได้": [
+    "ui.dialog.ancom_after_realware_killed"
+   ],
+   "เรายืนยันว่านี่คือหน่วยเฉพาะกิจขนาดเล็กของนักรบ<color=#FFFEC1>RealWare Sec</color> <color=#FFFEC1>ทรานสปอนเดอร์ของบรรษัท</color>ถูกปิดไว้ ซึ่งแปลว่าพวกเขาไม่ได้รับความคุ้มครองจาก<color=#FFFEC1>NCE</color> เหตุการณ์แบบนี้ในหมู่เฮกซาร์คหาได้ยาก แต่นี่เป็นโอกาสดีที่จะได้ข้อมูลเรื่องดุลอำนาจที่แท้จริงในระบบสุริยะ<br><br>เพื่ออำนวยความสะดวกในการทำสัญญาให้สำเร็จ เราปล่อยแคปซูลอิสระสองลูกพร้อมทรัพยากรและต้นแบบที่มีอนาคตจาก Unveiled ลงไป เป็นโอกาสอันดีสำหรับคุณที่จะทำภารกิจให้สำเร็จ และสำหรับเราที่จะได้ทดสอบภาคสนาม เป้าหมายหลักของสัญญาไม่เปลี่ยนแปลง เราไม่เห็นอะไรที่คุณรับมือไม่ได้": [
+    "story.anc_1_comm_anarchy.dlg.ancom_after_realware_killed"
+   ]
+  },
+  "Gavvakh Addiction": {
+   "ติดกัฟวัค": [
+    "ui.effect.gavaahAddiction.caption"
+   ],
+   "การติดกัฟวัค": [
+    "tooltip.statuseffect_gavaahAddiction"
+   ]
+  },
+  "Drug Addiction": {
+   "ติดยาเสพติด": [
+    "ui.effect.morphineAddiction.caption"
+   ],
+   "การติดยาเสพติด": [
+    "tooltip.statuseffect_morphineAddiction"
+   ]
+  },
+  "Nicotine Addiction": {
+   "ติดนิโคติน": [
+    "ui.effect.nicotineAddiction.caption"
+   ],
+   "การติดนิโคติน": [
+    "tooltip.statuseffect_nicotineAddiction"
+   ]
+  },
+  "armor": {
+   "เสื้อเกราะ": [
+    "ui.itemproduction.armors"
+   ],
+   "เกราะ": [
+    "ui.mapobject.armorpoints"
+   ]
+  },
+  "Max": {
+   "สูงสุด": [
+    "ui.label.max"
+   ],
+   "Max": [
+    "monster.maximilian_rohr.name"
+   ]
+  },
+  "Space Shuttle": {
+   "กระสวยอวกาศ": [
+    "ui.mapobject.spaceship.caption"
+   ],
+   "ยานขนส่งอวกาศ": [
+    "mgperk.cargoshuttle_department.name"
+   ]
+  },
+  "Implant extraction": {
+   "การสกัดอวัยวะฝัง": [
+    "ui.mgmodifier.AGSTImplantGainChanceOnAmp",
+    "woundeffect.implant_drop_chance.desc"
+   ],
+   "การถอดอวัยวะฝัง": [
+    "mgperk.augst_augmenic_upgrade_speed.subName"
+   ]
+  },
+  "Reload": {
+   "การชาร์จใหม่": [
+    "ui.mgmodifier.AUCAPCapsuleRestoreSpeed",
+    "ui.mgmodifier.NDCooldownTimeReduce",
+    "ui.mgmodifier.TRDSHShuttleRestoreSpeed"
+   ],
+   "บรรจุอาวุธ": [
+    "story.anc_3_reload.name"
+   ]
+  },
+  "hit": {
+   "ทุบ": [
+    "firemode.breaker.name",
+    "firemode.smash_1.name"
+   ],
+   "ตะปบ": [
+    "firemode.claw_1.name"
+   ],
+   "ต่อย": [
+    "firemode.punch_1.name"
+   ]
+  },
+  "Recycling": {
+   "รีไซเคิล": [
+    "gamekey.Arsenal_GoToTab9.desc"
+   ],
+   "การรีไซเคิล": [
+    "mgperk.store_constructor_department.name"
+   ]
+  },
+  "Self-healing": {
+   "รักษาตัวเอง": [
+    "woundeffect.self_heal.desc"
+   ],
+   "การรักษาตัวเอง": [
+    "perk.selfhealing.name"
+   ]
+  },
+  "Power": {
+   "พลัง": [
+    "tooltip.EssencePower"
+   ],
+   "อำนาจ": [
+    "tooltip.Power"
+   ]
+  },
+  "Cannibalism": {
+   "การกินเนื้อมนุษย์": [
+    "tooltip.TriggersCannibalizm"
+   ],
+   "กินเนื้อมนุษย์": [
+    "perk.cannibalism.name"
+   ]
+  },
+  "Red Throne": {
+   "Red Throne": [
+    "station.RedThrone.name"
+   ],
+   "บัลลังก์แดง": [
+    "story.civ_4a_icepick.stage4.name"
+   ]
+  },
+  "Management": {
+   "การจัดการ": [
+    "mgperk.proxycorp_department.name"
+   ],
+   "ฝ่ายบริหาร": [
+    "story.civ_2_spark_flame.stage3.name"
+   ]
+  },
+  "Duggur": {
+   "ดักกูร์": [
+    "faction.DuggurFeral.name",
+    "bramfatura.Duggur.name"
+   ],
+   "ดุกกูร์": [
+    "story.tez_2_interplan.stage2.name"
+   ]
+  }
+ },
+ "unreviewed": {
+  "Blood Filtration": {
+   "เครื่องกรองเลือด": [
+    "item.blood_filtration.name"
+   ],
+   "การกรองเลือด": [
+    "perk.blood_filtration.name"
+   ]
+  },
+  "Khatm as-Sihr": {
+   "คอตัม อัซซิฮ์ร": [
+    "item.chaos_orb.name"
+   ],
+   "คัตม์ อัส-ซิห์ร": [
+    "perk.chaos_orb.name"
+   ]
+  },
+  "Pants": {
+   "กางเกง": [
+    "item.class.Leggings"
+   ],
+   "กางเกงขายาว": [
+    "item.common_pants_1.name"
+   ]
+  },
+  "Cyber Trojan": {
+   "โทรจันไซเบอร์": [
+    "item.cyber_trojan.name"
+   ],
+   "ไซเบอร์โทรจัน": [
+    "perk.cyber_trojan.name"
+   ]
+  },
+  "Controller": {
+   "ตัวควบคุม": [
+    "item.cyborg_chest.name",
+    "woundslot.BattleCyborgChest.name",
+    "woundslot.CyborgChest.name",
+    "woundslot.DroneStomach.name",
+    "woundslot.MarsCyborgChest.name",
+    "woundslot.RecreationCyborgChest.name"
+   ],
+   "คอนโทรลเลอร์": [
+    "ui.settings.joystick"
+   ]
+  },
+  "Frame": {
+   "โครง": [
+    "item.cyborg_guts.name",
+    "woundslot.BattleCyborgBody.name",
+    "woundslot.CyborgBody.name",
+    "woundslot.RecreationCyborgBody.name",
+    "woundslot.TurretBody.name"
+   ],
+   "โครงเหล็ก": [
+    "item.military_power_armor_1.name",
+    "item.military_power_boots_1.name",
+    "item.military_power_helmet_1.name",
+    "item.military_power_pants_1.name"
+   ]
+  },
+  "Discharge Chamber": {
+   "ห้องคายประจุ": [
+    "item.discharge_chamber.name"
+   ],
+   "ห้องปล่อยประจุ": [
+    "perk.discharge_chamber.name"
+   ]
+  },
+  "Shroud of Ash-Shakin": {
+   "ผ้าคลุมของอัชชะกิน": [
+    "item.ethereal_barrier.name",
+    "ui.effect.EtherealBarrierBuff.caption"
+   ],
+   "ผ้าคลุมแห่งอัช-ชากิน": [
+    "perk.ethereal_barrier.name"
+   ]
+  },
+  "Field Emitter": {
+   "ตัวปล่อยสนามพลัง": [
+    "item.field_emitter.name"
+   ],
+   "เครื่องปล่อยสนาม": [
+    "perk.field_emitter.name"
+   ]
+  },
+  "Waste": {
+   "ของเสีย": [
+    "item.human_poop.shortdesc"
+   ],
+   "สูญเปล่า": [
+    "curse.moon_curse_2.name"
+   ]
+  },
+  "Ossuary": {
+   "สุสานกระดูก": [
+    "item.impaler.name"
+   ],
+   "ที่เก็บกระดูก": [
+    "perk.impaler.name"
+   ]
+  },
+  "Disruption Burst": {
+   "คลื่นรบกวน": [
+    "item.matrix_interference_generator.name"
+   ],
+   "คลื่นรบกวนระเบิด": [
+    "perk.matrix_interference_generator.name"
+   ]
+  },
+  "Autoinjector": {
+   "เครื่องฉีดอัตโนมัติ": [
+    "item.med_auto_injector.name"
+   ],
+   "เข็มฉีดอัตโนมัติ": [
+    "perk.med_auto_injector.name"
+   ]
+  },
+  "Volcano": {
+   "ภูเขาไฟ": [
+    "item.plasma_hmg_1.name"
+   ],
+   "Vulcan": [
+    "spaceobject.volcano.name"
+   ]
+  },
+  "Ricochet": {
+   "ริโคเชต์": [
+    "item.prison_light_helmet_1.name"
+   ],
+   "กระดอน": [
+    "trait.ricochet"
+   ]
+  },
+  "Sinews of Zharm": {
+   "เอ็นของซาร์ม": [
+    "item.quasi_generator.name",
+    "ui.effect.QuasiGeneratorBuff.caption"
+   ],
+   "เอ็นแห่งซาร์ม": [
+    "perk.quasi_generator.name"
+   ]
+  },
+  "Radio Jack": {
+   "ช่องต่อวิทยุ": [
+    "item.radio_jack.name"
+   ],
+   "เรดิโอแจ็ค": [
+    "perk.radio_jack.name"
+   ]
+  },
+  "Castigor Tenebrarum": {
+   "คาสติกอร์ เทเนบรารุม": [
+    "item.ripper.name"
+   ],
+   "Castigor Tenebrarum": [
+    "perk.ripper.name"
+   ]
+  },
+  "Sting": {
+   "เหล็กไน": [
+    "item.she_heavy_pistol_1.name"
+   ],
+   "เหล็กใน": [
+    "woundslot.VenusCatSting.name"
+   ]
+  },
+  "Morax’s Authority Circle": {
+   "วงอำนาจของโมแรกซ์": [
+    "item.skull_cattaram_arena.name"
+   ],
+   "วงอำนาจแห่งโมแรกซ์": [
+    "perk.cattaram_arena.name"
+   ]
+  },
+  "Rattling Tear of Cronuth": {
+   "หยาดน้ำตาสั่นไหวของโครนุธ": [
+    "item.skull_cattaram_pillar.name"
+   ],
+   "หยาดน้ำตาสั่นสะท้านแห่งโครนุธ": [
+    "perk.cattaram_pillar.name"
+   ]
+  },
+  "At the Gates of Tartarus": {
+   "ที่ประตูแห่งทาร์ทารัส": [
+    "item.skull_cattaram_stonewalk.name"
+   ],
+   "ณ ประตูแห่งทาร์ทารัส": [
+    "perk.cattaram_stonewalk.name"
+   ]
+  },
+  "Lament of Cronuth": {
+   "บทคร่ำครวญของโครนุธ": [
+    "item.skull_cattaram_upheaval.name"
+   ],
+   "บทคร่ำครวญแห่งโครนุธ": [
+    "perk.cattaram_upheaval.name"
+   ]
+  },
+  "Sidhe Chainmail": {
+   "เกราะโซ่ซีเธอ": [
+    "item.skull_flauros_barkskin.name",
+    "ui.effect.BarkskinBuff.caption"
+   ],
+   "เกราะโซ่แห่งชี": [
+    "perk.flauros_barkskin.name"
+   ]
+  },
+  "Consecration": {
+   "การถวายพร": [
+    "item.skull_flauros_baron_form.name"
+   ],
+   "การอภิเษก": [
+    "perk.flauros_baron_form.name"
+   ]
+  },
+  "Blasphemy": {
+   "คำหมิ่นศาสนา": [
+    "item.skull_flauros_blood_moon.name",
+    "ui.effect.BloodMoonBuff.caption"
+   ],
+   "การลบหลู่": [
+    "perk.flauros_blood_moon.name"
+   ]
+  },
+  "Amergin’s Ogham Knots": {
+   "ปมโอกัมของอเมอร์กิน": [
+    "item.skull_flauros_druid.name",
+    "ui.effect.FlaurosDruidBuff.caption"
+   ],
+   "ปมโอกัมแห่งอเมอร์กิน": [
+    "perk.flauros_druid.name"
+   ]
+  },
+  "Shedu's False Gifts": {
+   "ของขวัญลวงของเชดู": [
+    "item.skull_mars_brass_conversion.name"
+   ],
+   "ของกำนัลลวงแห่งเชดู": [
+    "perk.mars_brass_conversion.name"
+   ]
+  },
+  "Urparp's Ziggurat": {
+   "ซิกกูรัตของอูร์พาร์ป": [
+    "item.skull_mars_brazen_armor.name"
+   ],
+   "ซิกกูรัตแห่งอูร์ปาร์ป": [
+    "perk.mars_brazen_armor.name"
+   ]
+  },
+  "Urparp's Living Seal": {
+   "ตราประทับมีชีวิตของอูร์พาร์ป": [
+    "item.skull_mars_enforced_order.name"
+   ],
+   "ตราประทับมีชีวิตแห่งอูร์ปาร์ป": [
+    "perk.mars_enforced_order.name"
+   ]
+  },
+  "Red and Gold Idol": {
+   "รูปเคารพแดงและทอง": [
+    "item.skull_mars_idol_of_ur.name"
+   ],
+   "เทวรูปแดงและทอง": [
+    "perk.mars_idol_of_ur.name"
+   ]
+  },
+  "Nergal's Cuneiform": {
+   "อักษรลิ่มของเนอร์กัล": [
+    "item.skull_mars_incendiary_rain.name"
+   ],
+   "อักษรลิ่มแห่งเนอร์กัล": [
+    "perk.mars_incendiary_rain.name"
+   ]
+  },
+  "Nergal's Red Edict": {
+   "พระราชโองการแดงของเนอร์กัล": [
+    "item.skull_mars_molten_jet.name"
+   ],
+   "พระราชโองการแดงแห่งเนอร์กัล": [
+    "perk.mars_molten_jet.name"
+   ]
+  },
+  "Gibil's Extra": {
+   "ของแถมจากกิบิล": [
+    "item.skull_mars_overclock.name",
+    "ui.effect.MarsOverclockBuff.caption"
+   ],
+   "ส่วนเกินแห่งกิบิล": [
+    "perk.mars_overclock.name"
+   ]
+  },
+  "Gibil's Blackfire": {
+   "ไฟดำของกิบิล": [
+    "item.skull_mars_reactive_pyre.name",
+    "ui.effect.ReactivePyreBuff.caption",
+    "ui.effect.ReactivePyreMark.caption"
+   ],
+   "เพลิงดำแห่งกิบิล": [
+    "perk.mars_reactive_pyre.name"
+   ]
+  },
+  "Marduk's Blazing Charge": {
+   "ประจุลุกโชนของมาร์ดุก": [
+    "item.skull_mars_shatter_grenade.name"
+   ],
+   "ระเบิดเพลิงแห่งมาร์ดุก": [
+    "perk.mars_shatter_grenade.name"
+   ]
+  },
+  "Incarnate Blind Shift": {
+   "การเลื่อนตำแหน่งบอดแห่งอวตาร": [
+    "item.skull_mercury_arcane_escape.name"
+   ],
+   "การย้ายบอดแห่งร่างจุติ": [
+    "perk.mercury_arcane_escape.name"
+   ]
+  },
+  "Abd’s Turning": {
+   "การหันเหของอับด์": [
+    "item.skull_mercury_mass_displacement.name"
+   ],
+   "การกลับใจแห่งอับด์": [
+    "perk.mercury_mass_displacement.name"
+   ]
+  },
+  "Fukabirna Surface": {
+   "พื้นผิวฟูกาบีร์นา": [
+    "item.skull_mercury_reflect_shield.name",
+    "ui.effect.ReflectShieldBuff.caption"
+   ],
+   "ผิวหน้าฟูคาบีร์นา": [
+    "perk.mercury_reflect_shield.name"
+   ]
+  },
+  "In the Form of Mujtahid": {
+   "ในร่างของมุจญ์ตะฮิด": [
+    "item.skull_mercury_rewind.name"
+   ],
+   "ในร่างมุจตะฮิด": [
+    "perk.mercury_rewind.name"
+   ]
+  },
+  "Oblivion": {
+   "การลืมเลือน": [
+    "item.skull_mercury_times_marching_on.name"
+   ],
+   "การสูญสลาย": [
+    "perk.mercury_times_marching_on.name"
+   ]
+  },
+  "Vincar's Cold Warden": {
+   "ผู้คุมเย็นชาของวินการ์": [
+    "item.skull_moon_iron_maiden.name"
+   ],
+   "ผู้คุมเย็นแห่งวินคาร์": [
+    "perk.moon_iron_maiden.name"
+   ]
+  },
+  "End of Dream": {
+   "จุดจบของความฝัน": [
+    "item.skull_moon_mass_decay.name",
+    "ui.effect.MoonMassDecayBuff.caption"
+   ],
+   "อวสานแห่งความฝัน": [
+    "perk.moon_mass_decay.name"
+   ]
+  },
+  "Pacification": {
+   "การสยบ": [
+    "item.skull_moon_psychic_resonance.name",
+    "ui.effect.PsychicResonanceBuff.caption"
+   ],
+   "การปราบให้สงบ": [
+    "perk.moon_psychic_resonance.name"
+   ]
+  },
+  "Chöd": {
+   "เชอ": [
+    "item.skull_olirna_baron_form.name"
+   ],
+   "เชอด": [
+    "perk.olirna_baron_form.name"
+   ]
+  },
+  "Marah's Mantle": {
+   "อาภรณ์ของมาราห์": [
+    "item.skull_olirna_carapace.name",
+    "ui.effect.CarapaceBuff.caption"
+   ],
+   "เสื้อคลุมแห่งมาราห์": [
+    "perk.olirna_carapace.name"
+   ]
+  },
+  "Gnyann's Gaze": {
+   "สายตาของกนีอันน์": [
+    "item.skull_olirna_glaciation.name"
+   ],
+   "สายตาแห่งญัน": [
+    "perk.olirna_glaciation.name"
+   ]
+  },
+  "Gnyann's Binding": {
+   "พันธนาการของกนีอันน์": [
+    "item.skull_olirna_ice_age.name",
+    "ui.effect.IceAgeBuff.caption"
+   ],
+   "พันธนาการแห่งญัน": [
+    "perk.olirna_ice_age.name"
+   ]
+  },
+  "Miasma": {
+   "มิอาสมา": [
+    "item.skull_olirna_mountain_breath.name"
+   ],
+   "ไอพิษ": [
+    "perk.olirna_mountain_breath.name"
+   ]
+  },
+  "Cruel Edict": {
+   "พระราชกฤษฎีกาโหด": [
+    "item.skull_ron_eye_of_the_storm.name",
+    "ui.effect.EyeOfTheStormBuff.caption"
+   ],
+   "พระราชโองการโหด": [
+    "perk.ron_eye_of_the_storm.name"
+   ]
+  },
+  "Zār's Quiet Step": {
+   "ย่างก้าวเงียบของซาร์": [
+    "item.skull_ron_invisibility.name"
+   ],
+   "ย่างก้าวเงียบแห่งซาร์": [
+    "perk.ron_invisibility.name"
+   ]
+  },
+  "Zār's Drumbeat": {
+   "เสียงกลองของซาร์": [
+    "item.skull_ron_static_field.name"
+   ],
+   "เสียงกลองแห่งซาร์": [
+    "perk.ron_static_field.name"
+   ]
+  },
+  "Carnifex": {
+   "คาร์นิเฟกซ์": [
+    "item.skull_scrivnus_baron_form.name"
+   ],
+   "Carnifex": [
+    "perk.scrivnus_baron_form.name"
+   ]
+  },
+  "Karzurs' Bonebreak": {
+   "การหักกระดูกของคาร์ซูร์": [
+    "item.skull_scrivnus_impale.name"
+   ],
+   "กระดูกหักแห่งคาร์ซูร์": [
+    "perk.scrivnus_impale.name"
+   ]
+  },
+  "Karzur's Bone Needle": {
+   "เข็มกระดูกของคาร์ซูร์": [
+    "item.skull_scrivnus_torment.name"
+   ],
+   "เข็มกระดูกแห่งคาร์ซูร์": [
+    "perk.scrivnus_torment.name"
+   ]
+  },
+  "Hematite": {
+   "เฮมาไทต์": [
+    "item.skull_venus_baron_form.name"
+   ],
+   "ฮีมาไทต์": [
+    "perk.venus_baron_form.name"
+   ]
+  },
+  "Tlenamacac": {
+   "ตเลนามาคัก": [
+    "item.skull_venus_blood_vortex.name"
+   ],
+   "ตเลนามากัก": [
+    "perk.venus_blood_vortex.name"
+   ]
+  },
+  "Stealth Skin": {
+   "ผิวพรางตัว": [
+    "item.stealth_skin.name",
+    "ui.effect.StealthSkinBuff.caption"
+   ],
+   "ผิวลอบเร้น": [
+    "perk.stealth_skin.name"
+   ]
+  },
+  "Thermal Emitter": {
+   "ตัวปล่อยความร้อน": [
+    "item.thermal_emitter.name"
+   ],
+   "เครื่องปล่อยความร้อน": [
+    "perk.thermal_emitter.name"
+   ]
+  },
+  "Leap of al-Abarsa": {
+   "การกระโจนของอัลอาบาร์ซา": [
+    "item.warp_accelerator.name"
+   ],
+   "การกระโจนแห่งอัล-อาบาร์ซา": [
+    "perk.warp_accelerator.name"
+   ]
+  },
+  "Web Gland": {
+   "ต่อมใยแมงมุม": [
+    "item.web_gland.name"
+   ],
+   "ต่อมใย": [
+    "perk.web_gland.name"
+   ]
+  },
+  "reloading": {
+   "กำลังบรรจุอาวุธ": [
+    "ui.activity.Reloading"
+   ],
+   "การบรรจุอาวุธ": [
+    "tooltip.ReloadDuration",
+    "tooltip.Restoration"
+   ]
+  },
+  "take": {
+   "เก็บ": [
+    "ui.context.Take"
+   ],
+   "หยิบ": [
+    "ui.hud.caption.takeskull"
+   ]
+  },
+  "We confirm that this is a small task force of <color=#FFFEC1>RealWare Sec</color> fighters. Their <color=#FFFEC1>corporate transponders</color> are turned off, which means they are not covered by <color=#FFFEC1>NCE</color>. Such episodes among the hexarchs are rare, but this is a good chance to obtain information about the true balance of power in the System.<br><br>To facilitate the fulfillment of the contract we dropped two autonomous capsules with resources and promising prototypes from the Unveiled. A great opportunity for you to complete the mission, and for us to conduct field tests. The main goal of the contract does not change. We don't see anything you can't handle.": {
+   "เรายืนยันว่านี่คือหน่วยเฉพาะกิจขนาดเล็กของนักรบ <color=#FFFEC1>RealWare Sec</color> <color=#FFFEC1>ทรานสปอนเดอร์ประจำองค์กร</color>ของพวกเขาถูกปิดอยู่ ซึ่งหมายความว่าพวกเขาไม่ได้รับความคุ้มครองจาก <color=#FFFEC1>NCE</color> เหตุการณ์แบบนี้ในหมู่เฮกซาร์คเกิดขึ้นไม่บ่อย แต่นี่เป็นโอกาสดีที่จะได้ข้อมูลเกี่ยวกับดุลอำนาจที่แท้จริงในระบบสุริยะ<br><br>เพื่อให้ทำสัญญาได้ง่ายขึ้น เราได้ปล่อยแคปซูลอัตโนมัติสองลูกที่บรรจุทรัพยากรและต้นแบบที่น่าจับตาจาก Unveiled ลงไป เป็นโอกาสดีที่คุณจะทำภารกิจให้สำเร็จ และเป็นโอกาสที่เราจะได้ทดสอบภาคสนาม เป้าหมายหลักของสัญญายังไม่เปลี่ยน เราไม่เห็นว่าจะมีอะไรที่คุณรับมือไม่ได้": [
+    "ui.dialog.ancom_after_realware_killed"
+   ],
+   "เรายืนยันว่านี่คือหน่วยเฉพาะกิจขนาดเล็กของนักรบ<color=#FFFEC1>RealWare Sec</color> <color=#FFFEC1>ทรานสปอนเดอร์ของบรรษัท</color>ถูกปิดไว้ ซึ่งแปลว่าพวกเขาไม่ได้รับความคุ้มครองจาก<color=#FFFEC1>NCE</color> เหตุการณ์แบบนี้ในหมู่เฮกซาร์คหาได้ยาก แต่นี่เป็นโอกาสดีที่จะได้ข้อมูลเรื่องดุลอำนาจที่แท้จริงในระบบสุริยะ<br><br>เพื่ออำนวยความสะดวกในการทำสัญญาให้สำเร็จ เราปล่อยแคปซูลอิสระสองลูกพร้อมทรัพยากรและต้นแบบที่มีอนาคตจาก Unveiled ลงไป เป็นโอกาสอันดีสำหรับคุณที่จะทำภารกิจให้สำเร็จ และสำหรับเราที่จะได้ทดสอบภาคสนาม เป้าหมายหลักของสัญญาไม่เปลี่ยนแปลง เราไม่เห็นอะไรที่คุณรับมือไม่ได้": [
+    "story.anc_1_comm_anarchy.dlg.ancom_after_realware_killed"
+   ]
+  },
+  "Gavvakh Addiction": {
+   "ติดกัฟวัค": [
+    "ui.effect.gavaahAddiction.caption"
+   ],
+   "การติดกัฟวัค": [
+    "tooltip.statuseffect_gavaahAddiction"
+   ]
+  },
+  "Drug Addiction": {
+   "ติดยาเสพติด": [
+    "ui.effect.morphineAddiction.caption"
+   ],
+   "การติดยาเสพติด": [
+    "tooltip.statuseffect_morphineAddiction"
+   ]
+  },
+  "Nicotine Addiction": {
+   "ติดนิโคติน": [
+    "ui.effect.nicotineAddiction.caption"
+   ],
+   "การติดนิโคติน": [
+    "tooltip.statuseffect_nicotineAddiction"
+   ]
+  },
+  "armor": {
+   "เสื้อเกราะ": [
+    "ui.itemproduction.armors"
+   ],
+   "เกราะ": [
+    "ui.mapobject.armorpoints"
+   ]
+  },
+  "Max": {
+   "สูงสุด": [
+    "ui.label.max"
+   ],
+   "Max": [
+    "monster.maximilian_rohr.name"
+   ]
+  },
+  "Space Shuttle": {
+   "กระสวยอวกาศ": [
+    "ui.mapobject.spaceship.caption"
+   ],
+   "ยานขนส่งอวกาศ": [
+    "mgperk.cargoshuttle_department.name"
+   ]
+  },
+  "Implant extraction": {
+   "การสกัดอวัยวะฝัง": [
+    "ui.mgmodifier.AGSTImplantGainChanceOnAmp",
+    "woundeffect.implant_drop_chance.desc"
+   ],
+   "การถอดอวัยวะฝัง": [
+    "mgperk.augst_augmenic_upgrade_speed.subName"
+   ]
+  },
+  "Reload": {
+   "การชาร์จใหม่": [
+    "ui.mgmodifier.AUCAPCapsuleRestoreSpeed",
+    "ui.mgmodifier.NDCooldownTimeReduce",
+    "ui.mgmodifier.TRDSHShuttleRestoreSpeed"
+   ],
+   "บรรจุอาวุธ": [
+    "story.anc_3_reload.name"
+   ]
+  },
+  "hit": {
+   "ทุบ": [
+    "firemode.breaker.name",
+    "firemode.smash_1.name"
+   ],
+   "ตะปบ": [
+    "firemode.claw_1.name"
+   ],
+   "ต่อย": [
+    "firemode.punch_1.name"
+   ]
+  },
+  "Recycling": {
+   "รีไซเคิล": [
+    "gamekey.Arsenal_GoToTab9.desc"
+   ],
+   "การรีไซเคิล": [
+    "mgperk.store_constructor_department.name"
+   ]
+  },
+  "Self-healing": {
+   "รักษาตัวเอง": [
+    "woundeffect.self_heal.desc"
+   ],
+   "การรักษาตัวเอง": [
+    "perk.selfhealing.name"
+   ]
+  },
+  "Power": {
+   "พลัง": [
+    "tooltip.EssencePower"
+   ],
+   "อำนาจ": [
+    "tooltip.Power"
+   ]
+  },
+  "Cannibalism": {
+   "การกินเนื้อมนุษย์": [
+    "tooltip.TriggersCannibalizm"
+   ],
+   "กินเนื้อมนุษย์": [
+    "perk.cannibalism.name"
+   ]
+  },
+  "Red Throne": {
+   "Red Throne": [
+    "station.RedThrone.name"
+   ],
+   "บัลลังก์แดง": [
+    "story.civ_4a_icepick.stage4.name"
+   ]
+  },
+  "Management": {
+   "การจัดการ": [
+    "mgperk.proxycorp_department.name"
+   ],
+   "ฝ่ายบริหาร": [
+    "story.civ_2_spark_flame.stage3.name"
+   ]
+  },
+  "Duggur": {
+   "ดักกูร์": [
+    "faction.DuggurFeral.name",
+    "bramfatura.Duggur.name"
+   ],
+   "ดุกกูร์": [
+    "story.tez_2_interplan.stage2.name"
+   ]
+  }
+ },
+ "merged": {
+  "อวัยวะฝังศีรษะ": [
+   "Head Implant",
+   "Head implant"
+  ],
+  "อวัยวะฝังหน้าอก": [
+   "Chest Implant",
+   "Chest implant"
+  ],
+  "สินค้าทางทหาร": [
+   "Military Good",
+   "Military Goods"
+  ],
+  "สินค้าฟุ่มเฟือย": [
+   "Luxury Good",
+   "Luxury Goods"
+  ],
+  "เสื้อผ้า": [
+   "Clothes",
+   "Clothing"
+  ],
+  "รองเท้าอะรามิด": [
+   "Aramid Boots",
+   "Aramid Footwear"
+  ],
+  "ปืนกลมือ": [
+   "SMG",
+   "Submachine Gun"
+  ],
+  "อวัยวะฝังไหล่": [
+   "Shoulder Implant",
+   "Shoulder implant"
+  ],
+  "แผ่นเกราะ": [
+   "Armor Plate",
+   "Plate"
+  ],
+  "อวัยวะฝังต้นขา": [
+   "Thigh Implant",
+   "Thigh implant"
+  ],
+  "ยา": [
+   "Medication",
+   "medicine"
+  ],
+  "อวัยวะฝังท้อง": [
+   "Stomach Implant",
+   "Stomach implant"
+  ],
+  "สินค้าวิทยาศาสตร์": [
+   "Scientific Good",
+   "Scientific Goods"
+  ],
+  "อวัยวะฝังเท้า": [
+   "Foot Implant",
+   "Foot implant"
+  ],
+  "ซาก": [
+   "Remains",
+   "Wreck"
+  ],
+  "อวัยวะฝังลำตัว": [
+   "Body Implant",
+   "Body implant"
+  ],
+  "ชุดทำงาน": [
+   "Work Clothes",
+   "Workwear"
+  ],
+  "ปืนพกลำกล้องใหญ่": [
+   "Large-Caliber Pistol",
+   "Large-caliber Pistol"
+  ],
+  "กระสุน": [
+   "Ammo",
+   "ammo"
+  ],
+  "เกราะ": [
+   "Armor",
+   "armor"
+  ],
+  "เป้": [
+   "Backpack",
+   "Backpacks"
+  ],
+  "ข้อมูล": [
+   "Data",
+   "Info",
+   "info"
+  ],
+  "เครื่องดื่ม": [
+   "Drink",
+   "Drinks"
+  ],
+  "ระเบิดมือ": [
+   "Grenades",
+   "grenade"
+  ],
+  "สินค้าอุตสาหกรรม": [
+   "Industrial Good",
+   "Industrial Goods"
+  ],
+  "ชุดปฐมพยาบาล": [
+   "First Aid Kit",
+   "Medical Kits"
+  ],
+  "ที่กำบังเคลื่อนย้ายได้": [
+   "Portable Covers",
+   "Portable cover"
+  ],
+  "วัตถุโบราณ": [
+   "Artifact",
+   "Artifacts"
+  ],
+  "อวัยวะเสริมควอซิมอร์ฟิก": [
+   "Quasimorphic Augments",
+   "Quasimorphic augments"
+  ],
+  "ชุดซ่อม": [
+   "Repair Kit",
+   "Repair Kits"
+  ],
+  "ป้อมปืน": [
+   "Turret",
+   "Turrets"
+  ],
+  "เสื้อกั๊ก": [
+   "Vest",
+   "Vests"
+  ],
+  "อาวุธ": [
+   "Weapons",
+   "weapons"
+  ],
+  "ชิ้นส่วนก่อสร้าง": [
+   "Construction Detail",
+   "Construction Part"
+  ],
+  "เครื่องยิงใบเลื่อย": [
+   "Disc-Saw Thrower",
+   "Disc-saw Thrower"
+  ],
+  "อวัยวะฝังแขน": [
+   "Arm Implant",
+   "Arm implant"
+  ],
+  "เกราะพลังโชแบม": [
+   "Chobham Power Armor",
+   "Сhobham Power Armor"
+  ],
+  "รองเท้าพลังโชแบม": [
+   "Chobham Power Boots",
+   "Сhobham Power Boots"
+  ],
+  "กางเกงพลังโชแบม": [
+   "Chobham Power Pants",
+   "Сhobham Power Pants"
+  ],
+  "กะโหลก": [
+   "Skull",
+   "Skulls"
+  ],
+  "อวัยวะฝังหัวเข่า": [
+   "Knee Implant",
+   "Knee implant"
+  ],
+  "เวชภัณฑ์": [
+   "Medical Preparation",
+   "Medicine"
+  ],
+  "มีดทำเอง": [
+   "Homemade Knife",
+   "Makeshift Knife"
+  ],
+  "อวัยวะเสริม": [
+   "Augmentation",
+   "Augmented Limb",
+   "augmentations"
+  ],
+  "มือใหม่": [
+   "Rookie",
+   "rookie"
+  ],
+  "ตัวปล่อยคลื่นแม่เหล็กไฟฟ้า": [
+   "Electromagnetic Emitter",
+   "Electromagnetic emitter"
+  ],
+  "การแก้แค้น": [
+   "Retribution",
+   "Vengeance"
+  ],
+  "ห่าพิษแห่งฟลาวรอส": [
+   "Flauros's Venom Hail",
+   "Flauros’ Venom Hail"
+  ],
+  "แสงแห่งบัรซัค": [
+   "Barzakh's Light",
+   "Barzakh’s Light"
+  ],
+  "มุญาฮะดะฮ์": [
+   "Mujahada",
+   "Mujahadah"
+  ],
+  "กำแพงความเจ็บปวดแห่งดักกูร์": [
+   "Duggur's Pain Walls",
+   "Duggur’s Pain Walls"
+  ],
+  "ขื่อคาแห่งดักกูร์": [
+   "Duggur's Stocks",
+   "Duggur’s Stocks"
+  ],
+  "เสียงหัวเราะแดงของ Tezctlan": [
+   "Tezctlan's Red Laughter",
+   "Tezctlan’s Red Laughter"
+  ],
+  "การฟื้นคืนของ Tezctlan": [
+   "Tezctlan's Renewal",
+   "Tezctlan’s Renewal"
+  ],
+  "ซากศพ": [
+   "REMAINS",
+   "corpse"
+  ],
+  "เสียชีวิต": [
+   "DEATH",
+   "Death",
+   "dead"
+  ],
+  "น้ำหนักอุปกรณ์": [
+   "EQUIPMENT WEIGHT",
+   "Equipment Weight"
+  ],
+  "ชั้น": [
+   "FLOOR",
+   "Floor",
+   "Floors"
+  ],
+  "ติดตาม": [
+   "FOLLOW",
+   "subscribe"
+  ],
+  "พลังชีวิต": [
+   "HEALTH",
+   "health",
+   "hit points"
+  ],
+  "อวัยวะฝัง": [
+   "IMPLANTS",
+   "Implants"
+  ],
+  "คลังของ": [
+   "INVENTORY",
+   "Inventory"
+  ],
+  "แผนที่ย่อ": [
+   "MINIMAP",
+   "Mini map"
+  ],
+  "ภารกิจสำเร็จ": [
+   "Mission Complete",
+   "Mission completed"
+  ],
+  "คลาสผู้ปฏิบัติการ": [
+   "OPERATOR CLASS",
+   "Operator class"
+  ],
+  "เลือกคลาส": [
+   "Select class",
+   "select class"
+  ],
+  "โครงการ S.K.U.L.L.": [
+   "Project S.K.U.L.L.",
+   "S.K.U.L.L. PROJECT"
+  ],
+  "แยกชิ้นส่วนทั้งหมด": [
+   "Disassemble everything",
+   "disassemble all"
+  ],
+  "โจมตี": [
+   "Attack",
+   "attack"
+  ],
+  "เปิด": [
+   "Open",
+   "on",
+   "open"
+  ],
+  "บรรจุอาวุธ": [
+   "Reload",
+   "Reload weapon",
+   "reload",
+   "weapon reload"
+  ],
+  "เก็บ": [
+   "Take",
+   "take"
+  ],
+  "ใช้": [
+   "Apply",
+   "use"
+  ],
+  "เสียง": [
+   "Sound",
+   "sound"
+  ],
+  "รังสี": [
+   "Beam",
+   "radiation"
+  ],
+  "เอนโทรปี": [
+   "Entropic",
+   "entropy"
+  ],
+  "ระเบิด": [
+   "Explosive",
+   "explosive"
+  ],
+  "การติดเชื้อ": [
+   "Infection",
+   "infection"
+  ],
+  "เจาะทะลุ": [
+   "Piercing",
+   "piercing"
+  ],
+  "พลาสมา": [
+   "Plasma",
+   "plasma"
+  ],
+  "พิษ": [
+   "Toxic",
+   "poison"
+  ],
+  "ไฟช็อต": [
+   "Shock",
+   "shock"
+  ],
+  "ทั้งหมด": [
+   "All",
+   "all"
+  ],
+  "ปกติ": [
+   "Normal",
+   "normal"
+  ],
+  "ไม่มี": [
+   "None",
+   "none"
+  ],
+  "ความมืดมัว": [
+   "Dimness",
+   "Murk"
+  ],
+  "ใช้ไม่ได้": [
+   "Can't be used",
+   "Not available"
+  ],
+  "ยิงเร่งจังหวะ": [
+   "Ramp-up Shot",
+   "Ramp-up shot"
+  ],
+  "คลาส": [
+   "Classes",
+   "class"
+  ],
+  "ความเสียหาย": [
+   "Damage",
+   "damage"
+  ],
+  "อาวุธระยะประชิด": [
+   "Melee weapons",
+   "melee weapon"
+  ],
+  "ย้อนกลับ": [
+   "Back",
+   "back"
+  ],
+  "ปิด": [
+   "Close",
+   "close",
+   "off"
+  ],
+  "ปรับแต่ง": [
+   "Configure",
+   "Customize"
+  ],
+  "คอนเทนเนอร์": [
+   "Container",
+   "container"
+  ],
+  "ศัตรู": [
+   "Enemies",
+   "Enemy"
+  ],
+  "อุปกรณ์": [
+   "Equipment",
+   "device",
+   "equipment"
+  ],
+  "อพยพ": [
+   "Evacuate",
+   "evacuation"
+  ],
+  "แลกเปลี่ยน": [
+   "Barter",
+   "exchange"
+  ],
+  "ไอเทม": [
+   "Item",
+   "Items",
+   "items"
+  ],
+  "ภารกิจ": [
+   "Mission",
+   "Missions"
+  ],
+  "ไม่มีอวัยวะฝัง": [
+   "No Implants",
+   "No implants"
+  ],
+  "ผู้ปฏิบัติการ": [
+   "Operator",
+   "Operators"
+  ],
+  "เพิร์กติดตัว": [
+   "Passive perks",
+   "passive perk"
+  ],
+  "ช่อง": [
+   "slot",
+   "tile"
+  ],
+  "เพิร์กกระตุ้น": [
+   "Active perk",
+   "Trigger perks"
+  ],
+  "ช่วยเหลือ": [
+   "Help",
+   "help"
+  ],
+  "กลไก": [
+   "Mechanism",
+   "mechanism"
+  ],
+  "ฟื้นฟู": [
+   "Restore",
+   "regen"
+  ],
+  "เครื่องสแกน": [
+   "Scanner",
+   "scanner"
+  ],
+  "ความเสียหายระยะประชิด": [
+   "Melee damage",
+   "melee damage"
+  ],
+  "โอกาสโดน": [
+   "Hit chance",
+   "hit chance"
+  ],
+  "โบนัสความเสียหาย": [
+   "Damage bonus",
+   "damage bonus"
+  ],
+  "ระยะการมองเห็น": [
+   "Sight Range",
+   "Vision range",
+   "vision distance"
+  ],
+  "การชาร์จใหม่": [
+   "Recharge",
+   "Reload"
+  ],
+  "เจ็บปวด": [
+   "Painful",
+   "painful"
+  ],
+  "ควอซิมอร์ฟ": [
+   "Quasimorph",
+   "Quasimorphs"
+  ],
+  "แช่แข็ง": [
+   "Freeze",
+   "Freezing",
+   "Frozen"
+  ],
+  "อาวุธปืน": [
+   "Firearm",
+   "Firearms"
+  ],
+  "เครื่องมือ": [
+   "Tool",
+   "Tools"
+  ],
+  "ยิงข่ม": [
+   "Suppressive Fire",
+   "suppressive fire"
+  ],
+  "ภารกิจที่สำเร็จ": [
+   "Missions completed",
+   "missions complete"
+  ],
+  "ระยะผลักถอยเพิ่ม": [
+   "Add. Knockback Range",
+   "Add. knockback range"
+  ],
+  "ตัดอวัยวะเมื่อบาดเจ็บ": [
+   "Amputates When Injured",
+   "Amputates when injured"
+  ],
+  "อาวุธสำรอง": [
+   "Backup Gun",
+   "Backup gun"
+  ],
+  "คริติคอลเจ็บปวด": [
+   "Painful Crits",
+   "Painful crits"
+  ],
+  "ขว้างแม่นยำ": [
+   "Accurate Throws",
+   "Accurate throws"
+  ],
+  "ขว้างทะลุ": [
+   "Piercing Throws",
+   "Piercing throws"
+  ],
+  "ตัวเก็บเสียง": [
+   "Silencer",
+   "silencer"
+  ],
+  "ขว้างไม่ได้": [
+   "Unthrowable",
+   "cannot be thrown"
+  ],
+  "ทะลุแล้วสร้างบาดแผล": [
+   "Wound-Inflicting Pierce",
+   "Wound-inflicting pierce"
+  ],
+  "ความแม่นยำ": [
+   "Accuracy",
+   "accuracy"
+  ],
+  "โอกาสเสพติด": [
+   "Addiction chance",
+   "Chance to get addiciton"
+  ],
+  "การใช้แคลอรี": [
+   "Calorie Consumption",
+   "Calorie consumption",
+   "calorie consumption"
+  ],
+  "พลังชีวิตสูงสุด": [
+   "Max. health",
+   "Maximum health"
+  ],
+  "ระยะขว้าง": [
+   "Throw Range",
+   "Throw range"
+  ],
+  "ตัวปรับความเสียหาย": [
+   "damage mod",
+   "damage mod."
+  ],
+  "การโจมตีเพิ่ม": [
+   "Extra Strikes",
+   "Extra strike"
+  ],
+  "คูลดาวน์เพิร์ก": [
+   "Perk Cooldown",
+   "Perk cooldown"
+  ],
+  "การกระจาย": [
+   "Scatter",
+   "scatter"
+  ],
+  "รัศมีการตรวจจับ": [
+   "Detection Radius",
+   "Detection radius"
+  ],
+  "ไม่รู้สึกเจ็บ": [
+   "Feel No Pain",
+   "Feels no pain",
+   "feels no pain"
+  ],
+  "ความจุ": [
+   "Capacities",
+   "capacity"
+  ],
+  "โอกาสทะลุผ่าน": [
+   "Pierce Chance",
+   "Pierce chance"
+  ],
+  "ระยะเวลามึนงง": [
+   "Stun Duration",
+   "stun duration"
+  ],
+  "สายลับของหน่วยลับ \"ผู้เก็บรักษาความลับ\" ของ AnCom": [
+   "An agent of AnCom's secret unit \"Keepers of Secrets\".",
+   "An agent of the AnCom secret unit \"Keepers of Secrets\"."
+  ],
+  "หน่วยรบตอบโต้เร็วของ SBN ที่ขึ้นตรงต่อผู้บริหารระดับสูงสุดของบรรษัท": [
+   "SBN Rapid Response Combat Teams reporting directly to the highest levels of corporate management",
+   "SBN Rapid Response Combat Teams reporting directly to the highest levels of corporate management."
+  ],
+  "ผู้พิทักษ์": [
+   "Custodian",
+   "Guardian"
+  ],
+  "ป้อมปราการ": [
+   "Bastion",
+   "Fortress"
+  ],
+  "ผู้คุมงาน": [
+   "Overseer",
+   "Taskmaster"
+  ],
+  "สิ่งมีชีวิตนี้ชวนให้นึกถึงญินจากตำนานโบราณของโลก ชาร์ตมาคุมเป็นบรามฟาตูราที่ลึกลับและร้ายกาจจริงๆ": [
+   "This creature is reminiscent of genies from ancient earth legends. Truly, Shartmakhum is a mysterious and deadly Bramfatura.",
+   "This creature is reminiscent of genies from ancient earth legends. Truly, shartmakhum is a mysterious and deadly Bramfatura."
+  ],
+  "ผู้ที่ถูกบังคับให้ทำงานหนักเพื่อความรอดของตนเองและในนามของวิวรณ์": [
+   "One who was forced to labor for her own Salvation and in the name of Revelation.",
+   "One who was forced to labor for his own Salvation and in the name of Revelation."
+  ],
+  "นักสู้ติดอาวุธหนักจากหนึ่งในบริษัททหารเอกชนมากมาย": [
+   "A heavily armed fighter from one of the many private military companies.",
+   "A heavily-armed fighter from one of the many private military companies."
+  ],
+  "ผู้บัญชาการ": [
+   "Commander",
+   "commander"
+  ],
+  "พลทหาร": [
+   "Trooper",
+   "private"
+  ],
+  "นครวงโคจร": [
+   "Orbital City",
+   "Orbital city"
+  ],
+  "โรงแปรรูป": [
+   "Processing Plant",
+   "Processing plant"
+  ],
+  "ศูนย์สื่อสาร": [
+   "Communication Center",
+   "Communication center"
+  ],
+  "นครอวกาศ": [
+   "Space City",
+   "Space city"
+  ],
+  "ศูนย์การศึกษา": [
+   "Education centre",
+   "Educational center"
+  ],
+  "ศูนย์วิจัย": [
+   "Research Center",
+   "Research center"
+  ],
+  "ชุมชนเหมืองแร่": [
+   "Mining Community",
+   "Mining community"
+  ],
+  "โรงไฟฟ้า": [
+   "Power Station",
+   "Power plant",
+   "Power station"
+  ],
+  "สนามยิงปืน": [
+   "Shooting Range",
+   "Shooting range"
+  ],
+  "คลังอาวุธ": [
+   "Armory",
+   "Arsenal"
+  ],
+  "การใช้ยาจะกระตุ้นทริกเกอร์": [
+   "The use of meds activates the trigger.",
+   "Using medicine activates the trigger."
+  ],
+  "ยินดีต้อนรับสู่เขตของบริษัทเรา ด้านล่างคือรายการสินค้าที่เรารับ:": [
+   "Welcome to our company's territory. Below is the list of accepted goods:",
+   "Welcome to our company’s territory. Below is the list of accepted goods:"
+  ],
+  "ยอดเยี่ยมมากครับ<color=#FFFEC1>บอส</color> เหล่าคอลโนดเตรียมและส่งสินค้ามีค่ามาที่ Magnum เป็นค่าตอบแทนของคุณแล้ว": [
+   "Excellent work, <color=#FFFEC1>Boss</color>. Colnodes have prepared and shipped valuable cargo to the Magnum as your reward.",
+   "Excellent work, <color=#FFFEC1>Boss</color>. The colnodes have prepared and shipped valuable cargo to the Magnum as your reward."
+  ],
+  "<color=#FFFEC1>ภารกิจ:</color> คุ้มกัน<color=#FFFEC1>คอลโนด</color>ไปยังจุดปลอดภัย": [
+   "<color=#FFFEC1>Task:</color> Escort <color=#FFFEC1>comnode</color> to the safe location.",
+   "<color=#FFFEC1>Task:</color> Escort the <color=#FFFEC1>comnode</color> to a safe location."
+  ],
+  "<color=#FFFEC1>ภารกิจ:</color> เก็บต้นแบบสิ่งประดิษฐ์ใหม่ที่ %STATION_NAME% แล้วอพยพพร้อมกับมัน": [
+   "<color=#FFFEC1>Task:</color> Pick up the prototype of a new invention at %STATION_NAME% and evacuate with it.",
+   "<color=#FFFEC1>Task:</color> Pick up the prototype of the new invention at %STATION_NAME% and evacuate with it."
+  ],
+  "<color=#FFFEC1>รายละเอียด:</color> กองบัญชาการของคอลโนดคนสำคัญแห่ง<color=#FFFEC1>ขบวนการต่อต้านพลเรือน</color>ตั้งอยู่ที่ %STATION_NAME% เมื่อไม่นานมานี้ พวกเขาดำเนินปฏิบัติการสำเร็จหลายครั้งเพื่อต่อต้านควอซิมอร์ฟ และตอนนี้ %VICTIM_NAME% กำลังจะโจมตีสถานี<br><br>ถ้าเรารับสัญญาด่วนนี้ เราต้องพาคอลโนดคนสำคัญไปยังจุดปลอดภัย": [
+   "<color=#FFFEC1>Details:</color> The headquarters of the <color=#FFFEC1>Civil Resistance</color> key colnode is located at %STATION_NAME%. Recently, they has carried out several successful operations against quasimorphs. And now %VICTIM_NAME% is about to attack the station.<br><br>If we take on this urgent contract, we need to bring the key colnode to the safe location.",
+   "<color=#FFFEC1>Details:</color> The headquarters of the <color=#FFFEC1>Civil Resistance</color> key colnode is located at %STATION_NAME%. Recently, they have carried out several successful operations against quasimorphs. And now %VICTIM_NAME% is about to attack the station.<br><br>If we take on this urgent contract, we need to bring the key colnode to the safe location."
+  ],
+  "พบลายเซ็นของ<color=#FFFEC1>อิกวาไลต์</color>แล้ว ตำแหน่งของมันถูกทำเครื่องหมายไว้บนแผนที่ของคุณ เคลื่อนที่ผ่าน %STATION_NAME% อย่างระมัดระวัง เก็บแรงไว้ <color=#FFFEC1>ฝ่ายกบฏ</color>พร้อมจะให้ค่าตอบแทนงามๆ สำหรับก้อนหินนี้จริงๆ<br><br>เราจะพยายามส่งคุณลงใกล้จุดนั้นที่สุดเท่าที่ทำได้ แต่รับปากอะไรไม่ได้: นักบินยานขนส่งรายงานว่าเห็นนิมิตประหลาด": [
+   "The signature of <color=#FFFEC1>igvalite</color> has been found, its location is marked on your map. Move through %STATION_NAME% carefully, save your strength. The <color=#FFFEC1>rebels</color> are really ready to reward you well for this rock.<br><br>We will try to drop you off as close to the place as possible, but we can’t promise anything: the shuttle pilot reports strange visions.",
+   "The signature of the <color=#FFFEC1>igvalite</color> has been found, its location is marked on your map. Move through %STATION_NAME% carefully, save your strength. The <color=#FFFEC1>rebels</color> are really ready to reward you well for this rock.<br><br>We will try to drop you off as close to the place as possible, but we can’t promise anything: the shuttle pilot reports strange visions."
+  ],
+  "<color=#FFFEC1>ภารกิจ:</color> เก็บ<color=#FFFEC1>อิกวาไลต์</color>ที่ %STATION_NAME% แล้วอพยพพร้อมกับมัน": [
+   "<color=#FFFEC1>Task:</color> Pick up <color=#FFFEC1>igvalite</color> at %STATION_NAME% and evacuate with it.",
+   "<color=#FFFEC1>Task:</color> Pick up the <color=#FFFEC1>igvalite</color> at %STATION_NAME% and evacuate with it."
+  ],
+  "การพบปะกับตัวแทนของ %BENEFICIARY_NAME% เกิดขึ้นแล้ว เป็นดีลที่ดี: ก้อนหินไร้ค่าแลกกับสินค้ามีค่า": [
+   "The meeting with a representative of %BENEFICIARY_NAME% took place. It's a good deal: a worthless rock in exchange for valuable cargo.",
+   "The meeting with a representative of %BENEFICIARY_NAME% took place. It's a good deal: worthless rock in exchange for valuable cargo."
+  ],
+  "พบลายเซ็นของ<color=#FFFEC1>อิกวาไลต์</color>แล้ว ตำแหน่งของมันถูกทำเครื่องหมายไว้บนแผนที่ของคุณ เคลื่อนที่ผ่าน %STATION_NAME% อย่างระมัดระวัง เก็บแรงไว้ %BENEFICIARY_NAME% พร้อมจ่ายค่าตอบแทนงามๆ สำหรับก้อนหินนี้<br><br>เราจะพยายามส่งคุณลงใกล้จุดนั้นที่สุดเท่าที่ทำได้ แต่รับปากอะไรไม่ได้: นักบินยานขนส่งรายงานว่าเห็นนิมิตประหลาด": [
+   "The signature of <color=#FFFEC1>igvalite</color> has been found, its location is marked on your map. Move through %STATION_NAME% carefully, save your strength. %BENEFICIARY_NAME% is ready to reward well for this rock.<br><br>We will try to drop you off as close to the place as possible, but we cannot promise anything: the shuttle pilot reports strange visions.",
+   "The signature of the <color=#FFFEC1>igvalite</color> has been found, its location is marked on your map. Move through %STATION_NAME% carefully, save your strength. %BENEFICIARY_NAME% is ready to reward well for this rock.<br><br>We will try to drop you off as close to the place as possible, but we cannot promise anything: the shuttle pilot reports strange visions."
+  ],
+  "<color=#FFFEC1>ภารกิจ:</color> ค้นหา<color=#FFFEC1>อิกวาไลต์</color> วัตถุอาถรรพ์ควอซิมอร์ฟิกที่มีลักษณะคล้ายแร่ แล้วนำมันกลับมาที่ Magnum การขโมยรวมอยู่ในบริการมาตรฐานของเราอยู่แล้ว การที่เราปฏิบัติการในดินแดนของควอซิมอร์ฟก็ไม่ได้เปลี่ยนอะไร": [
+   "<color=#FFFEC1>Task:</color> Find <color=#FFFEC1>igvalite</color> - a quasimorphic artifact similar to a mineral, and then return with it to Magnum. Stealing is included in the standard range of our services. The fact that we are operating in the territory of quasimorphs does not change anything.",
+   "<color=#FFFEC1>Task:</color> Find the <color=#FFFEC1>igvalite</color> - a quasimorphic artifact similar to a mineral, and then return with it to Magnum. Stealing is included in the standard range of our services. The fact that we are operating in the territory of quasimorphs does not change anything."
+  ],
+  "อย่างที่คาด %BENEFICIARY_NAME% อ้างสิทธิ์ใน %STATION_NAME% เป็นทรัพย์สินของตน สิ่งที่เกิดขึ้นที่นั่นเป็นความลับของบรรษัท เราได้สิ่งที่ควรได้แล้ว: สินค้าจาก %BENEFICIARY_NAME% อยู่บน Magnum เรียบร้อย": [
+   "As expected, %BENEFICIARY_NAME% claimed %STATION_NAME% as its property. What happened there is a corporate secret. We got what we were due: the cargo from %BENEFICIARY_NAME% is already on Magnum.",
+   "As expected, %BENEFICIARY_NAME% claimed %STATION_NAME% as their property. What happened there is a corporate secret. We got what we were due: the cargo from %BENEFICIARY_NAME% is already on Magnum."
+  ],
+  "<color=#FFFEC1>รายละเอียด:</color> ควอซิมอร์โฟซิสค่อยๆ เลิกเป็นปริศนาแล้ว <color=#FFFEC1>เฮกซาร์คี</color>พยายามรักษาภาพลักษณ์ว่ายังควบคุมได้: ทุกอย่างที่ผิดปกติถูกนำเสนอว่าเป็นการยั่วยุของ<color=#FFFEC1>ขบวนการต่อต้านพลเรือน</color> %BENEFICIARY_NAME% ส่งประกาศผ่าน<color=#FFFEC1>SBN</color> ว่าจะทำการตรวจสอบสินทรัพย์ไร้เจ้าของ พูดอีกอย่างคือมันพร้อมจ้าง<color=#FFFEC1>PMC</color> ให้ชิง %STATION_NAME% คืนจากเหล่าควอซิมอร์ฟ หลังชัยชนะของเรา มันจะประกาศว่าสิ่งที่เกิดขึ้นคือคุณูปการของมันต่อการฟื้นฟูระเบียบในระบบสุริยะ ปล่อยให้มันพูดไปเถอะ ที่สำคัญคือมันจะต้องทุ่มเงินให้เราเยอะ<br><br>นี่คือสิ่งที่คุณต้องทำ: เดินให้ทั่ว %STATION_NAME% และ<color=#FFFEC1>ฆ่าควอซิมอร์ฟให้ได้มากที่สุด</color> ไม่รู้ด้วยวิธีใด %VICTIM_NAME% ฝึกให้ควอซิมอร์ฟคงอยู่ในความเป็นจริงทางกายภาพได้นาน<br><br>เมื่อเราออกจากที่นี่ พวกหัวใสของ %BENEFICIARY_NAME% ก็จะมาถึงและจัดการ %STATION_NAME% ให้เข้าที่": [
+   "<color=#FFFEC1>Details:</color> Quasimorphosis is gradually ceasing to be a mystery. The <color=#FFFEC1>Hexarchy</color> is trying to maintain the appearance of control: everything unusual is presented as provocations of the <color=#FFFEC1>Civil Resistance</color>. %BENEFICIARY_NAME% sent a notification via the <color=#FFFEC1>SBN</color> that it was going to conduct an orphan asset inspection. In other words, it is ready to attract <color=#FFFEC1>PMC</color> to take %STATION_NAME% away from the quasimorphs. After our victory, it will declare what happened as its contribution to the restoration of order in the System. Let it say what it want, the main thing is that it will have to invest heavily in us.<br><br>Here's what you need to do: walk around %STATION_NAME% and <color=#FFFEC1>kill as many quasimorphs as possible</color>. Somehow, %VICTIM_NAME% was able to train quasimorphs to linger in physical reality for a long time.<br><br>When we leave this place, the smart guys of %BENEFICIARY_NAME% will arrive and put %STATION_NAME% in order.",
+   "<color=#FFFEC1>Details:</color> Quasimorphosis is gradually ceasing to be a mystery. The <color=#FFFEC1>Hexarchy</color> is trying to maintain the appearance of control: everything unusual is presented as provocations of the <color=#FFFEC1>Civil Resistance</color>. %BENEFICIARY_NAME% sent a notification via the <color=#FFFEC1>SBN</color> that it was going to conduct an orphan asset inspection. In other words, it is ready to attract <color=#FFFEC1>PMC</color> to take %STATION_NAME% away from the quasimorphs. After our victory, it will declare what happened as its contribution to the restoration of order in the System. Let it say what it wants, the main thing is that it will have to invest heavily in us.<br><br>Here's what you need to do: walk around %STATION_NAME% and <color=#FFFEC1>kill as many quasimorphs as possible</color>. Somehow, %VICTIM_NAME% was able to train quasimorphs to linger in physical reality for a long time.<br><br>When we leave this place, the smart guys of %BENEFICIARY_NAME% will arrive and put %STATION_NAME% in order."
+  ],
+  "<color=#FFFEC1>ภารกิจ:</color> ทำลายหีบพระธาตุของ %VICTIM_NAME%": [
+   "<color=#FFFEC1>Task:</color> Destroy %VICTIM_NAME% reliquaries.",
+   "<color=#FFFEC1>Task:</color> Destroy the reliquary of %VICTIM_NAME%."
+  ],
+  "พบลายเซ็นของ<color=#FFFEC1>อิกวาไลต์</color>แล้ว ตำแหน่งของมันถูกทำเครื่องหมายไว้บนแผนที่ เราจะพยายามส่งคุณลงใกล้จุดนั้นที่สุดเท่าที่ทำได้ แต่รับปากอะไรไม่ได้: นักบินยานขนส่งเริ่มรายงานว่าเห็นนิมิตประหลาดแล้ว<br><br>เคลื่อนที่ผ่าน %STATION_NAME% อย่างระมัดระวัง เก็บแรงไว้ %VICTIM_NAME% จะปกป้อง<color=#FFFEC1>อิกวาไลต์</color>อย่างเอาเป็นเอาตายแน่นอน": [
+   "The signature of <color=#FFFEC1>igvalite</color> has been found, its location is marked on the map. We'll try to drop you off as close to the location as possible, but we can't promise anything: the shuttle pilot is already reporting strange visions.<br><br>Move through %STATION_NAME% carefully, save your strength. %VICTIM_NAME% will certainly defend <color=#FFFEC1>igvalite</color> with special zeal.",
+   "The signature of the <color=#FFFEC1>igvalite</color> has been found, its location is marked on the map. We'll try to drop you off as close to the location as possible, but we can't promise anything: the shuttle pilot is already reporting strange visions.<br><br>Move through %STATION_NAME% carefully, save your strength. %VICTIM_NAME% will certainly defend the <color=#FFFEC1>igvalite</color> with special zeal."
+  ],
+  "เหล่าคอลโนดของ<color=#FFFEC1>ขบวนการต่อต้านพลเรือน</color>ทะลวงแนวรอบนอกของ %STATION_NAME% เข้าไปแล้ว เราจะส่งคุณลงในเขตปะทะหลัก <color=#FFFEC1>ตรึงแนวรับไว้</color>จนกว่าศัตรูจะถอย": [
+   "<color=#FFFEC1>The Civil Resistance</color> colnodes have already penetrated the perimeter of %STATION_NAME%. We'll drop you off in the main strike zone. <color=#FFFEC1>Hold your defense</color> until the enemies retreat.",
+   "The <color=#FFFEC1>Civil Resistance</color> colnodes have already penetrated the perimeter of %STATION_NAME%. We'll drop you off in the main strike zone. <color=#FFFEC1>Hold your defense</color> until the enemies retreat."
+  ],
+  "<color=#FFFEC1>บอส</color> %VICTIM_NAME% กำลังโจมตี %STATION_NAME% โดยไม่สนความสูญเสีย ดูเหมือน<color=#FFFEC1>พวกคนนอกคอก</color>ต้องการอะไรบางอย่างที่สถานีนี้จริงๆ %BENEFICIARY_NAME% เรียกร้องให้ข้ารับใช้ผู้ภักดีมาช่วย เหล่าควอซิมอร์ฟอยากเก็บสถานีนี้ไว้เอง<br><br>ถ้าเราตอบรับคำขอความช่วยเหลือ เราจะต้องต้อนรับฝ่ายโจมตีอย่างสมเกียรติ: <color=#FFFEC1>ต้านการโจมตีของพวกมัน</color>ไว้จนกว่ากำลังเสริมจาก %BENEFICIARY_NAME% จะมาถึง": [
+   "<color=#FFFEC1>Boss</color>, %VICTIM_NAME% is attacking %STATION_NAME%, regardless of losses. Looks like the <color=#FFFEC1>outcasts</color> really need something at this station. %BENEFICIARY_NAME% calls on its loyal servants to help. The quasimorphs would like to keep the station for themselves.<br><br>If we respond to the call for help, we will need to provide the attackers with a worthy greeting: <color=#FFFEC1>hold back their attacks</color> until reinforcements from %BENEFICIARY_NAME% will arrive.",
+   "<color=#FFFEC1>Boss</color>, %VICTIM_NAME% is attacking %STATION_NAME%, regardless of losses. Looks like the <color=#FFFEC1>outcasts</color> really need something at this station. %BENEFICIARY_NAME% calls on its loyal servants to help. The quasimorphs would like to keep the station for themselves.<br><br>If we respond to the call for help, we will need to provide the attackers with a worthy meeting: <color=#FFFEC1>hold back their attacks</color> until reinforcements from %BENEFICIARY_NAME% will arrive."
+  ],
+  "<color=#FFFEC1>รายละเอียด:</color> %BENEFICIARY_NAME% ยึด %STATION_NAME% ไว้อย่างเหนียวแน่น ป้อมปราการแห่งนี้ของพวกมันในความเป็นจริงทางกายภาพคือหลักฐานว่าระบบสุริยะกำลังกลับสู่การควบคุมของเจ้านายโบราณ อย่างไรก็ตาม ผู้คนยังไม่เข้าใจว่าควรเลือกข้างไหน<br><br>%BENEFICIARY_NAME% ต้องการให้เราป้องกัน %STATION_NAME% จากการโจมตีของ %VICTIM_NAME% มันต้องการเหตุการณ์ที่โดดเด่นไว้โฆษณาใน<color=#FFFEC1>SBN</color> แน่นอนว่าบรรษัทจะไม่บอกว่ามันยึดสินทรัพย์มาจากเหล่าควอซิมอร์ฟ มันจะโกหกว่าเป็น<color=#FFFEC1>ขบวนการต่อต้านพลเรือน</color> <color=#FFFEC1>ภารกิจของเรา</color>: ทำให้แน่ใจว่ามันจะไม่ได้สิ่งที่ต้องการ": [
+   "<color=#FFFEC1>Details:</color> %BENEFICIARY_NAME% firmly holds %STATION_NAME%. This bastion of theirs in physical reality is evidence that the Solar System is returning under the control of its ancient masters. However, people have not yet understood which side to take.<br><br>%BENEFICIARY_NAME% wants us to defend %STATION_NAME% from the attack by %VICTIM_NAME%. It needs a bright event to advertise in the <color=#FFFEC1>SBN</color>. Of course, the corporation will not say that it seized the asset from the quasimorphs, it will lie about the <color=#FFFEC1>Civil Resistance</color>. <color=#FFFEC1>Our task</color>: to make sure that it won't get what it wants.",
+   "<color=#FFFEC1>Details:</color> %BENEFICIARY_NAME% firmly holds %STATION_NAME%. This bastion of theirs in physical reality is evidence that the Solar System is returning under the control of its ancient masters. However, people have not yet understood which side to take.<br><br>%BENEFICIARY_NAME% wants us to defend %STATION_NAME% from the attack of %VICTIM_NAME%. It needs a bright event to advertise in the <color=#FFFEC1>SBN</color>. Of course, the corporation will not say that it seized the asset from the quasimorphs, it will lie about the <color=#FFFEC1>Civil Resistance</color>. <color=#FFFEC1>Our task</color>: to make sure that it won't get what it wants."
+  ],
+  "<color=#FFFEC1>รายละเอียด:</color> %VICTIM_NAME% ยึด %STATION_NAME% ไว้อย่างเหนียวแน่น ผู้ปฏิบัติการของ<color=#FFFEC1>กองพันเชดู</color>บอกเราว่าที่ %STATION_NAME% มี<color=#FFFEC1>อิกวาไลต์</color> สิ่งพิเศษที่มีลักษณะคล้ายแร่ <color=#FFFEC1>อิกวาไลต์</color>สามารถสะสมกัฟวัค พลังงานที่ขับเคลื่อนควอซิมอร์ฟได้ ถ้าเราต้องการรับใช้กองทัพแห่ง<color=#FFFEC1>กักตุงกร์</color> เราต้องเอาแร่นี้ไปให้มัน": [
+   "<color=#FFFEC1>Details:</color> %VICTIM_NAME% firmly holds %STATION_NAME%. Operators of The <color=#FFFEC1>Shedu's Thousand</color> told us that at %STATION_NAME% there is an <color=#FFFEC1>igvalite</color> - a special mineral-like entity. The <color=#FFFEC1>Igvalite</color> is capable of accumulating gavvakh - energy that powers quasimorphs. If we want to serve the army of <color=#FFFEC1>Gagtungr</color>, we must get this mineral for it.",
+   "<color=#FFFEC1>Details:</color> %VICTIM_NAME% firmly holds %STATION_NAME%. Operators of the <color=#FFFEC1>Shedu's Thousand</color> told us that at %STATION_NAME% there is an <color=#FFFEC1>igvalite</color> - a special mineral-like entity. The <color=#FFFEC1>Igvalite</color> is capable of accumulating gavvakh - energy that powers quasimorphs. If we want to serve the army of <color=#FFFEC1>Gagtungr</color>, we must get this mineral for it."
+  ],
+  "<color=#FFFEC1>รายละเอียด:</color> %BENEFICIARY_NAME% ยึด %STATION_NAME% มานานแล้ว อย่างไรก็ตาม ตอนนี้มันกำลังถูก %VICTIM_NAME% โจมตี<br><br>เราตรวจพบลายเซ็นของ<color=#FFFEC1>อิกวาไลต์</color>ที่แผ่ออกมาจากสถานี มันคือวัตถุอาถรรพ์ควอซิมอร์ฟิกที่สะสมกัฟวัคได้ ดูเหมือนว่า %BENEFICIARY_NAME% กำลังใช้ที่แห่งนี้เก็บพลังงาน<br><br>เรากำจัดกลุ่มควอซิมอร์ฟของ %VICTIM_NAME% ที่มาเอา<color=#FFFEC1>อิกวาไลต์</color>ได้ ลงมือกันเถอะ แล้วค่าตอบแทนจากเจ้าของใหม่ของระบบสุริยะจะสูงลิ่วแน่นอน": [
+   "<color=#FFFEC1>Details:</color> %BENEFICIARY_NAME% has held %STATION_NAME% for a long time. However, it is now under attack from %VICTIM_NAME%.<br><br>We have recognized the signature of an <color=#FFFEC1>Igvalite</color> coming from the station. It is a quasimorphic artifact capable of accumulating gavvakh. It seems that %BENEFICIARY_NAME% is using this place to store energy.<br><br>We can eliminate the groups of quasimorphs of %VICTIM_NAME% who have come for <color=#FFFEC1>igvalite</color>. Let's do this, and the reward from the new owners of the Solar System will be extremely high.",
+   "<color=#FFFEC1>Details:</color> %BENEFICIARY_NAME% has held %STATION_NAME% for a long time. However, it is now under attack from %VICTIM_NAME%.<br><br>We have recognized the signature of an <color=#FFFEC1>Igvalite</color> coming from the station. It is a quasimorphic artifact capable of accumulating gavvakh. It seems that %BENEFICIARY_NAME% is using this place to store energy.<br><br>We can eliminate the groups of quasimorphs of %VICTIM_NAME% who have come for the <color=#FFFEC1>igvalite</color>. Let's do this, and the reward from the new owners of the Solar System will be extremely high."
+  ],
+  "<color=#FFFEC1>ภารกิจ:</color> ทำลายวัตถุอาถรรพ์ควอซิมอร์ฟิกที่ %STATION_NAME%": [
+   "<color=#FFFEC1>Task:</color> Destroy the quasimorphic artifact at %STATION_NAME%.",
+   "<color=#FFFEC1>Task:</color> Destroy the quasimorphic artifacts at %STATION_NAME%."
+  ],
+  "<color=#FFFEC1>ภารกิจ:</color> ค้นหาและทำลาย<color=#FFFEC1>หีบพระธาตุ</color> วัตถุอาถรรพ์ควอซิมอร์ฟิกที่มีลักษณะคล้ายรูปปั้นหรือเสาโอเบลิสก์": [
+   "<color=#FFFEC1>Task:</color> Find and destroy the <color=#FFFEC1>reliquaries</color> — quasimorphic artifacts resembling a statue or an obelisk.",
+   "<color=#FFFEC1>Task:</color> Find and destroy the <color=#FFFEC1>reliquaries</color> — quasimorphic artifacts resembling statues or obelisks.",
+   "<color=#FFFEC1>Task:</color> find and destroy the <color=#FFFEC1>reliquary</color> - a quasimorphic artifact similar to a statue or obelisk."
+  ],
+  "<color=#FFFEC1>รายละเอียด:</color> %VICTIM_NAME% เริ่มเคลื่อนไหวรอบ %STATION_NAME% แล้ว อย่างไรก็ตาม วัตถุนี้อยู่ในมือของ %BENEFICIARY_NAME% เจ้าของระบบสุริยะโดยชอบธรรมจะไม่ยอมแพ้ง่ายๆ และ %VICTIM_NAME% ก็เข้าใจข้อนี้ ดูเหมือนมันกำลังเตรียมปฏิบัติการกำจัด<color=#FFFEC1>ดยุก</color>แห่ง %BENEFICIARY_NAME%<br><br>เหล่าควอซิมอร์ฟเรียกร้องให้ข้ารับใช้ผู้ภักดีทำหน้าที่อันศักดิ์สิทธิ์ของตน ถ้าเราต้องการกระชับความสัมพันธ์กับ %BENEFICIARY_NAME% เราต้องรับบทเป็นองครักษ์ส่วนตัวของดยุก เราต้อง<color=#FFFEC1>คุ้มกันเขาไปยังจุดปลอดภัย</color>บนสถานีและปกป้องเขาจากการโจมตีของคอลโนดแห่ง %VICTIM_NAME%": [
+   "<color=#FFFEC1>Details:</color> %VICTIM_NAME% has launched activities around %STATION_NAME%. However, the object is in the hands of %BENEFICIARY_NAME%. The rightful owners of the Solar System will not give up so easily. And %VICTIM_NAME% understands this. It seems that it is preparing an action to eliminate the <color=#FFFEC1>Duke</color> of %BENEFICIARY_NAME%.<br><br>The quasimorphs call on their faithful servants to fulfill their sacred duty. If we want to strengthen our relationship with %BENEFICIARY_NAME%, we must take on the role of the Duke's personal guard. We need to <color=#FFFEC1>escort it to the safe location</color> at the station and protect it from attacks by the colnodes of %VICTIM_NAME%.",
+   "<color=#FFFEC1>Details:</color> %VICTIM_NAME% has launched activities around %STATION_NAME%. However, the object is in the hands of %BENEFICIARY_NAME%. The rightful owners of the Solar System will not give up so easily. And %VICTIM_NAME% understands this. It seems that it is preparing an action to eliminate the <color=#FFFEC1>Duke</color> of %BENEFICIARY_NAME%.<br><br>The quasimorphs call on their faithful servants to fulfill their sacred duty. If we want to strengthen our relationship with %BENEFICIARY_NAME%, we must take on the role of the Duke's personal guard. We need to <color=#FFFEC1>escort it to the safe location</color> at the station and protect it from attacks from the colnodes of %VICTIM_NAME%."
+  ],
+  "กลุ่มควอซิมอร์ฟหลายกลุ่มจาก %VICTIM_NAME% แทรกซึมเข้า %STATION_NAME% ไปแล้ว คุณต้องหาพวกมันให้เจอและกำจัดก่อนที่พวกมันจะยึด<color=#FFFEC1>อิกวาไลต์</color>ไป %BENEFICIARY_NAME% พร้อมจ่ายค่าตอบแทนงามๆ สำหรับก้อนหินนี้<br><br>เรามาลงเอยแบบนี้ได้ยังไงกันครับ<color=#FFFEC1>บอส</color>": [
+   "Several groups of quasimorphs from %VICTIM_NAME% have already infiltrated %STATION_NAME%. You need to find them and eliminate them before they take over <color=#FFFEC1>igvalite</color>. %BENEFICIARY_NAME% is ready to give out a really good reward for this rock.<br><br>How did we even get into this, <color=#FFFEC1>Boss</color>?",
+   "Several groups of quasimorphs from %VICTIM_NAME% have already infiltrated %STATION_NAME%. You need to find them and eliminate them before they take over the <color=#FFFEC1>igvalite</color>. %BENEFICIARY_NAME% is ready to give out a really good reward for this rock.<br><br>How did we even get into this, <color=#FFFEC1>Boss</color>?"
+  ],
+  "ชั้นบัญชาการ": [
+   "Command Floor",
+   "Command Level"
+  ],
+  "ท่าเทียบ": [
+   "Dock",
+   "Docks"
+  ],
+  "ชั้นที่สอง": [
+   "Second Floor",
+   "Second Level"
+  ],
+  "ชั้นที่สาม": [
+   "Third Floor",
+   "Third Level"
+  ]
+ }
+}

@@ -33,6 +33,20 @@ TIERS: dict[str, set[str]] = {
 }
 
 
+#: The source table mixes straight and curly quotes for the same word - the skull
+#: item says `Tonal’s Wound Binding`, the perk it grants says `Tonal's`. Group
+#: English on a normalised form or a divergence hides behind a punctuation
+#: difference the player never sees. That one concealed a โทนัล / โตนัล split,
+#: and 31 more ability names with it.
+TYPOGRAPHIC = str.maketrans({"’": "'", "‘": "'", "“": '"',
+                             "”": '"', "–": "-", "—": "-"})
+
+
+def canonical(english: str) -> str:
+    """English as used for grouping: typographic variants folded together."""
+    return english.translate(TYPOGRAPHIC)
+
+
 def prefix_of(key: str) -> str:
     head = key.split(".", 1)[0]
     return head or "(blank)"

@@ -54,8 +54,10 @@ if ($LASTEXITCODE -ne 0) { throw "Translation validation failed - fix the proble
 python "$Project\tools\check_font.py"
 if ($LASTEXITCODE -ne 0) { throw "Unrenderable character(s) found - see above." }
 
-# Advisory until the Phase 2 sweep lands consistency_allow.json, then --strict.
-python "$Project\tools\consistency.py" | Select-String -Pattern "unreviewed|drifted"
+# One Thai rendering per English string, unless consistency_allow.json says the
+# divergence was reviewed and is deliberate (hit = ตะปบ / ต่อย / ทุบ, and so on).
+python "$Project\tools\consistency.py" --strict --limit 10
+if ($LASTEXITCODE -ne 0) { throw "Unreviewed translation divergence - see above." }
 
 Write-Host "[2/5] Packing translations into the override table" -ForegroundColor Cyan
 python "$Project\tools\build_overrides.py" "$stage\thai_overrides.tsv" --gzip

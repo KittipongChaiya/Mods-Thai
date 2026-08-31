@@ -2,7 +2,7 @@
 
 **Mod version**: 1.3 (released, game 1.0.3) → **1.4 in progress** — language refinement
 **Target game**: `1.0.3.578s.024ad60`, Unity `2022.3.62f2`
-**Phase**: 2 of 7 — Mechanical defect sweep | **Status**: IN_PROGRESS
+**Phase**: 3 of 7 — Tier A, the interface | **Status**: IN_PROGRESS
 **Updated**: 2026-08-31
 
 ---
@@ -20,8 +20,8 @@ Style contract: `STYLE.md` (new, binding) · Terminology: `GLOSSARY.md` (unchang
 |---|---|---|
 | 0 | Safety net — tag `v1.3-translation`, baseline green | **COMPLETE** |
 | 1 | `STYLE.md` + review tooling | **COMPLETE** |
-| 2 | Mechanical defect sweep (all tiers) | **IN_PROGRESS** |
-| 3 | Tier A — interface (1,812 pairs, ~11 batches) | PENDING |
+| 2 | Mechanical defect sweep (all tiers) | **COMPLETE** |
+| 3 | Tier A — interface (1,812 pairs, ~11 batches) | **IN_PROGRESS** |
 | 4 | Tier B — gameplay text (3,078 pairs, ~8 batches) | PENDING |
 | 5 | Tier C — world text (1,564 pairs, ~26 batches) | PENDING |
 | 6 | Tier D — mission/story, **defect sweep only** | PENDING |
@@ -97,6 +97,15 @@ Thai glyphs. Log clean, no exceptions, one table load, `Mod QuasimorphThai loade
   descriptions) stays plain, short and friendly; the world (factions, stations, monsters,
   terminals, bramfaturas, story, names) takes the elevated gothic register. The fiction
   gets darker *and* clearer; the interface gets friendlier.
+- 2026-08-31 — **Consistency grouping folds typographic variants** (`_corpus.canonical()`).
+  The source table writes one ability with a curly apostrophe in the skull item
+  (`Tonal’s Wound Binding`) and a straight one in the perk (`Tonal's`), so whole-cell
+  comparison never compared them. Normalising first turned 15 findings into 47 and exposed
+  **32 further ability-name divergences** that would otherwise have shipped.
+- 2026-08-31 — **Whole-cell comparison cannot see terminology drift inside prose.**
+  `consistency.py` found one `Duggur` cell; a targeted search found 16 occurrences of
+  ดุกกูร์ across 13 story cells, none of them flagged. `check_style.py --glossary` is the
+  tool for that class, and it is advisory by nature — the report is mostly incidental hits.
 - 2026-08-31 — **Revision is keyed by distinct (English, Thai) pair, not by cell.** 11,352
   cells are 7,977 pairs. ~30 % less work, and two cells sharing a source string and a
   translation can no longer drift apart mid-pass.
@@ -273,6 +282,15 @@ archive/v1.2_payload/     the old 1.2 delivery (BepInEx, doorstop, resources.ass
 ```
 
 ## Next Action
+
+**Phase 3 — tier A, the interface** (`ui` `tooltip` `tutorial` `gamekey` `notification`
+`strategy`; 1,812 pairs, ~195 k chars EN+TH, ~11 review batches). Highest-read text in the
+game and where "friendlier" is actually felt; the tutorial gets its own batch. Loop and
+gates are in the v1.4 section above.
+
+**Phase 2 is COMPLETE** — 80 divergences reviewed, then 32 more found once typographic
+variants were folded; 15 deliberate ones recorded in `consistency_allow.json` with
+reasons; `build.ps1` now runs `consistency.py --strict` as a hard gate. Superseded note:
 
 **Phase 2 — mechanical defect sweep.** Resolve the 80 English strings that carry more than
 one Thai rendering: fix the genuine defects, and record the deliberate ones (`hit` is

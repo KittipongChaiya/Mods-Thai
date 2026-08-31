@@ -1,0 +1,108 @@
+{
+ "Max": {
+  "reason": "สูงสุด is the UI maximum; Max is Maximilian Rohr's shortened name.",
+  "thai": [
+   "Max",
+   "สูงสุด"
+  ]
+ },
+ "hit": {
+  "reason": "Deliberately one verb per weapon type: ตะปบ for a claw, ต่อย for a punch, ทุบ for a bludgeon. Merging them would flatten good writing.",
+  "thai": [
+   "ตะปบ",
+   "ต่อย",
+   "ทุบ"
+  ]
+ },
+ "take": {
+  "reason": "หยิบ is picking up a skull specifically; เก็บ is the generic pick-up verb on the context menu.",
+  "thai": [
+   "หยิบ",
+   "เก็บ"
+  ]
+ },
+ "Pants": {
+  "reason": "กางเกง is the equipment class label; กางเกงขายาว is one garment inside it.",
+  "thai": [
+   "กางเกง",
+   "กางเกงขายาว"
+  ]
+ },
+ "Waste": {
+  "reason": "ของเสีย is bodily waste (an item); สูญเปล่า is 'wasted' (a curse name). Unrelated senses of the English word.",
+  "thai": [
+   "ของเสีย",
+   "สูญเปล่า"
+  ]
+ },
+ "armor": {
+  "reason": "เกราะ is the armour-points stat; เสื้อเกราะ is the wearable item category, per GLOSSARY.md.",
+  "thai": [
+   "เกราะ",
+   "เสื้อเกราะ"
+  ]
+ },
+ "Frame": {
+  "reason": "โครง is a cyborg or turret chassis; โครงเหล็ก is the Chobham powered-armour frame. Different objects.",
+  "thai": [
+   "โครง",
+   "โครงเหล็ก"
+  ]
+ },
+ "Reload": {
+  "reason": "การชาร์จใหม่ is a module recharge time (ui.mgmodifier.*); บรรจุอาวุธ is weapon reloading, used as a mission title.",
+  "thai": [
+   "การชาร์จใหม่",
+   "บรรจุอาวุธ"
+  ]
+ },
+ "reloading": {
+  "reason": "การบรรจุอาวุธ names a duration on a tooltip; กำลังบรรจุอาวุธ reports an action in progress.",
+  "thai": [
+   "การบรรจุอาวุธ",
+   "กำลังบรรจุอาวุธ"
+  ]
+ },
+ "Recycling": {
+  "reason": "การรีไซเคิล names a station department; รีไซเคิล is a terse tab label, per STYLE.md Layer 1 form.",
+  "thai": [
+   "การรีไซเคิล",
+   "รีไซเคิล"
+  ]
+ },
+ "Controller": {
+  "reason": "คอนโทรลเลอร์ is a gamepad in the settings screen; ตัวควบคุม is a cyborg control part.",
+  "thai": [
+   "คอนโทรลเลอร์",
+   "ตัวควบคุม"
+  ]
+ },
+ "Ricochet": {
+  "reason": "กระดอน is the trait (a mechanic, translated); ริโคเชต์ is a helmet model name (a proper noun, transliterated).",
+  "thai": [
+   "กระดอน",
+   "ริโคเชต์"
+  ]
+ },
+ "Volcano": {
+  "reason": "Volcano is a space object, and station and ship names stay Latin per GLOSSARY.md; ภูเขาไฟ is a plasma HMG, a descriptive weapon name.",
+  "thai": [
+   "Volcano",
+   "ภูเขาไฟ"
+  ]
+ },
+ "Self-healing": {
+  "reason": "การรักษาตัวเอง names the perk; รักษาตัวเอง describes the wound effect as an action.",
+  "thai": [
+   "การรักษาตัวเอง",
+   "รักษาตัวเอง"
+  ]
+ },
+ "Management": {
+  "reason": "การจัดการ names a station department; ฝ่ายบริหาร is the board of a corporation in a story stage.",
+  "thai": [
+   "การจัดการ",
+   "ฝ่ายบริหาร"
+  ]
+ }
+}

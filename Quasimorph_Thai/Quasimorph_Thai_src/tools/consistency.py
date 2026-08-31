@@ -32,10 +32,9 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from _corpus import PROJECT, load_base, load_translations, prefix_of
+from _corpus import PROJECT, canonical, load_base, load_translations, prefix_of
 
 ALLOW = PROJECT / "consistency_allow.json"
-
 
 def load_allow() -> dict[str, dict]:
     if not ALLOW.exists():
@@ -57,7 +56,7 @@ def main() -> int:
     by_english: dict[str, dict[str, list[str]]] = defaultdict(lambda: defaultdict(list))
     by_thai: dict[str, set[str]] = defaultdict(set)
     for key, value in thai.items():
-        english = base.get(key, "")
+        english = canonical(base.get(key, ""))
         if not english.strip():
             continue
         by_english[english][value].append(key)
