@@ -181,7 +181,7 @@ maintaining a 163-entry name map.
 
 Bramfaturas and their lords keep the transliterated Thai they already had in `faction` and
 `perk`: อูร์ (Ur) / อูร์ปาร์ป (Urparp), แกนนิกซ์ (Gannix), โอลีร์นา (Olirna), โฟเคอร์มา
-(Fokerma), ดุกกูร์ (Duggur), กักตุงกร์ (Gagtungr). `Skrivnus` stays Latin — the only
+(Fokerma), ดักกูร์ (Duggur), กักตุงกร์ (Gagtungr). `Skrivnus` stays Latin — the only
 existing use (`item.skrivnus_knife`) never transliterated it.
 
 | English | Thai | Note |
@@ -221,3 +221,63 @@ Station and ship names always stay Latin (`Hargeysa`, `Carcosa`, `Flat Obsidian`
 `Sinkhole Oasis`, `HIS Ares`, `Feathered Temple`, `Humankind's Hope Citadel`), but the
 bodies they orbit are transliterated (เวสตา, พัลลัส, ไททัน, ไฮเปอเรียน, โฟบอส) —
 `Interamnia` and `Hecate` are the exceptions, kept Latin by `097*_station_desc`.
+
+## Resolved during the v1.4 consistency sweep (2026-08-31)
+
+An ability that exists both as a skull **item** and as the **perk** it grants had drifted
+into two Thai names in ~45 cases, so the player met one ability under two names. Resolved
+systematically:
+
+| Case | Rule applied | Winner |
+|---|---|---|
+| Pact-ability name pairs (`item.skull_*` ↔ `perk.*`) | `STYLE.md` §3: ceremonial naming uses `…แห่ง…` | the **perk** form |
+| Implant / device pairs (`item.*` ↔ the perk it grants) | The item is a physical device; name both after it | the **item** form |
+| Transliteration conflicts | This glossary decides | see below |
+| Latin-vs-Thai conflicts | Latin ability names and station names stay Latin | Latin |
+
+Transliterations fixed to one form:
+
+| English | Thai | Was also |
+|---|---|---|
+| Urparp | อูร์ปาร์ป | อูร์พาร์ป |
+| Duggur | ดักกูร์ | ดุกกูร์ |
+| Gnyann | กนีอันน์ | ญัน |
+| Vincar | วินคาร์ | วินการ์ |
+| Fukabirna | ฟูคาบีร์นา | ฟูกาบีร์นา |
+| Hematite | ฮีมาไทต์ | เฮมาไทต์ |
+| Tlenamacac | ตเลนามากัก | ตเลนามาคัก |
+| Khatm as-Sihr | คัตม์ อัส-ซิห์ร | คอตัม อัซซิฮ์ร |
+| Ash-Shakin | อัช-ชากิน | อัชชะกิน |
+| al-Abarsa | อัล-อาบาร์ซา | อัลอาบาร์ซา |
+| Chöd | เชอด | เชอ |
+| Mujtahid | มุจญ์ตะฮิด | มุจตะฮิด |
+| Tonal | โตนัล | โทนัล |
+| Tonatiuh | โตนาติอู | โทนาติอุห์ |
+| Topiltzin | โตปิลต์ซิน | โทปิลต์ซิน |
+| Tezcatlipoca | เตซกัตลีโปกา | เทซคัตลิโปกา |
+| Nagual / Nawal | นาวาล | นากูอัล |
+| Quauhxicalli | กวาวชิกัลลี | เกาชิกัลลี |
+| Cathbad | แคธแบด | คาธบาด |
+| Kangling | คังลิง | กังลิง |
+| Hafizun | ฮาฟีซุน | ฮาฟิซุน |
+| Voglea | วอกเลีย | โวเกลอา |
+
+A second pass found **32 more** of these pairs that the first had missed: the source
+table writes the same name with a curly apostrophe in the skull item (`Tonal’s Wound
+Binding`) and a straight one in the perk (`Tonal's`), so a whole-cell comparison never put
+them side by side. `tools/consistency.py` now folds typographic variants together before
+grouping, and `_corpus.canonical()` is shared so `make_reviews.py` groups identically.
+
+Outright errors corrected: `spaceobject.volcano.name` said **`Vulcan`** (a different word
+entirely — now `Volcano`, Latin, as station and space-object names are); `Sting` was
+เหล็กไน, a misspelling of เหล็กใน; `Castigor Tenebrarum` and `Carnifex` were transliterated
+in the item cell but Latin in the perk cell, against the rule above.
+
+`Addiction` now uses this glossary's **ภาวะเสพติด** everywhere (ภาวะเสพติดยา /
+ภาวะเสพติดนิโคติน / ภาวะเสพติดกัฟวัค), replacing the ad-hoc การติด… and ติด… pair.
+`tooltip.Power` said อำนาจ — political authority — where the stat means พลัง.
+
+**Divergences that are correct and must stay** are recorded in `consistency_allow.json`
+with a reason each, and `tools/consistency.py --strict` fails on anything not listed there.
+`hit` is deliberately ตะปบ for a claw, ต่อย for a punch and ทุบ for a bludgeon; `Max` is
+สูงสุด in the UI and Maximilian Rohr's name elsewhere.
