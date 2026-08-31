@@ -1,0 +1,15 @@
+# Regenerable review-pipeline intermediates. Re-emit them any time with:
+#   python tools/make_reviews.py --emit --tier <a|b|c|d>
+work/reviews/[0-9][0-9][0-9]_*.json
+work/reviews/manifest.json
+work/revisions/
+work/style.json
+
+# work/reviews/reviewed.json is deliberately NOT ignored: it records which
+# (English, Thai) pairs have been through the v1.4 pass, including the ones
+# left unchanged. Without it, "reviewed and fine" is indistinguishable from
+# "never looked at" and the pass cannot resume.
+
+# Python bytecode
+__pycache__/
+*.pyc

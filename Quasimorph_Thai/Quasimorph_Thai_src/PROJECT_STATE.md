@@ -1,9 +1,66 @@
 # Project State — Quasimorph Thai Mod
 
-**Mod version**: 1.2 (old, game 0.9.9) → **1.3 in progress** (game 1.0.3)
+**Mod version**: 1.3 (released, game 1.0.3) → **1.4 in progress** — language refinement
 **Target game**: `1.0.3.578s.024ad60`, Unity `2022.3.62f2`
-**Phase**: 3 of 5 — Translate the table | **Status**: COMPLETE
-**Updated**: 2026-08-28
+**Phase**: 2 of 7 — Mechanical defect sweep | **Status**: IN_PROGRESS
+**Updated**: 2026-08-31
+
+---
+
+## v1.4 — language refinement pass
+
+Not a translation task: v1.3 is 100 % translated and validating. v1.4 is an **editing**
+pass over finished Thai to make it read better, be easier to understand, and feel
+friendlier — with the target voice set by the project owner as **Warhammer 40,000**.
+
+Plan: `.claude/plans/thai-v1.4-language-refinement.plan.md`
+Style contract: `STYLE.md` (new, binding) · Terminology: `GLOSSARY.md` (unchanged authority)
+
+| Phase | What | Status |
+|---|---|---|
+| 0 | Safety net — tag `v1.3-translation`, baseline green | **COMPLETE** |
+| 1 | `STYLE.md` + review tooling | **COMPLETE** |
+| 2 | Mechanical defect sweep (all tiers) | **IN_PROGRESS** |
+| 3 | Tier A — interface (1,812 pairs, ~11 batches) | PENDING |
+| 4 | Tier B — gameplay text (3,078 pairs, ~8 batches) | PENDING |
+| 5 | Tier C — world text (1,564 pairs, ~26 batches) | PENDING |
+| 6 | Tier D — mission/story, **defect sweep only** | PENDING |
+| 7 | Release v1.4 (version bump, build, deploy, verify) | PENDING |
+
+**Scope decided by the owner 2026-08-31**: tiers A + B + C fully revised; tier D
+(mission + story, ~1 M chars) gets a defect sweep only, not a rewrite.
+
+### The v1.4 revision loop
+
+```powershell
+$P = "C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Thai\Quasimorph_Thai_src"
+python "$P\tools\check_style.py" --json "$P\work\style.json"   # refresh the smell index
+python "$P\tools\make_reviews.py" --stats                      # what is left
+python "$P\tools\make_reviews.py" --emit --tier a --budget 18000
+# read work\reviews\NNN_tier_prefix.json  ({key: {en, th}})
+# write work\revisions\NNN_tier_prefix.json  ({key: new_thai}) - only what changes
+python "$P\tools\apply_reviews.py" "$P\work\revisions\NNN_tier_prefix.json"
+python "$P\tools\check_translations.py"   # hard gate
+git diff --stat translations\             # the revision record
+```
+
+Work is **one unit per distinct (English, Thai) pair**, not per cell: 11,352 cells collapse
+to 7,977 pairs, and `apply_reviews.py` fans each revision back out to every cell sharing
+that pair. `work/reviews/reviewed.json` records what has been through the pass — including
+pairs deliberately left unchanged — so the loop is resumable.
+
+### Tooling added in Phase 1
+
+| Tool | Role |
+|---|---|
+| `tools/_corpus.py` | Shared loaders + the pair grouping `make_reviews` and `apply_reviews` must agree on |
+| `tools/make_reviews.py` | Emit review batches (`--tier`, `--prefix`, `--smell`, `--budget`) |
+| `tools/apply_reviews.py` | Write revisions back in place, fan out by pair, refuse anything unsafe |
+| `tools/check_style.py` | Advisory lint against `STYLE.md` (11 rules) |
+| `tools/consistency.py` | Same-English→different-Thai, with a reviewed-exceptions allowlist |
+| `tools/check_font.py` | **Hard gate**: every character must exist in `tahoma.ttf` |
+
+---
 
 ## Architecture (validated end to end on 2026-08-27)
 
@@ -34,6 +91,31 @@ Thai glyphs. Log clean, no exceptions, one table load, `Mod QuasimorphThai loade
 
 ## Decisions
 
+- 2026-08-31 — **v1.4 target voice is Warhammer 40,000, resolved as two layers.** The
+  owner's steer conflicts with "friendlier" only if one register is applied to everything.
+  `STYLE.md` splits it: chrome (buttons, tooltips, settings, tutorial, mechanic
+  descriptions) stays plain, short and friendly; the world (factions, stations, monsters,
+  terminals, bramfaturas, story, names) takes the elevated gothic register. The fiction
+  gets darker *and* clearer; the interface gets friendlier.
+- 2026-08-31 — **Revision is keyed by distinct (English, Thai) pair, not by cell.** 11,352
+  cells are 7,977 pairs. ~30 % less work, and two cells sharing a source string and a
+  translation can no longer drift apart mid-pass.
+- 2026-08-31 — **Revisions land in `translations/*.json` in place; `git diff` is the
+  revision record.** An overlay directory would fork the translation and complicate the
+  next game-update merge. `apply_reviews.py` edits the value on each key's own line rather
+  than re-serialising the file, because a `json.dumps` round-trip silently deletes the
+  blank lines that group `090_small.json` by prefix.
+- 2026-08-31 — **`...` is the convention, not `…`** — this reverses the first draft of
+  `STYLE.md`. Both render, but `.` is in the shipped static atlas and `…` is not, and 128
+  of 131 affected cells already use `...`. Normalise the outliers down, not the majority up.
+- 2026-08-31 — **Font coverage is a build gate now** (`tools/check_font.py`). The shipped
+  TMP asset has a 179-glyph static atlas but is *dynamic* (`m_AtlasPopulationMode = 1`) with
+  the `tahoma` `Font` object embedded, so TMP rasterizes the rest from `tahoma.ttf` at
+  runtime. Verified by static analysis that all 10 characters used outside the atlas —
+  `“` `”` (91× each), **`ฤ` (89×: ฤทธิ์, พฤหัสบดี)**, `ฯ`, `…`, `’`, `ö`, `ü`, `é`, `ì`,
+  Cyrillic `С` — are present in `tahoma.ttf`. Nothing is tofu today, but an editing pass
+  could easily introduce a character that is (an en dash from an English source), and TMP
+  draws nothing with no error anywhere. The gate makes that impossible to ship.
 - 2026-08-27 — **Dropped the bsdiff delivery entirely.** It was byte-locked to the 0.9.9
   `resources.assets` and was the direct cause of the failed install. Replaced with the game's
   own `CustomResources` override hook.
@@ -192,14 +274,11 @@ archive/v1.2_payload/     the old 1.2 delivery (BepInEx, doorstop, resources.ass
 
 ## Next Action
 
-Phase 6 — playthrough validation. The translation is complete and the mod is deployed, but
-only the startup path has been verified programmatically (log: 11,352 translated, font
-loaded and applied, no exceptions). What still needs a human pass:
+**Phase 2 — mechanical defect sweep.** Resolve the 80 English strings that carry more than
+one Thai rendering: fix the genuine defects, and record the deliberate ones (`hit` is
+correctly ตะปบ / ต่อย / ทุบ; `Max` is สูงสุด in the UI and Maximilian Rohr's name elsewhere)
+in `consistency_allow.json` with a reason. Then normalise the 3 `…` outliers to `...`, add
+every resolution to `GLOSSARY.md`, and switch `build.ps1` to `consistency.py --strict`.
 
-1. Play far enough to see long `story.*.details` briefings and check Thai combining marks
-   (สระ / วรรณยุกต์) are not clipped — the 1.2 plugin had `AdjustThaiMarkGlyphMetrics`,
-   not yet ported. Port it only if screenshots show clipping.
-2. Spot-check a station screen, a perk tooltip, and a mission briefing for line-wrapping
-   and overflow in the narrower UI panels.
-
-Then Phase 5 (installer + `วิธีติดตั้ง.txt` rewrite), which is still pending.
+Then Phase 3 (tier A, the interface). The v1.3 items below are unchanged and still pending
+after v1.4 ships: the installer rewrite, and a playthrough validation pass.

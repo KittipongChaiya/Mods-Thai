@@ -62,6 +62,10 @@ def main() -> int:
                 problems.append(f"{where}: contains a TAB")
             if "\n" in thai or "\r" in thai:
                 problems.append(f"{where}: contains a line break")
+            # A trailing space survives into the label and pushes centred text
+            # off by half a character. There is no case where it is intended.
+            if thai != thai.strip():
+                problems.append(f"{where}: leading or trailing whitespace")
 
             for label, pattern in (("placeholder", BRACE), ("token", PERCENT)):
                 want, got = Counter(pattern.findall(english)), Counter(pattern.findall(thai))

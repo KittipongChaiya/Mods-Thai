@@ -49,6 +49,14 @@ Write-Host "[1/5] Validating translations" -ForegroundColor Cyan
 python "$Project\tools\check_translations.py"
 if ($LASTEXITCODE -ne 0) { throw "Translation validation failed - fix the problems above before building." }
 
+# A character no shipped font can draw renders as nothing at all, with no error
+# in the log - so it has to be caught here rather than found by a player.
+python "$Project\tools\check_font.py"
+if ($LASTEXITCODE -ne 0) { throw "Unrenderable character(s) found - see above." }
+
+# Advisory until the Phase 2 sweep lands consistency_allow.json, then --strict.
+python "$Project\tools\consistency.py" | Select-String -Pattern "unreviewed|drifted"
+
 Write-Host "[2/5] Packing translations into the override table" -ForegroundColor Cyan
 python "$Project\tools\build_overrides.py" "$stage\thai_overrides.tsv" --gzip
 if ($LASTEXITCODE -ne 0) { throw "Building the override table failed." }
