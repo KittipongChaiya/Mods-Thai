@@ -60,7 +60,7 @@
  "perk.scrivnus_baron_form.name": "Carnifex",
  "perk.scrivnus_decimation.desc": "สังหารศัตรูที่มองเห็นซึ่งมี HP ปัจจุบันต่ำกว่า %FHealthThreshold:Percent100NoPlus% ของค่าสูงสุด เป็นเวลา %IDuration% เทิร์น ศัตรูที่ถูกสังหารด้วยวิธีนี้จะระเบิด สร้างความเสียหาย %Explosion.Damage% (%Explosion.DamageType:LocalizeDamageType%) ในรัศมี %Explosion.Radius%",
  "perk.scrivnus_decimation.name": "คำพิพากษาแห่งสคริฟนัส",
- "perk.scrivnus_dominate.desc": "รักษาเป้าหมายที่กำลังตื่นตระหนกซึ่งถูกเลือกให้หายเป็นปกติและทำให้มันเป็นพันธมิตร",
+ "perk.scrivnus_dominate.desc": "รักษาเป้าหมายที่เลือกไว้ซึ่งกำลังตื่นตระหนกให้หายเป็นปกติ แล้วทำให้เขาเป็นพันธมิตร",
  "perk.scrivnus_dominate.name": "ความปรานีแห่งอันโดรมาลิอุส",
  "perk.scrivnus_execution.desc": "สังหารศัตรูทั้งหมดภายในพื้นที่เป้าหมายรัศมี %IRadius%",
  "perk.scrivnus_execution.name": "ทะเบียนคนตายแห่งเฟอร์คัส",
@@ -162,7 +162,7 @@
  "perk.venus_reapers_harvest.name": "หนี้เลือดอิตซ์ปาปาโลตล์",
  "perk.venus_run_cold.desc": "สร้างความเสียหาย %IMinDamage% - %IMaxDamage% (%SDamageType:LocalizeDamageType%) แก่ทุกคนในพื้นที่เป้าหมายรัศมี %IRadius%",
  "perk.venus_run_cold.name": "ลมหายใจแห่งเตซกัตลีโปกา",
- "perk.venus_sacrifice.desc": "สังหารพันธมิตรเป้าหมายและแปลง HP ปัจจุบันของมันแต่ละแต้มเป็นแต้มโล่ %FShieldCapacityModifier% ให้ผู้ถือสนธิสัญญา",
+ "perk.venus_sacrifice.desc": "สังหารพันธมิตรเป้าหมายและแปลง HP ปัจจุบันของเขาแต่ละแต้มเป็นแต้มโล่ %FShieldCapacityModifier% ให้ผู้ถือสนธิสัญญา",
  "perk.venus_sacrifice.name": "พิธีมรณะแห่งนานาอัวตซิน",
  "perk.venus_sanguine_echo.desc": "สร้างความเสียหาย %FDamage:Percent100NoPlus% ของความเสียหายจากการโจมตีที่สำเร็จแก่ศัตรูที่มองเห็นตนอื่น เป็นเวลา %IDuration% เทิร์น",
  "perk.venus_sanguine_echo.name": "การโจมตีสะท้อนแห่งโตนัล",
@@ -172,6 +172,6 @@
  "perk.war_crime.name": "อาชญากรรมสงคราม",
  "perk.warp_accelerator.desc": "เมื่อใช้งาน จะย้ายโคลนไปยังช่องเป้าหมาย",
  "perk.warp_accelerator.name": "การกระโจนแห่งอัล-อาบาร์ซา",
- "perk.web_gland.desc": "เมื่อใช้งาน จะปกคลุมเป้าหมายด้วยใย ทำให้มันเคลื่อนที่ไม่ได้เป็นเวลา %IDuration% เทิร์น",
+ "perk.web_gland.desc": "เมื่อใช้งาน จะปกคลุมเป้าหมายด้วยใย ทำให้เป้าหมายเคลื่อนที่ไม่ได้เป็นเวลา %IDuration% เทิร์น",
  "perk.web_gland.name": "ต่อมใยแมงมุม"
 }
