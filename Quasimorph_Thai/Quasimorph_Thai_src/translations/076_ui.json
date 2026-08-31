@@ -237,7 +237,7 @@
  "ui.dialog.control_find_next_objective": "ทำได้ดีมาก ไปยังวัตถุชิ้นต่อไปได้เลย",
  "ui.dialog.control_find_objective": "แผนที่แสดงตำแหน่งของวัตถุที่คุณต้องปกป้อง ไปที่นั่นแล้วรอผู้มาเยือน",
  "ui.dialog.control_objective_destroyed": "เราปกป้องทรัพย์สินของลูกค้าไม่ได้ มันถูกทำลายไปแล้ว",
- "ui.dialog.counterattack_find_objective": "ใกล้ถึงแล้ว คุณต้องหาจุดประกอบพิธีกรรมให้เจอโดยเร็วที่สุดแล้วหยุดมันให้ได้!",
+ "ui.dialog.counterattack_find_objective": "ใกล้ถึงแล้ว คุณต้องหาสถานที่ประกอบพิธีให้เจอโดยเร็วที่สุดแล้วหยุดมันให้ได้!",
  "ui.dialog.counterattack_remains": "เหลือ: {0}",
  "ui.dialog.counterattack_ritual_ended": "หยุดพิธีกรรมไม่ทันเวลา ตอนนี้ทั้งชั้นเต็มไปด้วยควอซิมอร์ฟ ทางกลับคงไม่ง่ายแล้ว",
  "ui.dialog.escort_after_arrival": "VIP กำลังรอคุณอยู่ใกล้กระสวย พาเขาไปยังตำแหน่งที่ทำเครื่องหมายไว้",

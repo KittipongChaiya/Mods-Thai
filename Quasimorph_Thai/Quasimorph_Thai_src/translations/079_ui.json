@@ -13,7 +13,7 @@
  "ui.mapobject.repair": "ซ่อม {0}",
  "ui.mapobject.repairStation.caption": "สถานีบำรุงรักษา",
  "ui.mapobject.repairStation.desc": "สถานีสำหรับซ่อมอุปกรณ์ ต้องชาร์จก่อนใช้งาน",
- "ui.mapobject.RitualPlace": "จุดประกอบพิธีกรรม",
+ "ui.mapobject.RitualPlace": "สถานที่ประกอบพิธี",
  "ui.mapobject.scaner.caption": "เครื่องสแกน",
  "ui.mapobject.scaner.desc": "เทอร์มินัลควบคุมสถานี ให้คุณระบุตำแหน่งวัตถุ บุคลากร หรือลิฟต์ได้",
  "ui.mapobject.serverStation.caption": "สถานีเซิร์ฟเวอร์",
