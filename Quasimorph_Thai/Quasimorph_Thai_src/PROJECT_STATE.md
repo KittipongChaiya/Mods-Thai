@@ -2,7 +2,7 @@
 
 **Mod version**: 1.3 (released, game 1.0.3) → **1.4 in progress** — language refinement
 **Target game**: `1.0.3.578s.024ad60`, Unity `2022.3.62f2`
-**Phase**: 3 of 7 — Tier A, the interface | **Status**: IN_PROGRESS
+**Phase**: 3 of 7 — Tier A, the interface | **Status**: PARTIAL (735 / 7,912 pairs reviewed)
 **Updated**: 2026-08-31
 
 ---
@@ -21,7 +21,7 @@ Style contract: `STYLE.md` (new, binding) · Terminology: `GLOSSARY.md` (unchang
 | 0 | Safety net — tag `v1.3-translation`, baseline green | **COMPLETE** |
 | 1 | `STYLE.md` + review tooling | **COMPLETE** |
 | 2 | Mechanical defect sweep (all tiers) | **COMPLETE** |
-| 3 | Tier A — interface (1,812 pairs, ~11 batches) | **IN_PROGRESS** |
+| 3 | Tier A — interface (1,812 pairs, ~11 batches) | **PARTIAL** |
 | 4 | Tier B — gameplay text (3,078 pairs, ~8 batches) | PENDING |
 | 5 | Tier C — world text (1,564 pairs, ~26 batches) | PENDING |
 | 6 | Tier D — mission/story, **defect sweep only** | PENDING |
@@ -292,20 +292,37 @@ archive/v1.2_payload/     the old 1.2 delivery (BepInEx, doorstop, resources.ass
 
 ## Next Action
 
-**Phase 3 — tier A, the interface** (`ui` `tooltip` `tutorial` `gamekey` `notification`
-`strategy`; 1,812 pairs, ~195 k chars EN+TH, ~11 review batches). Highest-read text in the
-game and where "friendlier" is actually felt; the tutorial gets its own batch. Loop and
-gates are in the v1.4 section above.
+**Resume Phase 3 at the `ui` prefix.** 735 of 7,912 pairs are through the pass. Complete
+inside tier A: `gamekey`, `notification`, `strategy`, `tooltip`, `tutorial`, the small `ui`
+batches, and every Layer 1 `ui` cell that `check_style.py` flags. Remaining: the bulk of the
+`ui` prefix (~1,100 pairs), most of it `ui.dialog.*` faction and bramfatura speech — Layer 2,
+already in the grimdark register, and largely correct as it stands.
 
-**Phase 2 is COMPLETE** — 80 divergences reviewed, then 32 more found once typographic
-variants were folded; 15 deliberate ones recorded in `consistency_allow.json` with
-reasons; `build.ps1` now runs `consistency.py --strict` as a hard gate. Superseded note:
+```powershell
+python tools\check_style.py --json work\style.json
+python tools\make_reviews.py --emit --tier a --budget 16000
+# read work\reviews\NNN_a_ui.json, write work\revisions\NNN_a_ui.json, then:
+python tools\apply_reviews.py work\revisions\NNN_a_ui.json            # whole batch read
+python tools\apply_reviews.py work\revisions\NNN_a_ui.json --partial  # spot fix only
+```
 
-**Phase 2 — mechanical defect sweep.** Resolve the 80 English strings that carry more than
-one Thai rendering: fix the genuine defects, and record the deliberate ones (`hit` is
-correctly ตะปบ / ต่อย / ทุบ; `Max` is สูงสุด in the UI and Maximilian Rohr's name elsewhere)
-in `consistency_allow.json` with a reason. Then normalise the 3 `…` outliers to `...`, add
-every resolution to `GLOSSARY.md`, and switch `build.ps1` to `consistency.py --strict`.
+Then Phase 4 (tier B), 5 (tier C), 6 (tier D defect sweep), 7 (release).
 
-Then Phase 3 (tier A, the interface). The v1.3 items below are unchanged and still pending
-after v1.4 ships: the installer rewrite, and a playthrough validation pass.
+### What the review has found so far, by kind
+
+The translation was in better shape than the plan assumed: `gamekey`, `notification` and
+most of `tooltip` needed nothing at all. The defects that did turn up were almost all
+**cross-cell consistency**, not bad prose — and most were invisible to whole-cell
+comparison because the English strings differ:
+
+| Defect | Example |
+|---|---|
+| A UI label names the wrong thing | vest slot rendered ช่องเสื้อเกราะ, which is the *armor* slot |
+| Tutorial names a button that does not exist | told the player to press ส่งยานขนส่ง; the button reads ปล่อยกระสวย |
+| One concept, several terms | shuttle as กระสวย / ยานขนส่ง / ยานการค้า; mind chip; Essence spelling |
+| Same ability, two names | ~45 skull-item to perk pairs, half hidden behind curly apostrophes |
+| An obscure word where a plain one exists | เภทภัย for Bane |
+
+This is why the tooling matters more than the prose editing here: a human reading one
+batch at a time cannot see any of these.
+
