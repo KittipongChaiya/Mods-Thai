@@ -71,7 +71,7 @@ namespace QuasimorphThai
 
     internal static class ModInfo
     {
-        internal const string Version = "1.3.0";
+        internal const string Version = "1.4.0";
         internal const string UniqueName = "QuasimorphThai";
     }
 }
