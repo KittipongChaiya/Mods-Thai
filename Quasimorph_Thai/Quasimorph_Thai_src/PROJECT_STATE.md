@@ -244,6 +244,15 @@ newline into a cell.
 
 ## Known risks / open items
 
+- **Narrator pronoun is inconsistent and needs someone who knows the game.** The ship-side
+  voice says `ฉัน` in `ui.dialog.spacemodetutorial_10/_12` and `ผม` in `_4` and
+  `tutorial.broken_backpack.dialog`, and used the male particle `ครับ` in two tutorial
+  cells. Jane is the ship's operations officer and speaks most mission dialogue, but
+  `spacemodetutorial_4` refers to Jane in the **third person**, so that cell is a different
+  speaker and the split may be correct. Deliberately **not guessed**: the particles were
+  removed (safe for any speaker, and STYLE.md Layer 1 wants none), but the pronouns are
+  untouched. Resolving this needs someone who knows who speaks each line.
+
 - Thai combining-mark vertical positioning not yet visually verified beyond the title screen.
   The old plugin adjusted glyph metrics; port only if screenshots show clipping.
 - Steam Workshop distribution untested (this copy cannot use it). Local folder install works.
