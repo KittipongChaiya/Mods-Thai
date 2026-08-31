@@ -68,7 +68,7 @@ LAYER2_PREFIXES = {"faction", "station", "monster", "terminal", "bramfatura",
 #: Layer 2 pockets inside the `ui` prefix. STYLE.md section 1 is explicit that
 #: the layer follows what the text *does*, not its key prefix: a settings toggle
 #: and a demon's speech are both `ui.*` and could not be further apart.
-LAYER2_UI = ("ui.dialog.", "ui.outro.", "ui.intro.", "ui.newsline.",
+LAYER2_UI = ("ui.dialog.", "ui.outro", "ui.intro", "ui.newsline.",
              "ui.credits.", "ui.effect.")
 
 
