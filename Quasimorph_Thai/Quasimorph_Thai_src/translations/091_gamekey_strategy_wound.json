@@ -162,7 +162,7 @@
  "strategy.MultipleMissions.name": "ทำลายนาคัลของ Tezctlan",
  "strategy.RealWare_LocationCapture_earth_1.desc": "ยึดสถานีใหม่ %ILocationCaptureTotal% แห่งในเซกเตอร์ %SLocationCapture:LocalizeSpaceObject%",
  "strategy.RealWare_LocationCapture_earth_1.name": "ยึดสถานี",
- "strategy.RealWare_TwoMissions.desc": "ทำภารกิจโจมตี Unchained Belt และขบวนการต่อต้านพลเรือนให้สำเร็จ",
+ "strategy.RealWare_TwoMissions.desc": "ทำภารกิจโจมตี แถบเข็มขัดไร้พันธนาการ และขบวนการต่อต้านพลเรือนให้สำเร็จ",
  "strategy.RealWare_TwoMissions.name": "โจมตี UB และ CR",
  "strategy.Reputation.desc": "เพิ่มชื่อเสียงของคุณกับ %SFaction:LocalizeFaction% ให้สูงกว่า %IReputation:MinusInt%",
  "strategy.Reputation.name": "เพิ่มชื่อเสียง",
