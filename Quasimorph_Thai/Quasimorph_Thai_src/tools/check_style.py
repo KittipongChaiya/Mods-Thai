@@ -45,6 +45,20 @@ CEREMONIAL = ["จง", "เถิด", "ผองชน", "ดวงจิต",
 SOFT_RUN = 60
 HARD_RUN = 90
 
+#: Ordinary words that merely *contain* การ without being การ+verb. Counting the
+#: bare substring makes "จัดการผู้ปฏิบัติการ" - two plain nouns - score 2, so
+#: these are removed before counting. Not exhaustive, just the ones this corpus
+#: actually uses often.
+NOT_NOMINAL = ("ผู้ปฏิบัติการ", "ปฏิบัติการ", "สถานการณ์", "เหตุการณ์", "จัดการ",
+               "บริการ", "ประการ", "กิจการ", "ราชการ", "อาการ", "ทำการ", "การณ์")
+
+
+def nominalisations(value: str) -> int:
+    """How many การ+verb nominalisations the cell actually carries."""
+    for word in NOT_NOMINAL:
+        value = value.replace(word, "")
+    return value.count("การ")
+
 
 def plain(value: str) -> str:
     """Text as the player reads it: tags removed, <br> treated as a break."""
@@ -94,7 +108,7 @@ def build_rules(base: dict[str, str]):
             lambda k, t: SOFT_RUN < longest_run(t) <= HARD_RUN,
             f"unbroken run of {SOFT_RUN + 1}-{HARD_RUN} chars - readable, could breathe"),
         "stacked_nominalisation": (
-            lambda k, t: t.count("การ") >= 2,
+            lambda k, t: nominalisations(t) >= 2,
             "two or more 'การ'+verb nominalisations in one cell"),
         "nominalised_mechanic": (
             lambda k, t: is_mechanic(k) and t.lstrip().startswith("การ"),

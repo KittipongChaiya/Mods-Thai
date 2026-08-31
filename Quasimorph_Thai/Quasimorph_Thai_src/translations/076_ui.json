@@ -141,7 +141,7 @@
  "ui.context.UseScaner": "ใช้เครื่องสแกน",
  "ui.controls.bindEscTip": "กด {0} เพื่อยกเลิกการผูกปุ่ม",
  "ui.controls.bindKey": "กดปุ่มที่ต้องการผูก:",
- "ui.controls.confirmReset": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตการผูกปุ่มกลับเป็นค่าเริ่มต้น?",
+ "ui.controls.confirmReset": "แน่ใจหรือไม่ว่าจะรีเซ็ตการผูกปุ่ม กลับเป็นค่าเริ่มต้น?",
  "ui.controls.forbidBindKey": "เปลี่ยนปุ่มนี้ไม่ได้",
  "ui.controls.Game": "การเล่น",
  "ui.controls.Hotkeys": "ปุ่มลัดตามบริบท",
