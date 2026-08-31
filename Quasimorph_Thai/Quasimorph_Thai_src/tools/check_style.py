@@ -21,7 +21,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
-from _corpus import PROJECT, load_base, load_translations, prefix_of, tier_of
+from _corpus import PROJECT, layer_of, load_base, load_translations, prefix_of, tier_of
 
 TAG = re.compile(r"<[^>]+>")
 BR = re.compile(r"<br\s*/?>", re.IGNORECASE)
@@ -63,7 +63,7 @@ def build_rules(base: dict[str, str]):
     """name -> (predicate(key, thai) -> bool, description)."""
 
     def is_mechanic(key: str) -> bool:
-        return key.endswith((".desc", ".shortdesc")) and tier_of(key) == "b"
+        return key.endswith((".desc", ".shortdesc")) and layer_of(key) == 1
 
     return {
         "trailing_space": (
@@ -80,7 +80,7 @@ def build_rules(base: dict[str, str]):
         # Only in chrome. A character saying "ใช่ครับ" in mission dialogue is
         # characterisation, not a register error - Layer 2 is left alone.
         "polite_particle": (
-            lambda k, t: tier_of(k) in {"a", "b"} and
+            lambda k, t: layer_of(k) == 1 and
             bool(re.search(r"(ครับ|ค่ะ|คะ)(\s|$)", t)),
             "polite particle in a Layer 1 cell"),
         "inanimate_pronoun": (
@@ -111,8 +111,7 @@ def build_rules(base: dict[str, str]):
             lambda k, t: "ถูก" in t and re.search(r"ถูก.{0,40}โดย", t) is not None,
             "'ถูก … โดย' - an English passive carried over whole"),
         "register_leak": (
-            lambda k, t: tier_of(k) in {"a", "b"} and
-            not k.endswith(".name") and
+            lambda k, t: layer_of(k) == 1 and
             any(w in t for w in CEREMONIAL),
             "Layer 2 ceremonial vocabulary in a Layer 1 cell"),
     }

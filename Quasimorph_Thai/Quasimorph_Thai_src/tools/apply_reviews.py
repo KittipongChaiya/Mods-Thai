@@ -94,6 +94,8 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("revisions", help="work/revisions/NNN_tier_prefix.json")
     parser.add_argument("--dry-run", action="store_true", help="report, write nothing")
+    parser.add_argument("--partial", action="store_true",
+                        help="mark only the revised pairs reviewed, not the whole batch")
     args = parser.parse_args()
 
     revisions_path = Path(args.revisions)
@@ -136,12 +138,23 @@ def main() -> int:
             print(f"  ... and {len(problems) - 25} more")
         return 1
 
-    reviewed_now = {signature(e["en"], edits.get(k, e["th"])) for k, e in review.items()}
+    # Applying a batch normally means "this whole batch has been read", so every
+    # pair in it is marked reviewed - including the ones deliberately left alone,
+    # which is the only way to tell those from pairs nobody has looked at yet.
+    # --partial is for landing a fix noticed while reading somewhere else: it
+    # would otherwise mark hundreds of unread pairs as done and skip them for good.
+    scope = revisions if args.partial else review
+    reviewed_now = {signature(review[k]["en"], edits.get(k, review[k]["th"]))
+                    for k in scope}
     fanned = len(edits) - changed_pairs
 
     print(f"review batch : {review_path.name} ({len(review)} pairs)")
     print(f"revised      : {changed_pairs} pair(s) changed, "
-          f"{len(review) - changed_pairs} left as they were")
+          f"{(len(scope) - changed_pairs) if args.partial else len(review) - changed_pairs}"
+          f" left as they were")
+    if args.partial:
+        print(f"partial      : marking only {len(scope)} pair(s) reviewed, "
+              f"not the batch's {len(review)}")
     print(f"cells written: {len(edits)} ({fanned} by fan-out to identical cells)")
 
     if args.dry_run:

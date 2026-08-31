@@ -60,6 +60,28 @@ def tier_of(key: str) -> str:
     return "b"
 
 
+#: Prefixes that are entirely Layer 2 - the game speaking as fiction.
+LAYER2_PREFIXES = {"faction", "station", "monster", "terminal", "bramfatura",
+                   "spaceobject", "story", "mission", "curse", "pact",
+                   "alliance", "factiontype"}
+
+#: Layer 2 pockets inside the `ui` prefix. STYLE.md section 1 is explicit that
+#: the layer follows what the text *does*, not its key prefix: a settings toggle
+#: and a demon's speech are both `ui.*` and could not be further apart.
+LAYER2_UI = ("ui.dialog.", "ui.outro.", "ui.intro.", "ui.newsline.",
+             "ui.credits.", "ui.effect.")
+
+
+def layer_of(key: str) -> int:
+    """1 for chrome, 2 for the world. See STYLE.md section 1."""
+    if prefix_of(key) in LAYER2_PREFIXES or key.startswith(LAYER2_UI):
+        return 2
+    # A perk or item *name* is ceremonial even though its mechanic line is not.
+    if key.endswith(".name") and prefix_of(key) in {"perk", "item"}:
+        return 2
+    return 1
+
+
 def load_base() -> dict[str, str]:
     """key -> English cell, from the extracted game table."""
     text = BASE.read_bytes().decode("utf-8", "surrogateescape")
