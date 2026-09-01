@@ -86,6 +86,9 @@ namespace QuasimorphRetinue
         /// </summary>
         private static readonly HashSet<int> Logged = new HashSet<int>();
 
+        /// <summary>Same purpose, for the allies deliberately left alone.</summary>
+        private static readonly HashSet<int> Skipped = new HashSet<int>();
+
         internal static void Sweep(State state)
         {
             if (!ModConfig.AllyPower || ModConfig.Power <= 0f)
@@ -111,6 +114,20 @@ namespace QuasimorphRetinue
             var turnController = state.Get<TurnController>();
             foreach (var ally in AllyIdentity.Living(creatures))
             {
+                // A mod may have fielded one of the player's own roster mercenaries as
+                // an ally. Those are persistent characters, and strength written onto
+                // one would follow it back to the ship and stay in the save. They count
+                // as squad members everywhere else in this mod; here they are skipped.
+                if (AllyIdentity.IsPlayerMercenary(state, ally))
+                {
+                    if (Skipped.Add(ally.CreatureData.UniqueId))
+                    {
+                        ModLog.Info("ally #" + ally.CreatureData.UniqueId + " is one of your own " +
+                                    "mercenaries; left exactly as the game made it");
+                    }
+                    continue;
+                }
+
                 Apply(ally, difficulty.Preset, turnController);
             }
         }

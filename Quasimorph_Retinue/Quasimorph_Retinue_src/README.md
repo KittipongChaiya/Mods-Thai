@@ -129,6 +129,19 @@ firemode. A horror does not accept a sandwich.
 
 ---
 
+## Playing with other ally mods
+
+| Mod | What happens |
+|---|---|
+| **Squad: More operatives** | Your own operatives are fielded as player-alliance allies. They **count toward `squad_size`** — so with three operatives deployed and `squad_size=3`, no guards spawn at all — but their **stats are never touched**. They are persistent characters; strength written onto one would follow it back to the ship and stay in your save forever. Raise `squad_size` if you want guards on top of your operatives, and watch the turn length. |
+| **Ally Roam / Patrol** | Complementary. This mod only sets a stance at the moment an ally spawns; that mod's orders take over afterwards, which is the right way round. |
+| **Direct Follower Orders** | Complementary. It changes how you give orders; this changes who is there to receive them. |
+
+All three are detected at startup and the interaction is written to
+`QuasimorphRetinue.log`, so the log always explains what your squad is made of.
+
+---
+
 ## Building from source
 
 Requires the .NET 8 SDK and a copy of the game.

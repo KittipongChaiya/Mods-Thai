@@ -17,7 +17,7 @@ Plan: `.claude/plans/retinue.plan.md`
 | 2 | Ally identity + strength layer | **IMPLEMENTED, UNTESTED** |
 | 3 | The retinue spawn | **IMPLEMENTED, UNTESTED** |
 | 4 | Recruiting | **IMPLEMENTED, UNTESTED** |
-| 5 | Spectator switch, README | **COMPLETE** — implemented and documented |
+| 5 | Spectator switch, README, mod interactions | **COMPLETE** — implemented and documented |
 | 6 | Live test and tuning | **BLOCKED** — needs a game launch |
 
 ## What "UNTESTED" means here
@@ -76,6 +76,15 @@ Workshop mod black-screened the game doing exactly that.
   An enemy that defects for a dropped rifle turns every firefight into an auction.
 - 2026-09-01 — No Harmony patches. Nothing here needs to intercept a call; every lever
   is a public field or method reachable from a hook.
+- 2026-09-01 — **The player's own roster mercenaries are counted but never buffed.**
+  Found by inspecting the Workshop mods already installed on this machine: *Squad: More
+  operatives* fields your other operatives as player-alliance monsters, which are
+  indistinguishable from a recruited thug by alliance alone. They are persistent
+  characters, so strength written onto one would follow it back to the ship and live in
+  the save forever - a permanent player buff wearing an ally's coat. Detected by
+  reference-comparing `CreatureData` against `Mercenaries.Values`, the same test that
+  mod uses on itself. They still count toward `squad_size`, because the cap exists to
+  control turn length and they are bodies taking turns.
 
 ## Known risks
 
@@ -136,6 +145,9 @@ enough** — the dump runs at `AfterConfigsLoaded`. It writes `probe.txt` and
    multiply design exists to prevent.
 8. Drop food near a thinking enemy in its line of sight. Confirm a *turned ally* entry
    in the combat log.
+8b. With *Squad: More operatives* active, deploy operatives and confirm the log says
+   "is one of your own mercenaries; left exactly as the game made it" for each, and
+   that the retinue spawned fewer guards to make room.
 9. Set `spectator=true`, restart, stand in the open in front of an armed enemy for
    three turns. Confirm no incoming fire. Set it back to `false` and confirm fire
    resumes.

@@ -38,6 +38,61 @@ namespace QuasimorphRetinue
         }
 
         /// <summary>
+        /// True for an ally that is really one of the player's own roster mercenaries
+        /// wearing a monster's clothes.
+        ///
+        /// Nothing in vanilla does this - the game fields exactly one mercenary and
+        /// every other ally is a monster. Mods do: the Workshop mod <i>Squad: More
+        /// operatives</i> deploys your other operatives as player-alliance monsters so
+        /// the AI can drive them, and they are indistinguishable from a recruited thug
+        /// by alliance alone.
+        ///
+        /// They must be, though, because a mercenary is a persistent character. Writing
+        /// strength onto one is not buffing a minion, it is permanently buffing the
+        /// player's own roster - and those stats would follow the character back to the
+        /// ship, into the next raid, and into the save forever. So this mod counts them
+        /// as bodies in the squad and refuses to touch their stats.
+        ///
+        /// The test is the one that mod uses on itself: does this creature's
+        /// <c>CreatureData</c> belong, by reference, to a mercenary on the roster.
+        /// </summary>
+        internal static bool IsPlayerMercenary(State state, Creature creature)
+        {
+            var data = creature?.CreatureData;
+            if (data == null)
+            {
+                return false;
+            }
+
+            List<Mercenary> roster;
+            try
+            {
+                roster = state?.Get<Mercenaries>()?.Values;
+            }
+            catch (Exception)
+            {
+                // Not knowing is not a licence to write. Treat it as "yes, leave alone".
+                return true;
+            }
+
+            if (roster == null)
+            {
+                return false;
+            }
+
+            foreach (var mercenary in roster)
+            {
+                // Reference identity on purpose: two mercenaries can hold equal-looking
+                // data, but only one object is this creature.
+                if (mercenary != null && ReferenceEquals(mercenary.CreatureData, data))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Every living ally on the current floor, however it was acquired - spawned by
         /// this mod, recruited with a gift, converted by a perk, summoned, or handed
         /// over by a quest. The layers above deliberately do not care which.

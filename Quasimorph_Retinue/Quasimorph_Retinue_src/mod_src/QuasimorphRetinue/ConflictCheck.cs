@@ -26,6 +26,25 @@ namespace QuasimorphRetinue
                 "unlimited backpack space. Unrelated to the squad, but it makes the " +
                 "supplies that recruiting and healing cost effectively free."
             },
+            {
+                "Squad_Leader",
+                "the 'Squad: More operatives' mod. Your own mercenaries are fielded as " +
+                "player-alliance allies by it. They count toward squad_size, so the " +
+                "retinue spawns fewer guards to make room, but their stats are left " +
+                "exactly as the game made them - they are persistent characters, and " +
+                "strength written onto one would follow it back to the ship."
+            },
+            {
+                "AllyRoamPatrol",
+                "extra ally stances. It patches FollowTarget and IdleFollow; this mod " +
+                "only sets the initial stance at spawn, so its orders win afterwards, " +
+                "which is the right way round."
+            },
+            {
+                "QM_FollowerOrders",
+                "richer ally commands. Complementary - it changes how you give orders, " +
+                "this mod changes who is there to receive them."
+            },
         };
 
         internal static void Run()
