@@ -109,6 +109,20 @@ namespace QuasimorphBigPack
         }
 
         /// <summary>
+        /// Grow, first noting the height the storage arrived with. For a mercenary who
+        /// never swaps a backpack this is the only chance to see a vanilla height at all,
+        /// because nothing else puts their storage through <c>ResizeStorage</c>.
+        /// </summary>
+        private static bool GrowTracked(ItemStorage storage, int target, string what)
+        {
+            if (storage != null)
+            {
+                UninstallRisk.RecordInitialHeight(storage, storage.Height);
+            }
+            return Grow(storage, target, what);
+        }
+
+        /// <summary>
         /// Storages built in the <see cref="Inventory"/> constructor never pass through
         /// <c>ResizeStorage</c>, so the patch alone would miss a mercenary who has no
         /// backpack equipped. Run this whenever we get a fresh look at the roster.
@@ -124,11 +138,12 @@ namespace QuasimorphBigPack
             foreach (var inventory in PlayerInventories.All(state))
             {
                 seen++;
-                if (Grow(inventory.BackpackStore, ModConfig.BackpackHeight, "backpack"))
+                if (GrowTracked(inventory.BackpackStore, ModConfig.BackpackHeight, "backpack"))
                 {
                     grown++;
                 }
-                if (ModConfig.ResizeVest && Grow(inventory.VestStore, ModConfig.VestHeight, "vest"))
+                if (ModConfig.ResizeVest &&
+                    GrowTracked(inventory.VestStore, ModConfig.VestHeight, "vest"))
                 {
                     grown++;
                 }

@@ -28,7 +28,8 @@ namespace QuasimorphBigPack
 
         /// <summary>
         /// Called from the resize postfix with the height the game itself chose, before
-        /// we grow past it. This is the only place that number is observable.
+        /// we grow past it. Authoritative, and it overwrites: equipping a bigger backpack
+        /// genuinely raises the vanilla height.
         /// </summary>
         internal static void RecordVanillaHeight(ItemStorage storage, int height)
         {
@@ -37,6 +38,25 @@ namespace QuasimorphBigPack
                 return;
             }
             VanillaHeight.Remove(storage);
+            VanillaHeight.Add(storage, height);
+        }
+
+        /// <summary>
+        /// Called from the re-assert pass with the storage's current height, which is
+        /// still the game's own until we grow it a line later.
+        ///
+        /// Record-if-absent, never overwrite: by the second re-assert the storage is
+        /// already tall because of us, and taking that as the vanilla height would erase
+        /// the very signal this class exists to produce. Without this, a mercenary who
+        /// never swaps a backpack would never get a warning at all, since nothing else
+        /// puts their storage through <c>ResizeStorage</c>.
+        /// </summary>
+        internal static void RecordInitialHeight(ItemStorage storage, int height)
+        {
+            if (storage == null || height <= 0 || VanillaHeight.TryGetValue(storage, out _))
+            {
+                return;
+            }
             VanillaHeight.Add(storage, height);
         }
 
