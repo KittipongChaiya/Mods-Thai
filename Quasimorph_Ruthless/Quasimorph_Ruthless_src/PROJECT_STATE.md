@@ -102,6 +102,73 @@ The rule inherited from the sibling mods holds: nothing patches `State`, `GameLo
   against the three tests, not a formality.
 - Big Pack contradicts this mod's premise. Warned about in the log, not blocked.
 
+## Probe checklist
+
+`probe=true` is currently set in the installed config at
+`%USERPROFILE%\AppData\LocalLow\Magnum Scriptum LTD\Quasimorph\LocalUserPresets\QuasimorphRuthless\config.txt`.
+That file is generated at runtime and lives outside this repository, so it is not
+tracked here.
+
+Reaching the **main menu is enough** — the dump runs at `AfterConfigsLoaded`. It writes
+`probe.txt` and `QuasimorphRuthless.log` beside the DLL. `HardcoreTacticalRuthless`
+will *not* appear in `probe.txt`: the dump runs before registration on purpose, so it
+is a clean vanilla baseline.
+
+### The check that answers most of it
+
+Read each preset field **across `Easy` → `Normal` → `Hard`** rather than reading `Hard`
+alone. The direction the vanilla ladder moves is the ground truth for which way is
+"harder", and it validates the sign of every multiplier in `PresetTuning` in one pass.
+(`Easy` displays as *Normal* in game, `Hard` as *Unfair*.)
+
+| Field | Assumed harder = | Expect across the ladder |
+|---|---|---|
+| `EnemyLos`, `EnemyActionPoint`, `EnemyDamageMult`, `EnemyDodgeMult`, `EnemyResistance` | higher | rising |
+| `MonsterPoints`, `ExpMult`, `WeightSatietyDrain`, `QmorphLevelGrowth` | higher | rising |
+| `ItemPoints`, `KilledMobsItemsCond`, `BarterValue`, `MissionRewardPoints`, `FactionReputation`, `ProcMissionLifetime` | lower | falling |
+
+Any field moving the other way means that multiplier is inverted and is currently
+making the mode **easier**.
+
+### Blocking — a failure here means something is broken
+
+- `--- Hard ---` exists and reports `icon descriptor present`. A `NULL` here, or a
+  missing `Hard`, is the one condition that can break the whole difficulty screen.
+- The log reports `patch targets resolved: both Localization.Get overloads`. Without
+  it the panel renders a raw localization key instead of a name.
+- `Data.MobClasses` is non-empty and no id looks player-side (`merc`, `player`,
+  `ally`). This is the evidence behind the claim that the player's squad is
+  structurally out of reach of layer 3.
+
+### Tuning — a failure here means numbers need changing
+
+- Multiply the deltas out by hand. `ItemPoints x0.70` and `KilledMobsItemsCond x0.60`
+  are the two most likely to overshoot from scarcity into misery if `Hard` is already low.
+- `EnemyLos x1.30`: if `Hard` is already near 1.5 the product approaches 2.0, at which
+  point the player never gets the first shot. That fails the answerable test.
+- Count the `[thinker]` tags. Zero means the heuristic caught nothing and the door
+  layer is inert; every record tagged means it is too loose. Humanoids tagged and
+  monsters untagged is the intended shape.
+- Check whether `CanOpenDoor` is *already* true on the thinkers in vanilla. If it is,
+  the README's "doors no longer stop anyone" is overstated and must be softened.
+- `HuntMemory` / `InvestigateMemory` magnitude. Values of 3-8 make x1.75 meaningful;
+  values in the hundreds mean the units are something else and x1.75 may amount to
+  "hunts forever".
+- Any chance field above 1.0 proves that table is 0-100 rather than 0-1.
+  `Tuning.ScaleChance` calibrates per value so it is safe either way, but it should
+  be recorded.
+- `EquipTechLevelBonus` baseline and the `ItemConditionPercent` range. If condition is
+  already something like `10..30`, x0.70 makes salvage close to worthless.
+
+### Settles the two deliberately untuned knobs
+
+`MagnumCraftingTime` and `FactionGrowthSpeed` are untouched because the field names and
+the UI labels imply opposite directions. The ladder resolves both:
+
+- `MagnumCraftingTime` **rising** Easy→Hard means it is a duration, so tuning multiplies
+  *up*. **Falling** means the UI label was right, it is a speed, and tuning multiplies *down*.
+- Same reading for `FactionGrowthSpeed`.
+
 ## Next action
 
 Install and launch:
@@ -113,9 +180,9 @@ cd C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthl
 
 Then, in order:
 
-1. Set `probe=true`, launch, and read `probe.txt`. Check every multiplier in
-   `PresetTuning`, `TacticalAi` and `MobLoadouts` against the real vanilla values —
-   especially the chance ranges in (e) above.
+1. Launch to the main menu and work through the probe checklist above. Retune
+   `PresetTuning`, `TacticalAi` and `MobLoadouts` against the measured values, and
+   record the answers to (d), (e) and the two untuned knobs.
 2. Open the difficulty screen. Confirm the fourth panel renders with an icon and the
    right text, in both languages.
 3. Start a run on it. Confirm from the log that the layers switched ON.
