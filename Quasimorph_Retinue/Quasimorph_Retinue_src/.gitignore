@@ -1,0 +1,8 @@
+# Build output. Regenerate with .\build.ps1
+build/
+bin/
+obj/
+
+# Python bytecode
+__pycache__/
+*.pyc
