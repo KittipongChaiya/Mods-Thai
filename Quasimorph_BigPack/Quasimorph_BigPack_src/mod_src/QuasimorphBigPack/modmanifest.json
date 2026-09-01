@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "QuasimorphBigPack",
+  "Assemblies": ["QuasimorphBigPack.dll"],
+  "Dependencies": [],
+  "SteamTags": [],
+  "RoomPresetNamespaceSlot": 0
+}
