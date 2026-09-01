@@ -10,7 +10,7 @@
     <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
     <DebugType>none</DebugType>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Product>Quasimorph Big Stack</Product>
     <!-- The game ships its own copies of these; never copy them into the mod folder. -->
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>

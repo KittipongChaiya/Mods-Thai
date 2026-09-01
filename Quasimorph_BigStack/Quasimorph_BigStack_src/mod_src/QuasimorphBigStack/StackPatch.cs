@@ -35,6 +35,17 @@ namespace QuasimorphBigStack
         private static bool _loggedFirst;
 
         /// <summary>
+        /// The value the game would have used, from the most recent call.
+        ///
+        /// <see cref="InitialCountPatch"/> needs it and cannot obtain it any other way:
+        /// a <c>StackableItemComponent</c> is constructed from the result of this method
+        /// on the very next instruction, and by then the vanilla number is gone. Game
+        /// logic is single-threaded, so "the most recent call" is unambiguous.
+        /// </summary>
+        internal static short LastVanillaMax;
+        internal static bool HasLastVanillaMax;
+
+        /// <summary>
         /// <paramref name="stackable"/> is matched by name against the game's own
         /// parameter list. A rename in a game update makes Harmony throw at patch time,
         /// which the caller logs — a loud failure, not a silent one.
@@ -64,6 +75,10 @@ namespace QuasimorphBigStack
                                 " for the first record asked; overriding to " +
                                 ModConfig.MaxStack);
                 }
+
+                // Hand the vanilla number to InitialCountPatch before losing it.
+                LastVanillaMax = __result;
+                HasLastVanillaMax = true;
 
                 __result = (short)ModConfig.MaxStack;
             }

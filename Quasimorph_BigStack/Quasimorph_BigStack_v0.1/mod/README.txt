@@ -79,14 +79,23 @@ This is also why the mod overrides the game's stack calculation rather than edit
 item definitions: the vanilla routine multiplies by the difficulty's stack setting, and
 `9999 × 4` already overflows.
 
+## Capacity, not free ammunition
+
+Raising the ceiling raises how much a stack can *hold*. It does not change how much you
+are given.
+
+This needed fixing in 0.1.1. The game creates every stackable item full — a quirk that is
+harmless when "full" is 40 rounds and absurd when it is 9999 — so bought and mission-reward
+ammunition arrived at 9999 apiece. Newly created items now start at the amount vanilla
+would have given, in a container that happens to hold 9999.
+
 ## What to expect
 
 - **Stacks do not merge themselves.** Raising the limit does not combine stacks you
   already have — the game only redistributes stacks that are *over* the limit. Picking
   items up merges them normally, and the sort button helps.
-- **Trade may look different.** Station stock is generated and priced partly from stack
-  limits. This is the least predictable effect of the mod; if station inventories look
-  wrong, lower `max_stack` and restart.
+- **Trade may still look different.** Station stock is priced and laid out partly from
+  stack limits. If station inventories look wrong, lower `max_stack` and restart.
 
 ## Troubleshooting
 

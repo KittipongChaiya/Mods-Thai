@@ -1,9 +1,36 @@
 # Project State — Quasimorph Big Stack
 
-**Mod version**: 0.1.0 — item stacks to 9999
+**Mod version**: 0.1.1 — item stacks to 9999
 **Target game**: `1.0.3.578s.024ad60`, Unity `2022.3.62f2`
-**Phase**: 4 of 4 — Live test | **Status**: BUILT, NOT YET RUN IN GAME
+**Phase**: 4 of 4 — Live test | **Status**: PARTIALLY TESTED IN GAME — one bug found and fixed
 **Updated**: 2026-09-01
+
+## 0.1.1 — bought and reward ammunition arrived at 9999
+
+Reported from play. Root cause is one line of vanilla code:
+
+```csharp
+public StackableItemComponent(short max) { Max = max; Count = max; }
+```
+
+Every stackable item is created **full**. Vanilla survives that because "full" is a sane
+number. `ItemFactory.CreateComponent` overwrites `Count` with a random amount only for
+`AmmoRecord`, and only when `randomizeConditionAndCapacity` is set — and both reported
+routes call `CreateForInventory(id, false, false)`:
+
+| Route | Path |
+|---|---|
+| Mission rewards | `MissionFactory.GenerateReward` → `MissionSystem.AddReward` → `CreateForInventory(id, false, false)` |
+| Station stock | `TradeSystem.GetRandomItemsFromStation` → `CreateForInventory(id, 0, 0)` |
+
+Fixed by `InitialCountPatch`: a postfix on the `StackableItemComponent(short)` constructor
+clamps `Count` back to the vanilla maximum, captured from the `GetMaxStackSize` call that
+happens on the instruction immediately before. `Max` is left at the raised ceiling, so
+capacity is unchanged — an item now holds a normal amount in a 9999-capacity container.
+
+Ruled out along the way: the three dictionaries `GetRandomItemsFromStation` builds
+(`StackCount`, `InventoryWidthSize`, `MaxStack` by item id) are UI and valuation metadata,
+not stock quantities, so they needed no patch.
 **Branch**: `feat/stack-size-9999` (off `Quasimorph`)
 
 Plan: `.claude/plans/stack-size-9999.plan.md`
@@ -13,9 +40,10 @@ Plan: `.claude/plans/stack-size-9999.plan.md`
 | Phase | What | Status |
 |---|---|---|
 | 1 | Skeleton, config, logging, build | **COMPLETE** — builds clean, apicheck 0 unresolved |
-| 2 | `ItemFactory.GetMaxStackSize` postfix | **IMPLEMENTED, UNTESTED** |
+| 2 | `ItemFactory.GetMaxStackSize` postfix | **COMPLETE** — confirmed working in game |
+| 2b | `InitialCountPatch` — initial count back to vanilla | **IMPLEMENTED, UNTESTED** (0.1.1) |
 | 3 | Wind-down safety (warning + README) | **IMPLEMENTED, UNTESTED** |
-| 4 | Live test | **BLOCKED** — needs a game launch |
+| 4 | Live test | **PARTIAL** — stacks confirmed raised; 0.1.1 fix and trade effects still unverified |
 
 ## What "UNTESTED" means here
 

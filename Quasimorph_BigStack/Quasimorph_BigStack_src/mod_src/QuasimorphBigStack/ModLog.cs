@@ -71,7 +71,7 @@ namespace QuasimorphBigStack
 
     internal static class ModInfo
     {
-        internal const string Version = "0.1.0";
+        internal const string Version = "0.1.1";
         internal const string UniqueName = "QuasimorphBigStack";
 
         /// <summary>Harmony instance id. Unique per mod, by convention the mod name.</summary>
