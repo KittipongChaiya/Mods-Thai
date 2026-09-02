@@ -30,6 +30,7 @@ namespace QuasimorphSignals
             { "Monster", "get_ShowSignal" },
             { "MonsterInspectWindow", "IsFollowerAlly" },
             { "PlayerInteractionSystem", "EvaluateSecondaryCursorAction" },
+            { "FightState", "TryRangeAttack" },
         };
 
         internal static void Run(string modDirectory)
@@ -121,7 +122,9 @@ namespace QuasimorphSignals
                 Describe(text, typeof(ToggleAllyStateButton), Targets.RightCaptionField);
                 Describe(text, typeof(MonsterInspectWindow), Targets.CloseButtonField);
                 Describe(text, typeof(CommonButton), Targets.CommonButtonOnClickField);
+                Describe(text, typeof(HasTargetState), Targets.HasTargetStateOwnerField);
                 text.AppendLine("   move control usable : " + Targets.MoveButtonUsable);
+                text.AppendLine("   fire discipline usable : " + Targets.FireDisciplineUsable);
 
                 text.AppendLine();
                 text.AppendLine("== Line-of-sight candidates");

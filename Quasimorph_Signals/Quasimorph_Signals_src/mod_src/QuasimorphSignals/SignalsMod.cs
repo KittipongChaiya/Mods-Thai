@@ -105,6 +105,9 @@ namespace QuasimorphSignals
                 MoveTargeting.Disarm();
                 MoveOrders.Prune(_creatures);
 
+                // Approach history is measured in tiles on a map that no longer exists.
+                FireDiscipline.Reset();
+
                 AllyOrders.Sweep(context?.State);
             });
         }

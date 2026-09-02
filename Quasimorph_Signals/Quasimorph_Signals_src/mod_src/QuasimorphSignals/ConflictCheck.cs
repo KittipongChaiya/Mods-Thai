@@ -67,7 +67,11 @@ namespace QuasimorphSignals
                 "the 'Squad: More operatives' mod. Its operatives are player-alliance " +
                 "creatures, so they get the roam control too. Giving an order does not " +
                 "write to a character sheet, so unlike a stat change this is safe on a " +
-                "persistent mercenary."
+                "persistent mercenary. It also prefixes FightState.TryRangeAttack for " +
+                "its own operatives with the same effective-range rule this mod's fire " +
+                "discipline layer applies to every ally - both compute the same answer " +
+                "from the same weapon, so whichever Harmony runs first is correct and " +
+                "there is nothing to reconcile."
             },
         };
 

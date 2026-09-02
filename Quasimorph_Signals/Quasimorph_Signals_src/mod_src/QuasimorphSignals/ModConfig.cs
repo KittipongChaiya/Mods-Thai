@@ -20,6 +20,7 @@ namespace QuasimorphSignals
         internal static bool CommandUi = true;
         internal static bool RemoteOrders = true;
         internal static bool MoveOrders = true;
+        internal static bool FireDiscipline = true;
         internal static bool DefaultRoam = false;
         internal static bool YieldToAllyRoamPatrol = true;
         internal static bool Probe = false;
@@ -57,6 +58,22 @@ namespace QuasimorphSignals
             "# Press the button again to cancel, or give the ally any other order.\n" +
             "# Ordering into a sealed room simply fails after a few turns and says so.\n" +
             "move_orders=true\n" +
+            "\n" +
+            "# --------------------------------------------------------- fire discipline\n" +
+            "\n" +
+            "# Stop allies firing from beyond their weapon's effective range - the\n" +
+            "# shotgun-down-a-long-corridor problem. Out of range they close the\n" +
+            "# distance instead, which is what the game's own Attack state already\n" +
+            "# does; the state an escorting ally actually lives in never had the\n" +
+            "# check at all.\n" +
+            "#\n" +
+            "# Range is read per weapon and includes the ammunition loaded, item\n" +
+            "# traits and the creature's own range perks. An ally that is holding\n" +
+            "# position, immobile or blocked still fires rather than standing idle.\n" +
+            "#\n" +
+            "# Allies only. Enemies keep vanilla behaviour, deliberately: teaching\n" +
+            "# them not to waste ammunition is a difficulty change, not a bug fix.\n" +
+            "fire_discipline=true\n" +
             "\n" +
             "# --------------------------------------------------------- out of sight\n" +
             "\n" +
@@ -99,6 +116,7 @@ namespace QuasimorphSignals
                 CommandUi = Bool(values, "command_ui", CommandUi);
                 RemoteOrders = Bool(values, "remote_orders", RemoteOrders);
                 MoveOrders = Bool(values, "move_orders", MoveOrders);
+                FireDiscipline = Bool(values, "fire_discipline", FireDiscipline);
                 DefaultRoam = Bool(values, "default_roam", DefaultRoam);
                 YieldToAllyRoamPatrol = Bool(values, "yield_to_ally_roam_patrol", YieldToAllyRoamPatrol);
                 Probe = Bool(values, "probe", Probe);
@@ -114,6 +132,7 @@ namespace QuasimorphSignals
                         " command_ui=" + CommandUi +
                         " remote_orders=" + RemoteOrders +
                         " move_orders=" + MoveOrders +
+                        " fire_discipline=" + FireDiscipline +
                         " default_roam=" + DefaultRoam +
                         " yield_to_ally_roam_patrol=" + YieldToAllyRoamPatrol +
                         " probe=" + Probe);

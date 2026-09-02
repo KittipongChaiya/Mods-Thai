@@ -1,6 +1,6 @@
 # Project State
 
-**Version**: v0.2 | **Phase**: 7 of 7 — In-game verification | **Status**: BUILT, UNTESTED
+**Version**: v0.3 | **Phase**: 8 of 8 — In-game verification | **Status**: BUILT, UNTESTED
 **Updated**: 2026-09-02
 
 Sibling of Retinue, Ruthless, Big Pack, Big Stack and Thai. Adds a Move-to button and an
@@ -28,6 +28,11 @@ sight — including sending one to any cell on the floor, seen or unseen.
       and both additive (false → true only).
 - [x] **Phase 5 — Patch verification.** `PatchVerify.cs` + `Targets.cs`.
 - [x] **Phase 6 — Docs.** README, config template, `ConflictCheck`.
+- [x] **Phase 8 — Fire discipline (v0.3).** `FireDiscipline.cs`. One prefix on
+      `FightState.TryRangeAttack(CellPosition)`, ally-gated, holding fire beyond the
+      weapon's effective range so the ally closes instead. Plan:
+      `.claude/plans/fire-discipline.plan.md`. Builds clean, 0 warnings, 49 references
+      resolve.
 - [x] **Phase 7 — Move orders (v0.2).** `MoveOrders.cs`, `MoveTargeting.cs`,
       `MoveButton.cs`. A **Move to...** button on the ally panel arms a one-shot
       destination picker; the next right-click on the map sends that ally there and it
@@ -36,9 +41,9 @@ sight — including sending one to any cell on the floor, seen or unseen.
 ## Active
 
 - [ ] **In-game verification.** Everything below is UNTESTED in a running game. The mod
-      builds with 0 warnings, all 37 game references resolve, and it is installed to
-      LocalUserPresets — but no part of the UI, the move order or the line-of-sight
-      behaviour has been observed working.
+      builds with 0 warnings, all 49 game references resolve, and it is installed to
+      LocalUserPresets — but no part of the UI, the move order, the fire discipline or the
+      line-of-sight behaviour has been observed working.
 
 ## Pending
 
@@ -108,16 +113,62 @@ sight — including sending one to any cell on the floor, seen or unseen.
   because both mods relabel the *vanilla* follow button. The Move button is a new control
   with its own name that nothing else writes to, so yielding it would hide the feature
   from anyone running that mod — which is the majority case on this machine.
+- 2026-09-02 — **Fire discipline gates on effective range, computed properly.**
+  `WeaponComponent.Range + CreatureData.GetFirearmRangeBonus(record)`, not the raw
+  `weaponRecord.Range` that vanilla's own `Attack` check and the *Squad: More operatives*
+  patch both use. The component value already folds in the loaded ammunition's range
+  bonus, `EffectiveRangeStarts`, and an `IAddedEffectiveRange` item trait; the creature
+  bonus adds perks and augments. Reading the record alone would send an ally with
+  long-range rounds walking closer for nothing. All members public.
+- 2026-09-02 — **Effective range is the boundary because the game says so.**
+  `DamageSystem.FalloffDamage` begins reducing damage the moment `distance > range`. The
+  threshold is not invented; it is where the game starts punishing the shot.
+- 2026-09-02 — **Declining a shot needs an escape hatch, and it is not optional.** Every
+  caller turns a declined shot into movement, so "hold fire" only means "close in" while
+  the ally can actually move. An ally on Wait, immobile, or in a blocked corridor takes
+  the weak shot instead — a frozen bodyguard is worse than a bad shot. Plus a give-up
+  counter after six declines without the range shrinking, for targets that are visible
+  but unreachable, where vanilla's own gate would loop forever too.
+- 2026-09-02 — **Fire discipline applies to allies only.** Teaching enemies not to waste
+  ammunition is a difficulty change wearing a bug fix's clothes, and both sibling mods
+  hold the line that a patch must never make an enemy stronger unasked. One config key
+  later if wanted.
+- 2026-09-02 — **`FirearmSystem.ApproximateHits` considered and held.** It is public and
+  models scatter, accuracy and pellet count properly — the better metric in principle, and
+  the natural next step if shotguns still feel wrong *inside* effective range. It costs
+  three trajectory calculations per AI decision per creature and its threshold cannot be
+  tuned without play data. Effective range costs one subtraction.
 - 2026-09-02 — **`MoveOrders.Enforce` re-issues from a whitelist of states**
   (`Idle`, `IdleFollow`, `IdleMigrate`, `FollowTarget`, `Stay`), never a blacklist. An
   ally that is fighting, panicking, surrendering or fetching a weapon is left alone and
   the order resumes afterwards. An ally shot at en route should shoot back.
 
+## Diagnosis on record — why allies shot from too far
+
+Read off the decompiled `Assembly-CSharp`, not inferred. The distance gate exists in
+exactly one of the five states an ally can fight from:
+
+| State | Range check? |
+|---|---|
+| `Attack.ProcessTacticMode` | **Yes** — `weaponRecord.Range >= distance`, else *"Target out of eff. range. Approaching"* |
+| `Attack.ProcessDesperateMode` | No |
+| `Defense.TryAttack` | No |
+| `Rage` | No |
+| `FollowTarget.TryAttack` | **No** — and this is where every escorting ally lives |
+
+Neither function underneath filters by distance. `FightState.TryRangeAttack` checks only
+that the weapon is unbroken and can fire; `AiBehaviour.TryShoot` adds
+`ShootTargetReachable`, which sounds like a range test and is a line-of-fire raycast.
+
+The Workshop mod *Squad: More operatives* ships the identical prefix on the identical
+method — independent confirmation of both diagnosis and remedy — but gates on its own
+`IsSquadAlly`, so it covers only the operatives it deploys.
+
 ## Next Action
 
 Launch the game with the mod installed and check, in order:
 
-1. `QuasimorphSignals.log` says *"all 4 patches attached and all private members
+1. `QuasimorphSignals.log` says *"all 5 patches attached and all private members
    resolved"*. If not, stop — the rest cannot work.
 2. An ally panel shows a **Move to...** button. (The Escort/Roam toggle will be absent
    while *Ally Roam/Patrol* is installed and `yield_to_ally_roam_patrol=true` — that is
@@ -138,3 +189,19 @@ Launch the game with the mod installed and check, in order:
    floor change by design; confirm nothing throws.
 10. **Enemies gained no visibility, and no enemy can be given an order** — the check that
     matters most.
+
+### Fire discipline (v0.3)
+
+11. Give an ally a shotgun. Long corridor, enemy at the far end. It **walks instead of
+    firing**, and the log names the distance and the effective range it computed.
+12. It fires once inside that range.
+13. Same test with a rifle: it fires from much further, because its effective range is
+    larger. This is what proves the rule is per weapon and not a flat number.
+14. Swap to long-range ammunition; the ally should open fire sooner. This is the part
+    both vanilla and the Squad mod get wrong by reading the raw record value.
+15. Set the ally to Wait, enemy at long range: it **fires anyway** rather than standing
+    idle. Same for an immobile ally.
+16. Put a visible but unreachable target (across a chasm, behind glass) at long range:
+    the ally fires after roughly six declines rather than circling forever.
+17. **An enemy with a shotgun still opens fire from across the room** — enemies untouched.
+18. `fire_discipline=false`, restart, confirm the old behaviour returns.
