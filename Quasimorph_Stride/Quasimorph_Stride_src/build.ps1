@@ -1,0 +1,100 @@
+<#
+.SYNOPSIS
+    Builds the Quasimorph Stride mod and assembles the release folder.
+
+.DESCRIPTION
+    Compiles the C# mod against the game's own assemblies, stages the release
+    folder, and optionally installs it straight into LocalUserPresets for testing.
+
+.PARAMETER GameManaged
+    Path to <game>\Quasimorph_Data\Managed. The mod compiles against the game's
+    own assemblies, so point this at the version you are targeting.
+
+.PARAMETER OutDir
+    Where to put the release folder.
+
+.PARAMETER Install
+    Also copy the built mod into LocalUserPresets so the next launch picks it up.
+
+.EXAMPLE
+    .\build.ps1
+    .\build.ps1 -Install
+#>
+[CmdletBinding()]
+param(
+    [string]$GameManaged = "C:\Users\Administrator\Desktop\Quasimorph.v1.0.3\game\Quasimorph_Data\Managed",
+    [string]$OutDir = (Join-Path (Split-Path $PSScriptRoot -Parent) "Quasimorph_Stride_v0.1"),
+    [string]$PresetsDir = "$env:USERPROFILE\AppData\LocalLow\Magnum Scriptum LTD\Quasimorph\LocalUserPresets",
+    [switch]$Install
+)
+
+$ErrorActionPreference = 'Stop'
+$Project = $PSScriptRoot
+
+if (-not (Test-Path $GameManaged)) {
+    throw "Game assemblies not found: $GameManaged`nPass -GameManaged <path to Quasimorph_Data\Managed>."
+}
+
+# The .NET SDK lives in the user profile, so it is not on PATH by default.
+$env:DOTNET_ROOT = "$env:USERPROFILE\.dotnet"
+$env:PATH = "$env:DOTNET_ROOT;$env:PATH"
+$env:DOTNET_CLI_TELEMETRY_OPTOUT = "1"
+$env:DOTNET_NOLOGO = "1"
+if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
+    throw "dotnet not found. Install the .NET 8 SDK: https://dot.net"
+}
+
+$stage = Join-Path $Project "build\mod"
+New-Item -ItemType Directory -Force -Path $stage | Out-Null
+
+Write-Host "[1/4] Compiling the mod" -ForegroundColor Cyan
+dotnet build "$Project\mod_src\QuasimorphStride\QuasimorphStride.csproj" `
+    -c Release -o $stage --nologo -v q -p:GameManaged=$GameManaged |
+    Select-String -Pattern "error|warning|Build succeeded"
+if ($LASTEXITCODE -ne 0) { throw "Compilation failed." }
+
+Write-Host "[2/4] Staging the release folder" -ForegroundColor Cyan
+Remove-Item $OutDir -Recurse -Force -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Force -Path "$OutDir\mod" | Out-Null
+Copy-Item -Path "$Project\mod_src\QuasimorphStride\modmanifest.json" -Destination "$OutDir\mod" -Force
+Copy-Item -Path "$stage\QuasimorphStride.dll" -Destination "$OutDir\mod" -Force
+if (Test-Path "$Project\README.md") {
+    Copy-Item -Path "$Project\README.md" -Destination "$OutDir\mod\README.txt" -Force
+}
+
+Write-Host "[3/4] Verifying every game reference still resolves" -ForegroundColor Cyan
+# A sibling mod shipped a call to a SpawnItem overload the game had already dropped.
+# Resolving our references against the real assemblies each build makes that whole
+# class of bug impossible to ship.
+$checker = Join-Path $Project "tools\apicheck.py"
+if (Test-Path $checker) {
+    python $checker "$stage\QuasimorphStride.dll" $GameManaged
+    if ($LASTEXITCODE -ne 0) { throw "Unresolved game references - see above." }
+} else {
+    Write-Host "  (tools\apicheck.py not present - skipping)" -ForegroundColor DarkYellow
+}
+
+Write-Host "[4/4] Verifying the config still describes itself consistently" -ForegroundColor Cyan
+# Every setting is written down four times - the template, the parser, the field
+# default and the README table - and nothing in the compiler connects them. A key
+# renamed in one place produces settings that are silently ignored, which looks
+# exactly like the mod working.
+$cfgChecker = Join-Path $Project "tools\cfgcheck.py"
+if (Test-Path $cfgChecker) {
+    python $cfgChecker $Project
+    if ($LASTEXITCODE -ne 0) { throw "Config drift - see above." }
+} else {
+    Write-Host "  (tools\cfgcheck.py not present - skipping)" -ForegroundColor DarkYellow
+}
+
+if ($Install) {
+    $target = Join-Path $PresetsDir "QuasimorphStride"
+    New-Item -ItemType Directory -Force -Path $target | Out-Null
+    Copy-Item -Path "$OutDir\mod\*" -Destination $target -Force
+    Write-Host "Installed to $target" -ForegroundColor Green
+}
+
+Write-Host "`nDone. Release folder: $OutDir" -ForegroundColor Green
+Get-ChildItem "$OutDir" -Recurse -File |
+    Select-Object @{n = 'File'; e = { $_.FullName.Replace($OutDir, '') } }, Length |
+    Format-Table -AutoSize

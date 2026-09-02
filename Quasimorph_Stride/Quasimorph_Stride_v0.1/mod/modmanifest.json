@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "QuasimorphStride",
+  "Assemblies": ["QuasimorphStride.dll"],
+  "Dependencies": [],
+  "SteamTags": [],
+  "RoomPresetNamespaceSlot": 0
+}
