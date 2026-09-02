@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "QuasimorphSignals",
+  "Assemblies": ["QuasimorphSignals.dll"],
+  "Dependencies": [],
+  "SteamTags": [],
+  "RoomPresetNamespaceSlot": 0
+}
