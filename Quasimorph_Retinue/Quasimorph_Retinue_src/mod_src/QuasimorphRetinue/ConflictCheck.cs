@@ -45,6 +45,16 @@ namespace QuasimorphRetinue
                 "richer ally commands. Complementary - it changes how you give orders, " +
                 "this mod changes who is there to receive them."
             },
+            {
+                "QuasimorphSignals",
+                "the sibling command mod. This mod sets each ally's stance once at " +
+                "spawn, from the stance= setting; that one adds an Escort/Roam control " +
+                "to the ally panel so you can change it per ally afterwards, and lets " +
+                "you order an ally you cannot currently see. Neither mod requires the " +
+                "other and neither references the other - it reads the stance off the " +
+                "creature, not from here. It is a separate mod precisely so this one " +
+                "can keep applying no Harmony patches at all."
+            },
         };
 
         internal static void Run()

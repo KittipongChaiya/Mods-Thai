@@ -34,6 +34,19 @@ the game once; `config.txt` is written next to the DLL with every setting explai
 
 ---
 
+## Changing a stance in game
+
+`stance=` sets what every ally does when it spawns. To change one ally's mind afterwards
+— send this one hunting, keep that one beside you — install the sibling **Signals** mod,
+which adds an **Escort / Roam** control to the ally panel and lets you order an ally you
+cannot currently see.
+
+It is a separate mod on purpose. This one applies **no Harmony patches at all**, and the
+ally panel cannot be changed without them. Keeping the two apart means that guarantee
+stays true and you can uninstall either one alone. Neither requires the other.
+
+---
+
 ## How to actually play support
 
 **This part is vanilla Quasimorph and most players never find it.** The mod gives you
