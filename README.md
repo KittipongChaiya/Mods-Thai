@@ -16,6 +16,7 @@ Quasimorph_SourceCode          <- you are here: the shared base
 ├── bigpack-v0.1                Unlimited inventory space
 ├── bigstack-v0.1               Item stacks to 9999
 ├── complications-v0.1          One named complication per raid
+├── covenant-v0.1               Curse and Pact rebalance: cost tracks power
 ├── nemesis-v0.1                Enemies that remember you
 ├── retinue-v0.1                An ally squad that fights for you
 ├── ruthless-v0.1               Hardcore Tactical Ruthless difficulty
