@@ -114,9 +114,20 @@ namespace QuasimorphSignals
                 }
 
                 var ally = (Monster)creature;
-                var wanted = IsRoaming(ally);
                 try
                 {
+                    // A standing destination outranks the stance. Re-asserting escort
+                    // here would call StartFollowing on an ally half way across the
+                    // map and walk it straight back to the player; re-asserting roam
+                    // would send it to the nearest enemy instead. Either one would
+                    // silently cancel an order the player gave explicitly.
+                    if (MoveOrders.Has(ally))
+                    {
+                        MoveOrders.Enforce(ally, creatures);
+                        continue;
+                    }
+
+                    var wanted = IsRoaming(ally);
                     if (ally.Behaviour != null && ally.Behaviour.IsEndlessHunt != wanted)
                     {
                         Apply(ally, wanted, creatures);

@@ -98,6 +98,13 @@ namespace QuasimorphSignals
                     return;
                 }
                 _creatures = context?.State?.Get<Creatures>() ?? _creatures;
+
+                // A half-given order must not survive a floor change: the player armed
+                // it looking at a different map, and the cell they were about to click
+                // no longer means anything.
+                MoveTargeting.Disarm();
+                MoveOrders.Prune(_creatures);
+
                 AllyOrders.Sweep(context?.State);
             });
         }

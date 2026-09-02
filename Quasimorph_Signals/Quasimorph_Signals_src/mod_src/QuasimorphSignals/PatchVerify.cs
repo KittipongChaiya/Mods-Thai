@@ -29,6 +29,7 @@ namespace QuasimorphSignals
             { "MonsterInspectWindow", "RefreshFollowButton" },
             { "Monster", "get_ShowSignal" },
             { "MonsterInspectWindow", "IsFollowerAlly" },
+            { "PlayerInteractionSystem", "EvaluateSecondaryCursorAction" },
         };
 
         internal static void Run(string modDirectory)
@@ -118,6 +119,9 @@ namespace QuasimorphSignals
                 Describe(text, typeof(MonsterInspectWindow), Targets.FollowButtonField);
                 Describe(text, typeof(ToggleAllyStateButton), Targets.LeftCaptionField);
                 Describe(text, typeof(ToggleAllyStateButton), Targets.RightCaptionField);
+                Describe(text, typeof(MonsterInspectWindow), Targets.CloseButtonField);
+                Describe(text, typeof(CommonButton), Targets.CommonButtonOnClickField);
+                text.AppendLine("   move control usable : " + Targets.MoveButtonUsable);
 
                 text.AppendLine();
                 text.AppendLine("== Line-of-sight candidates");

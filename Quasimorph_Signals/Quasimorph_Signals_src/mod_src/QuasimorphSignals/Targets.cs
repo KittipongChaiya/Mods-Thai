@@ -24,16 +24,29 @@ namespace QuasimorphSignals
         internal const string FollowButtonField = "_followButton";
         internal const string LeftCaptionField = "_leftCaption";
         internal const string RightCaptionField = "_rightCaption";
+        internal const string CloseButtonField = "_closeButton";
+
+        /// <summary>
+        /// The compiler-generated backing field of <c>CommonButton.OnClick</c>. An
+        /// event cannot be assigned from outside its declaring class, and a cloned
+        /// button whose inherited handlers cannot be cleared is a button that might do
+        /// two things at once - so this is required, not cosmetic.
+        /// </summary>
+        internal const string CommonButtonOnClickField = "OnClick";
 
         internal static FieldInfo InspectedCreature;
         internal static FieldInfo FollowButton;
         internal static FieldInfo LeftCaption;
         internal static FieldInfo RightCaption;
+        internal static FieldInfo CloseButton;
+        internal static FieldInfo CommonButtonOnClick;
 
         /// <summary>Name of each member that could not be found, for the log.</summary>
         internal static readonly List<string> Missing = new List<string>();
 
         internal static bool UiUsable { get; private set; }
+
+        internal static bool MoveButtonUsable { get; private set; }
 
         internal static void Resolve()
         {
@@ -43,11 +56,18 @@ namespace QuasimorphSignals
             FollowButton = Field(typeof(MonsterInspectWindow), FollowButtonField);
             LeftCaption = Field(typeof(ToggleAllyStateButton), LeftCaptionField);
             RightCaption = Field(typeof(ToggleAllyStateButton), RightCaptionField);
+            CloseButton = Field(typeof(MonsterInspectWindow), CloseButtonField);
+            CommonButtonOnClick = Field(typeof(CommonButton), CommonButtonOnClickField);
 
             // The captions are cosmetic: a button with the wrong label still works. The
             // creature and the button it sits beside are not - without them there is
             // nothing to read the stance from and nowhere to put the control.
             UiUsable = InspectedCreature != null && FollowButton != null;
+
+            // The Move control needs two more members, and degrades on its own without
+            // taking the stance control with it - so it has its own flag rather than
+            // widening UiUsable.
+            MoveButtonUsable = UiUsable && CloseButton != null && CommonButtonOnClick != null;
         }
 
         private static FieldInfo Field(Type type, string name)

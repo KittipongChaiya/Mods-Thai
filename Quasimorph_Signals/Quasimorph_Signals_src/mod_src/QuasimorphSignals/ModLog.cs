@@ -71,7 +71,7 @@ namespace QuasimorphSignals
 
     internal static class ModInfo
     {
-        internal const string Version = "0.1.0";
+        internal const string Version = "0.2.0";
         internal const string UniqueName = "QuasimorphSignals";
         internal const string HarmonyId = "quasimorph.signals";
     }

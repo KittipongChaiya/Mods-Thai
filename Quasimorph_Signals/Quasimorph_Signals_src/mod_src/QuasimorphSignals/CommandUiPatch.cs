@@ -39,8 +39,8 @@ namespace QuasimorphSignals
         [HarmonyPostfix]
         internal static void Postfix(MonsterInspectWindow __instance)
         {
-            if (!ModConfig.Enabled || !ModConfig.CommandUi || ConflictCheck.YieldUi ||
-                !Targets.UiUsable || __instance == null)
+            if (!ModConfig.Enabled || !ModConfig.CommandUi || !Targets.UiUsable ||
+                __instance == null)
             {
                 return;
             }
@@ -54,6 +54,25 @@ namespace QuasimorphSignals
                 }
 
                 var creature = Targets.InspectedCreature.GetValue(__instance) as Creature;
+
+                // The move control is refreshed first, and outside the yield below.
+                //
+                // Yielding exists because 'Ally Roam/Patrol' and this mod both relabel
+                // the *vanilla* follow button, and two mods writing one control on the
+                // same callback is a coin toss. The move control is a new button of our
+                // own with its own name; nothing else writes to it, so there is nothing
+                // to yield and no reason to withhold it from a player who happens to
+                // run that mod. It is also refreshed before the ally check below, so
+                // that it can hide itself when an enemy is inspected - the window is
+                // pooled, and a control left visible from the last ally would otherwise
+                // appear on a monster.
+                MoveButton.Refresh(__instance, vanilla, creature);
+
+                if (ConflictCheck.YieldUi)
+                {
+                    return;
+                }
+
                 var toggle = Ensure(vanilla);
                 if (toggle == null)
                 {
@@ -192,6 +211,11 @@ namespace QuasimorphSignals
 
                 var creatures = SignalsMod.Creatures;
                 var roam = side == ToggleAllyStateButton.Side.Right;
+
+                // An explicit stance order supersedes a standing destination. Leaving
+                // both in force would have the two layers pulling the same ally in
+                // different directions every turn.
+                MoveOrders.Clear(creature);
                 AllyOrders.Set(creature, roam, creatures);
                 ModLog.Info("ally " + AllyTest.IdOf(creature) + " ordered to " +
                             (roam ? "roam" : "escort"));

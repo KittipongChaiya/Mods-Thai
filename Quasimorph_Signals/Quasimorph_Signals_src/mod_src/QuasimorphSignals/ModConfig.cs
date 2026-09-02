@@ -19,6 +19,7 @@ namespace QuasimorphSignals
         internal static bool Enabled = true;
         internal static bool CommandUi = true;
         internal static bool RemoteOrders = true;
+        internal static bool MoveOrders = true;
         internal static bool DefaultRoam = false;
         internal static bool YieldToAllyRoamPatrol = true;
         internal static bool Probe = false;
@@ -45,6 +46,17 @@ namespace QuasimorphSignals
             "# Whether a newly seen ally starts out roaming. false means every ally\n" +
             "# behaves exactly as the game made it until you say otherwise.\n" +
             "default_roam=false\n" +
+            "\n" +
+            "# ------------------------------------------------------------ go there\n" +
+            "\n" +
+            "# Adds a 'Move to...' button to the ally panel. Press it, then right-click\n" +
+            "# anywhere on the floor and that ally walks there and holds position -\n" +
+            "# through walls, into rooms you have never seen, across the whole map. It\n" +
+            "# will still fight anything it meets on the way and carry on afterwards.\n" +
+            "#\n" +
+            "# Press the button again to cancel, or give the ally any other order.\n" +
+            "# Ordering into a sealed room simply fails after a few turns and says so.\n" +
+            "move_orders=true\n" +
             "\n" +
             "# --------------------------------------------------------- out of sight\n" +
             "\n" +
@@ -86,6 +98,7 @@ namespace QuasimorphSignals
                 Enabled = Bool(values, "enabled", Enabled);
                 CommandUi = Bool(values, "command_ui", CommandUi);
                 RemoteOrders = Bool(values, "remote_orders", RemoteOrders);
+                MoveOrders = Bool(values, "move_orders", MoveOrders);
                 DefaultRoam = Bool(values, "default_roam", DefaultRoam);
                 YieldToAllyRoamPatrol = Bool(values, "yield_to_ally_roam_patrol", YieldToAllyRoamPatrol);
                 Probe = Bool(values, "probe", Probe);
@@ -100,6 +113,7 @@ namespace QuasimorphSignals
             ModLog.Info("config: enabled=" + Enabled +
                         " command_ui=" + CommandUi +
                         " remote_orders=" + RemoteOrders +
+                        " move_orders=" + MoveOrders +
                         " default_roam=" + DefaultRoam +
                         " yield_to_ally_roam_patrol=" + YieldToAllyRoamPatrol +
                         " probe=" + Probe);
