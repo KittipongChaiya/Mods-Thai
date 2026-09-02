@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "QuasimorphNemesis",
+  "Assemblies": ["QuasimorphNemesis.dll"],
+  "Dependencies": [],
+  "SteamTags": [],
+  "RoomPresetNamespaceSlot": 0
+}
