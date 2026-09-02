@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "QuasimorphSilence",
+  "Assemblies": ["QuasimorphSilence.dll"],
+  "Dependencies": [],
+  "SteamTags": [],
+  "RoomPresetNamespaceSlot": 0
+}
