@@ -1,8 +1,0 @@
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\build\mod\QuasimorphRetinue.deps.json
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\build\mod\QuasimorphRetinue.dll
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\mod_src\QuasimorphRetinue\obj\Release\QuasimorphRetinue.csproj.AssemblyReference.cache
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\mod_src\QuasimorphRetinue\obj\Release\QuasimorphRetinue.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\mod_src\QuasimorphRetinue\obj\Release\QuasimorphRetinue.AssemblyInfoInputs.cache
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\mod_src\QuasimorphRetinue\obj\Release\QuasimorphRetinue.AssemblyInfo.cs
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\mod_src\QuasimorphRetinue\obj\Release\QuasimorphRetinue.csproj.CoreCompileInputs.cache
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Retinue\Quasimorph_Retinue_src\mod_src\QuasimorphRetinue\obj\Release\QuasimorphRetinue.dll

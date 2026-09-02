@@ -1,0 +1,23 @@
+# ---------------------------------------------------------------
+# Mods-Thai - repository-wide ignore rules
+#
+# Each mod also carries its own .gitignore with the same rules;
+# this root file is the single source of truth for the monorepo.
+# ---------------------------------------------------------------
+
+# Build output. Regenerate with each mod's build.ps1
+build/
+bin/
+obj/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Editor / OS cruft
+.vs/
+.idea/
+*.user
+*.suo
+Thumbs.db
+desktop.ini

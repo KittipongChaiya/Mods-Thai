@@ -1,8 +1,0 @@
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\build\mod\QuasimorphBigPack.deps.json
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\build\mod\QuasimorphBigPack.dll
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\mod_src\QuasimorphBigPack\obj\Release\QuasimorphBigPack.csproj.AssemblyReference.cache
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\mod_src\QuasimorphBigPack\obj\Release\QuasimorphBigPack.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\mod_src\QuasimorphBigPack\obj\Release\QuasimorphBigPack.AssemblyInfoInputs.cache
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\mod_src\QuasimorphBigPack\obj\Release\QuasimorphBigPack.AssemblyInfo.cs
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\mod_src\QuasimorphBigPack\obj\Release\QuasimorphBigPack.csproj.CoreCompileInputs.cache
-C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_BigPack\Quasimorph_BigPack_src\mod_src\QuasimorphBigPack\obj\Release\QuasimorphBigPack.dll
