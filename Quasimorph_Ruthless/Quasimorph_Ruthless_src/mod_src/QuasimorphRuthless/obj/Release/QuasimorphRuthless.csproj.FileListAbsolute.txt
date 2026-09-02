@@ -1,0 +1,8 @@
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\mod_src\QuasimorphRuthless\obj\Release\QuasimorphRuthless.csproj.AssemblyReference.cache
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\mod_src\QuasimorphRuthless\obj\Release\QuasimorphRuthless.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\mod_src\QuasimorphRuthless\obj\Release\QuasimorphRuthless.AssemblyInfoInputs.cache
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\mod_src\QuasimorphRuthless\obj\Release\QuasimorphRuthless.AssemblyInfo.cs
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\mod_src\QuasimorphRuthless\obj\Release\QuasimorphRuthless.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\build\mod\QuasimorphRuthless.deps.json
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\build\mod\QuasimorphRuthless.dll
+C:\Users\Administrator\Desktop\Mods-Thai\Quasimorph_Ruthless\Quasimorph_Ruthless_src\mod_src\QuasimorphRuthless\obj\Release\QuasimorphRuthless.dll
