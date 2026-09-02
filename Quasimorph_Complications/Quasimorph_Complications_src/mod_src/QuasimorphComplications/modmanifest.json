@@ -1,0 +1,7 @@
+{
+  "UniqueModName": "QuasimorphComplications",
+  "Assemblies": ["QuasimorphComplications.dll"],
+  "Dependencies": [],
+  "SteamTags": [],
+  "RoomPresetNamespaceSlot": 0
+}
